@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Wave from '../components/Wave.astro';
+import Closing from '../components/Closing.astro';
+---
+<Base
+  title="Mon approche — Xénia Van Outryve, psychologue"
+  description="Une approche intégrative et holistique : la personne dans sa globalité, corps et esprit. Un espace sécurisant, sans jugement, à votre rythme."
+>
+  <PageHero overline="Mon approche">
+    <Fragment slot="title">
+      Une approche <em>intégrative</em>,<br />qui vous considère en entier
+    </Fragment>
+    <Fragment slot="copy">
+      Vous n'êtes pas « un symptôme à corriger ». Vous êtes une personne, avec
+      son histoire, ses forces et ses fragilités — et c'est avec tout cela que
+      nous travaillons.
+    </Fragment>
+  </PageHero>
+
+  <section class="section piliers">
+    <div class="container">
+      <div class="piliers__grid" data-reveal data-reveal-stagger>
+        <article class="card piliers__card">
+          <h2>Holistique, concrètement</h2>
+          <p>
+            Une approche <strong>intégrative et holistique</strong>, qui considère la
+            personne dans sa globalité : ce que vous vivez, ce que vous ressentez,
+            votre contexte familial et professionnel. Les outils s'adaptent à votre
+            situation — pas l'inverse.
+          </p>
+        </article>
+        <article class="card piliers__card">
+          <h2>Le corps fait partie du travail</h2>
+          <p>
+            La santé mentale est <strong>étroitement liée à la santé physique</strong>.
+            Sommeil, alimentation, activité physique : ces habitudes de vie pèsent
+            directement sur l'humeur, l'énergie et l'anxiété. On s'en occupe aussi,
+            à petits pas réalistes.
+          </p>
+        </article>
+        <article class="card piliers__card">
+          <h2>Sans jugement, à votre rythme</h2>
+          <p>
+            Un espace d'écoute <strong>bienveillant, sécurisant et sans jugement</strong>,
+            où explorer vos difficultés, mieux comprendre votre fonctionnement et
+            développer vos ressources. Le cap : un mieux-être durable, dans le
+            respect de vos besoins et de vos valeurs.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="soft-wrap">
+    <Wave fill="var(--ivory-soft)" />
+    <section class="section section--soft premiere">
+      <div class="container premiere__grid">
+        <div data-reveal>
+          <span class="overline">La première séance</span>
+          <h2 class="headline headline--md">
+            Et si je ne sais pas<br /><em>par où commencer</em> ?
+          </h2>
+          <p class="copy">
+            C'est très fréquent — et ce n'est pas un problème. La première
+            rencontre sert justement à ça : poser ce qui vous amène, avec vos
+            mots, sans ordre imposé. Nous définissons ensemble la suite, à votre
+            rythme.
+          </p>
+        </div>
+        <ul class="premiere__steps" data-reveal data-reveal-stagger>
+          <li>
+            <span class="premiere__num" aria-hidden="true"></span>
+            <div>
+              <h3>Vous arrivez comme vous êtes</h3>
+              <p>Pas besoin de préparer quoi que ce soit, ni d'avoir « les bons mots ».</p>
+            </div>
+          </li>
+          <li>
+            <span class="premiere__num" aria-hidden="true"></span>
+            <div>
+              <h3>On fait connaissance</h3>
+              <p>Ce qui vous amène, votre contexte, ce que vous attendez — et vos questions.</p>
+            </div>
+          </li>
+          <li>
+            <span class="premiere__num" aria-hidden="true"></span>
+            <div>
+              <h3>On décide ensemble</h3>
+              <p>La fréquence, les priorités, la manière de travailler : rien n'est figé d'avance.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <Wave fill="var(--ivory)" flip />
+  </div>
+
+  <section class="section pourqui">
+    <div class="container">
+      <span class="overline overline--center">Pour qui</span>
+      <h2 class="headline headline--md headline--center">
+        Enfants, adolescents, adultes,<br /><em>futurs et jeunes parents</em>
+      </h2>
+      <p class="copy copy--center">
+        Chaque âge a sa porte d'entrée : retrouvez le détail dans les trois
+        accompagnements, ou contactez-moi si vous hésitez sur la formule.
+      </p>
+      <div class="actions actions--center">
+        <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+        <a class="link-arrow" href="/accompagnements/adolescents-adultes/">Voir les accompagnements</a>
+      </div>
+    </div>
+  </section>
+
+  <Closing />
+</Base>
+
+<style>
+  .piliers__grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap-grid);
+  }
+  .piliers__card { padding: var(--pad-card); }
+  .piliers__card h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem; font-weight: 620; letter-spacing: -0.01em;
+  }
+  .piliers__card p { margin-top: 14px; color: var(--muted); font-size: 0.97rem; line-height: 1.6; }
+  .piliers__card strong { color: var(--ink); }
+
+  .premiere__grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+  .premiere__steps {
+    margin: 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 26px;
+    counter-reset: step;
+  }
+  .premiere__steps li { display: flex; gap: 18px; counter-increment: step; }
+  .premiere__num {
+    width: 46px; height: 46px; border-radius: 50%; flex: none;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, rgba(246,200,219,0.55), rgba(223,210,244,0.55));
+    font-family: var(--font-display); font-weight: 640; color: var(--framboise);
+  }
+  .premiere__num::after { content: counter(step); }
+  .premiere__steps h3 { font-size: 1.05rem; font-weight: 700; }
+  .premiere__steps p { margin-top: 4px; color: var(--muted); font-size: 0.94rem; line-height: 1.55; }
+
+  @media (max-width: 960px) {
+    .piliers__grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+    .premiere__grid { grid-template-columns: 1fr; }
+  }
+</style>

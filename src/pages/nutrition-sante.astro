@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Wave from '../components/Wave.astro';
+import Closing from '../components/Closing.astro';
+
+const motifs = [
+  { titre: 'Retrouver de l’énergie', desc: 'Quand la fatigue s’installe malgré le repos, l’assiette est souvent un levier négligé.' },
+  { titre: 'Soutenir la concentration', desc: 'Mieux nourrir son cerveau pour des journées moins brumeuses — au travail comme à l’école.' },
+  { titre: 'Apaiser la digestion', desc: 'Un confort digestif retrouvé change l’humeur, le sommeil et l’énergie. Tout est lié.' },
+  { titre: 'Un bien-être global', desc: 'Manger mieux sans peser chaque gramme : des habitudes durables, pas un régime de plus.' },
+];
+---
+<Base
+  title="Nutrition & Santé — Xénia Van Outryve, psychologue"
+  description="Un accompagnement en nutrition par une psychologue de la santé : énergie, concentration, digestion, menus TDAH, nutrition pédiatrique. Brabant wallon."
+>
+  <PageHero overline="Nutrition & Santé" sage>
+    <Fragment slot="title">
+      Mieux manger, mieux dormir,<br /><em>mieux vivre</em> — sans injonctions
+    </Fragment>
+    <Fragment slot="copy">
+      L'alimentation est un levier essentiel de la santé physique et mentale, au
+      même titre que le sommeil, l'activité physique et la gestion du stress.
+      C'est par là que nous passons — sans culpabilisation.
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="motifs" data-reveal data-reveal-stagger>
+        {motifs.map((m) => (
+          <article class="card motifs__card">
+            <h2>{m.titre}</h2>
+            <p>{m.desc}</p>
+          </article>
+        ))}
+      </div>
+      <p class="copy copy--center nutri-note" data-reveal>
+        <strong>Psychologue de la santé</strong>, j'aborde l'alimentation par les
+        comportements : ce qui se joue autour de l'assiette compte autant que ce
+        qu'il y a dedans.
+      </p>
+    </div>
+  </section>
+
+  <div class="soft-wrap">
+    <Wave fill="var(--ivory-soft)" />
+    <section class="section section--soft focus">
+      <div class="container focus__grid">
+        <article class="card focus__card" data-reveal>
+          <span class="overline">TDAH</span>
+          <h2 class="headline--sm">Des menus qui aident vraiment</h2>
+          <p>
+            Pour les personnes présentant un TDAH : des habitudes de vie adaptées
+            et des menus alimentaires conçus pour favoriser la concentration,
+            l'énergie et le bien-être au quotidien.
+          </p>
+          <a class="link-arrow" href="/accompagnements/adolescents-adultes/#tdah">L'accompagnement TDAH complet</a>
+        </article>
+        <article class="card focus__card" data-reveal>
+          <span class="overline overline--sage">Nutrition pédiatrique</span>
+          <h2 class="headline--sm">Pour les enfants et leurs familles</h2>
+          <p>
+            Actuellement en formation en nutrition pédiatrique, je développe une
+            expertise spécifique pour accompagner les problématiques et les
+            questionnements des enfants autour de l'alimentation — en complément
+            de ma pratique de psychologue.
+          </p>
+          <a class="link-arrow" href="/accompagnements/enfants-famille/">L'accompagnement Enfants & Famille</a>
+        </article>
+      </div>
+    </section>
+    <Wave fill="var(--ivory)" flip />
+  </div>
+
+  <Closing />
+</Base>
+
+<style>
+  .motifs {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap-grid);
+  }
+  .motifs__card { padding: clamp(22px, 2.4vw, 30px); }
+  .motifs__card h2 {
+    font-family: var(--font-display);
+    font-size: 1.18rem; font-weight: 630; letter-spacing: -0.01em;
+    color: var(--sage-deep);
+  }
+  .motifs__card p { margin-top: 10px; color: var(--muted); font-size: 0.93rem; line-height: 1.6; }
+  .nutri-note { margin-top: 48px; }
+
+  .focus__grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--gap-grid);
+  }
+  .focus__card { padding: var(--pad-card); display: flex; flex-direction: column; align-items: flex-start; }
+  .focus__card .overline { margin-bottom: 10px; }
+  .focus__card h2 { font-family: var(--font-display); font-weight: 620; }
+  .focus__card p { margin: 12px 0 18px; color: var(--muted); font-size: 0.96rem; line-height: 1.6; }
+  .focus__card .link-arrow { margin-top: auto; }
+
+  @media (max-width: 960px) {
+    .motifs { grid-template-columns: repeat(2, 1fr); }
+    .focus__grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .motifs { grid-template-columns: 1fr; }
+  }
+</style>

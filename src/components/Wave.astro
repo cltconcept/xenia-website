@@ -1,0 +1,18 @@
+---
+/* Séparateur organique entre deux fonds — « pas trop carré ».
+   flip : vague renversée. fill : couleur de la section qui ARRIVE. */
+interface Props { fill?: string; flip?: boolean; class?: string }
+const { fill = 'var(--ivory)', flip = false, class: cls } = Astro.props;
+---
+<svg
+  class:list={['wave', cls]}
+  style={flip ? 'transform: scaleY(-1);' : undefined}
+  viewBox="0 0 1440 96"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+>
+  <path
+    d="M0 64 C 180 20, 340 8, 540 34 C 760 62, 900 88, 1120 70 C 1260 58, 1360 40, 1440 44 L 1440 96 L 0 96 Z"
+    fill={fill}
+  />
+</svg>

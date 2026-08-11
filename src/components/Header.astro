@@ -1,0 +1,252 @@
+---
+import Logo from './Logo.astro';
+import { NAV } from '../data/site';
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<header class="nav" id="site-nav">
+  <div class="nav__pill">
+    <a href="/" class="nav__brand" aria-label="Xénia Van Outryve — accueil">
+      <Logo size={28} />
+      <span class="nav__name">Xénia <span class="nav__name-lt">Van Outryve</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Navigation principale">
+      {NAV.map((item) =>
+        item.children ? (
+          <div class:list={['nav__drop', { 'is-active': item.children.some((c) => isActive(c.href)) }]}>
+            <button class="nav__drop-btn" aria-expanded="false" aria-haspopup="true">
+              {item.label}
+              <svg width="9" height="6" viewBox="0 0 9 6" aria-hidden="true"><path d="M1 1l3.5 3.5L8 1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+            </button>
+            <div class="nav__drop-menu">
+              {item.children.map((c) => (
+                <a href={c.href} class:list={{ 'is-active': isActive(c.href) }}>{c.label}</a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a href={item.href} class:list={{ 'is-active': isActive(item.href!) }}>{item.label}</a>
+        )
+      )}
+    </nav>
+    <a class="btn-pill btn-pill--sm nav__cta" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+    <button class="nav__burger" id="nav-burger" aria-expanded="false" aria-controls="nav-menu" aria-label="Ouvrir le menu">
+      <span></span><span></span>
+    </button>
+  </div>
+
+  <div class="nav__menu" id="nav-menu" aria-hidden="true">
+    <nav aria-label="Menu mobile">
+      {NAV.map((item, i) =>
+        item.children ? (
+          <div class="nav__menu-group" style={`--i: ${i}`}>
+            <p>{item.label}</p>
+            {item.children.map((c) => <a href={c.href}>{c.label}</a>)}
+          </div>
+        ) : (
+          <a href={item.href} style={`--i: ${i}`}>{item.label}</a>
+        )
+      )}
+    </nav>
+    <div class="nav__menu-foot" style={`--i: ${NAV.length}`}>
+      <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+      <a class="nav__menu-tel" href="tel:+32475670350">Appeler le 0475 67 03 50</a>
+      <p class="nav__menu-note">Court-Saint-Étienne · Nivelles · La Hulpe · visio</p>
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  const burger = document.getElementById('nav-burger');
+  const menu = document.getElementById('nav-menu');
+
+  const onScroll = () => nav?.classList.toggle('is-scrolled', window.scrollY > 30);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setMenu = (open: boolean) => {
+    menu?.classList.toggle('is-open', open);
+    burger?.classList.toggle('is-open', open);
+    burger?.setAttribute('aria-expanded', String(open));
+    burger?.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    menu?.setAttribute('aria-hidden', String(!open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger?.addEventListener('click', () => setMenu(!menu?.classList.contains('is-open')));
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+  /* Menu déroulant : clic (tactile + clavier) en plus du survol CSS */
+  document.querySelectorAll<HTMLElement>('.nav__drop').forEach((drop) => {
+    const btn = drop.querySelector<HTMLButtonElement>('.nav__drop-btn');
+    btn?.addEventListener('click', () => {
+      const open = drop.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', (e) => {
+      if (!drop.contains(e.target as Node)) {
+        drop.classList.remove('is-open');
+        btn?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Capsule claire flottante — verre dépoli sur ivoire */
+  .nav {
+    position: fixed; inset-inline: 0; top: 14px; z-index: 60;
+    display: flex; justify-content: center;
+    pointer-events: none;
+    padding-inline: 12px;
+  }
+  .nav__pill {
+    pointer-events: auto;
+    display: flex; align-items: center;
+    gap: clamp(16px, 2.2vw, 30px);
+    padding: 8px 8px 8px 18px;
+    border-radius: var(--radius-pill);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glass);
+    transition: background 0.35s ease, box-shadow 0.35s ease;
+  }
+  .nav.is-scrolled .nav__pill {
+    background: rgba(253, 251, 248, 0.85);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 16px 44px rgba(67, 50, 75, 0.16);
+  }
+
+  .nav__brand {
+    display: flex; align-items: center; gap: 9px;
+    text-decoration: none; color: var(--ink);
+  }
+  .nav__name {
+    font-family: var(--font-display);
+    font-size: 0.98rem; font-weight: 640; letter-spacing: -0.005em; white-space: nowrap;
+  }
+  .nav__name-lt { font-weight: 420; }
+
+  .nav__links { display: flex; align-items: center; gap: clamp(14px, 1.7vw, 22px); }
+  .nav__links a, .nav__drop-btn {
+    font-size: 0.82rem; font-weight: 550; letter-spacing: 0.01em;
+    text-decoration: none; color: var(--muted);
+    padding: 6px 2px;
+    transition: color 0.25s ease;
+    background: none; border: 0; cursor: pointer;
+  }
+  .nav__links a:hover, .nav__drop-btn:hover { color: var(--ink); }
+  .nav__links a.is-active, .nav__drop.is-active .nav__drop-btn { color: var(--framboise); }
+
+  /* Menu déroulant Accompagnements */
+  .nav__drop { position: relative; }
+  .nav__drop-btn { display: inline-flex; align-items: center; gap: 5px; }
+  .nav__drop-btn svg { transition: transform 0.25s var(--ease); }
+  .nav__drop-menu {
+    position: absolute; top: calc(100% + 14px); left: 50%;
+    translate: -50% 0;
+    min-width: 240px;
+    display: flex; flex-direction: column;
+    padding: 10px;
+    border-radius: 22px;
+    background: rgba(253, 251, 248, 0.92);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 24px 60px rgba(67, 50, 75, 0.18);
+    opacity: 0; visibility: hidden; transform: translateY(-6px);
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0s linear 0.25s;
+  }
+  .nav__drop:hover .nav__drop-menu,
+  .nav__drop:focus-within .nav__drop-menu,
+  .nav__drop.is-open .nav__drop-menu {
+    opacity: 1; visibility: visible; transform: translateY(0);
+    transition-delay: 0s;
+  }
+  .nav__drop:hover .nav__drop-btn svg,
+  .nav__drop.is-open .nav__drop-btn svg { transform: rotate(180deg); }
+  .nav__drop-menu a {
+    padding: 10px 14px; border-radius: 14px;
+    font-size: 0.86rem; color: var(--ink);
+  }
+  .nav__drop-menu a:hover { background: rgba(246, 200, 219, 0.25); color: var(--ink); }
+  .nav__drop-menu a.is-active { color: var(--framboise); }
+
+  .nav__cta { white-space: nowrap; }
+
+  /* Burger + menu mobile */
+  .nav__burger {
+    display: none; position: relative;
+    width: 38px; height: 38px;
+    background: none; border: 0; cursor: pointer; padding: 0;
+  }
+  .nav__burger span {
+    position: absolute; left: 10px; right: 10px; height: 1.6px;
+    background: var(--ink);
+    transition: transform 0.3s var(--ease);
+  }
+  .nav__burger span:nth-child(1) { top: 15px; }
+  .nav__burger span:nth-child(2) { bottom: 15px; }
+  .nav__burger.is-open span:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+  .nav__burger.is-open span:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+
+  .nav__menu {
+    position: fixed; inset: 0; z-index: -1;
+    background: rgba(253, 251, 248, 0.96);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+    padding: 100px clamp(28px, 8vw, 48px) 40px;
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s var(--ease), visibility 0s linear 0.3s;
+  }
+  .nav__menu.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .nav__menu nav { display: flex; flex-direction: column; }
+  .nav__menu nav > a, .nav__menu-group {
+    border-bottom: 1px solid var(--sep);
+    opacity: 0; transform: translateY(14px);
+  }
+  .nav__menu nav > a {
+    text-decoration: none; color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.45rem; font-weight: 560; letter-spacing: -0.015em;
+    padding-block: 14px;
+  }
+  .nav__menu-group { padding-block: 14px; }
+  .nav__menu-group p {
+    margin: 0 0 4px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--framboise);
+  }
+  .nav__menu-group a {
+    display: block; text-decoration: none; color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.2rem; font-weight: 500;
+    padding-block: 7px;
+  }
+  .nav__menu.is-open nav > a, .nav__menu.is-open .nav__menu-group, .nav__menu.is-open .nav__menu-foot {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+    transition-delay: calc(0.045s * var(--i));
+  }
+  .nav__menu-foot {
+    margin-top: 30px;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
+    opacity: 0; transform: translateY(14px);
+  }
+  .nav__menu-tel { color: var(--framboise); text-decoration: none; font-weight: 600; font-size: 1rem; }
+  .nav__menu-note { margin: 0; color: var(--muted); font-size: 0.88rem; }
+
+  @media (max-width: 960px) {
+    .nav__links, .nav__cta { display: none; }
+    .nav__burger { display: block; }
+    .nav__pill { padding: 5px 8px 5px 16px; gap: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav__pill, .nav__burger span, .nav__menu, .nav__menu nav > a,
+    .nav__menu-group, .nav__menu-foot, .nav__drop-menu, .nav__drop-btn svg { transition: none !important; }
+  }
+</style>

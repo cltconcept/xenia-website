@@ -1,0 +1,162 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Wave from '../components/Wave.astro';
+import LieuxCards from '../components/LieuxCards.astro';
+import { IDENTITE } from '../data/site';
+---
+<Base
+  title="Lieux & Contact — Xénia Van Outryve, psychologue"
+  description="Trois cabinets : Court-Saint-Étienne, Nivelles, La Hulpe — et la visio. Rendez-vous en ligne via Doctoranytime ou Rosa. Tél. 0475 67 03 50."
+>
+  <PageHero overline="Lieux & Contact">
+    <Fragment slot="title">
+      Trois cabinets en Brabant wallon<br />— et <em>la visio</em>
+    </Fragment>
+    <Fragment slot="copy">
+      Choisissez le lieu et le jour qui vous arrangent : la prise de rendez-vous
+      se fait en ligne, sur la plateforme du cabinet concerné.
+    </Fragment>
+  </PageHero>
+
+  <section class="section rdv" id="rdv">
+    <div class="container">
+      <LieuxCards />
+      <div class="card card--glass rdv__visio" data-reveal>
+        <div>
+          <h2 class="headline--sm rdv__visio-titre">Et si la route est un frein : la visio</h2>
+          <p>
+            Les consultations peuvent aussi se faire en vidéo, quand la distance,
+            l'agenda ou la situation compliquent le déplacement.
+          </p>
+        </div>
+        <a class="btn-pill btn-pill--ghost" href={`mailto:${IDENTITE.email}?subject=Demande%20de%20consultation%20en%20visio`}>Demander une visio</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="soft-wrap">
+    <Wave fill="var(--ivory-soft)" />
+    <section class="section section--soft pratique">
+      <div class="container pratique__grid">
+        <div data-reveal>
+          <span class="overline">Côté pratique</span>
+          <h2 class="headline headline--md">
+            Les questions qu'on<br />me pose <em>avant de venir</em>
+          </h2>
+          <div class="actions">
+            <a class="btn-pill" href={`tel:${IDENTITE.telephoneIntl}`}>Appeler le {IDENTITE.telephone}</a>
+            <a class="link-arrow" href={`mailto:${IDENTITE.email}`}>Écrire un e-mail</a>
+          </div>
+        </div>
+        <dl class="pratique__faq" data-reveal data-reveal-stagger>
+          <div class="pratique__qa">
+            <dt>Comment payer ?</dt>
+            <dd>
+              Le paiement mobile est accepté en cabinet.
+              <!-- À CONFIRMER CLIENTE : tarifs exacts + autres moyens de paiement -->
+            </dd>
+          </div>
+          <div class="pratique__qa">
+            <dt>Les séances sont-elles remboursées ?</dt>
+            <dd>
+              Psychologue agréée (n° {IDENTITE.agrement}) : la plupart des
+              mutualités interviennent dans le coût des séances. Le montant varie
+              selon la vôtre — un justificatif vous est fourni sur demande.
+            </dd>
+          </div>
+          <div class="pratique__qa">
+            <dt>Faut-il une prescription ?</dt>
+            <dd>
+              Non : vous pouvez prendre rendez-vous directement, sans passer par
+              un médecin.
+            </dd>
+          </div>
+          <div class="pratique__qa">
+            <dt>Doctoranytime ou Rosa ?</dt>
+            <dd>
+              Cela dépend simplement du cabinet : Doctoranytime pour
+              Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe. Les deux
+              montrent mes disponibilités en direct.
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+    <Wave fill="var(--ivory)" flip />
+  </div>
+
+  <section class="section coords">
+    <div class="container coords__inner" data-reveal>
+      <h2 class="headline headline--md headline--center">Me <em>contacter</em></h2>
+      <div class="coords__grid">
+        <a class="card coords__item" href={`tel:${IDENTITE.telephoneIntl}`}>
+          <p class="coords__label">Téléphone</p>
+          <p class="coords__val">{IDENTITE.telephone}</p>
+        </a>
+        <a class="card coords__item" href={`mailto:${IDENTITE.email}`}>
+          <p class="coords__label">E-mail</p>
+          <p class="coords__val">{IDENTITE.email}</p>
+        </a>
+        <div class="card coords__item">
+          <p class="coords__label">Officiel</p>
+          <p class="coords__val coords__val--sm">Agrément {IDENTITE.agrement}<br />TVA {IDENTITE.tva}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .rdv__visio {
+    margin-top: var(--gap-grid);
+    padding: var(--pad-card);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .rdv__visio-titre { font-family: var(--font-display); font-weight: 620; }
+  .rdv__visio p { margin-top: 8px; color: var(--muted); max-width: 46em; }
+
+  .pratique__grid {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+  .pratique__faq { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .pratique__qa {
+    background: #fff; border-radius: var(--radius-media);
+    box-shadow: var(--shadow-card);
+    padding: 22px 26px;
+  }
+  .pratique__qa dt {
+    font-family: var(--font-display);
+    font-size: 1.1rem; font-weight: 640;
+  }
+  .pratique__qa dd { margin: 8px 0 0; color: var(--muted); font-size: 0.94rem; line-height: 1.6; }
+
+  .coords__grid {
+    margin-top: var(--headline-gap);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap-grid);
+  }
+  .coords__item {
+    padding: clamp(24px, 2.6vw, 34px);
+    text-decoration: none; text-align: center;
+  }
+  .coords__label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--framboise);
+  }
+  .coords__val {
+    margin-top: 8px;
+    font-family: var(--font-display);
+    font-size: 1.25rem; font-weight: 620;
+    overflow-wrap: anywhere;
+  }
+  .coords__val--sm { font-size: 1rem; line-height: 1.5; }
+
+  @media (max-width: 960px) {
+    .pratique__grid { grid-template-columns: 1fr; }
+    .coords__grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
+  }
+</style>

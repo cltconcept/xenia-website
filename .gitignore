@@ -1,0 +1,12 @@
+# build
+dist/
+node_modules/
+.astro/
+
+# Matériau client : le mail contient un fil privé (téléphone, e-mails) —
+# le dépôt sera PUBLIC pour Coolify, ces fichiers ne doivent jamais y figurer.
+brief/
+
+# divers
+.DS_Store
+__MACOSX/

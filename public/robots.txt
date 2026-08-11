@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Document de travail, accessible par lien mais non indexable
+Disallow: /dossier-xenia-van-outryve.pdf
+
+Sitemap: https://xeniavanoutryve.be/sitemap-index.xml

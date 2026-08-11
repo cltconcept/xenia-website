@@ -1,0 +1,22 @@
+---
+/* Marque « la rencontre » : deux pétales translucides qui se croisent,
+   leur recouvrement dessine une amande — le X de Xénia, sans le dire.
+   mix-blend multiply : le centre fonce naturellement. */
+interface Props { size?: number }
+const { size = 30 } = Astro.props;
+---
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  width={size}
+  height={size}
+  aria-hidden="true"
+  class="logo-mark"
+>
+  <g style="mix-blend-mode: multiply;">
+    <ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9" />
+  </g>
+  <g style="mix-blend-mode: multiply;">
+    <ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9" />
+  </g>
+</svg>

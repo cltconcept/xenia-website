@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Page introuvable — Xénia Van Outryve"
+  description="Cette page n'existe pas ou plus. Retrouvez les accompagnements, les lieux de consultation et la prise de rendez-vous depuis l'accueil."
+>
+  <section class="nf">
+    <div class="aurora" aria-hidden="true">
+      <div class="aurora__blob" style="--blob-c: rgba(255,217,196,0.85); width: 46vw; height: 46vw; top: -14vw; left: -10vw;"></div>
+      <div class="aurora__blob aurora__blob--slow" style="--blob-c: rgba(223,210,244,0.8); width: 40vw; height: 40vw; bottom: -12vw; right: -8vw;"></div>
+      <div class="halo" style="--halo-c: rgba(246,200,219,0.7); width: 32vw; height: 32vw; top: 8vw; right: 12vw;"></div>
+    </div>
+    <div class="container nf__inner">
+      <p class="overline">Erreur 404</p>
+      <h1 class="headline">Cette page a pris <em>une grande respiration</em>… et a disparu</h1>
+      <p class="copy">
+        L'adresse n'existe pas ou plus. Le plus simple : repartir de l'accueil,
+        ou aller directement à la prise de rendez-vous.
+      </p>
+      <div class="actions">
+        <a class="btn-pill" href="/">Retour à l'accueil</a>
+        <a class="link-arrow" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    position: relative;
+    min-height: 80svh;
+    display: flex; align-items: center;
+    padding-block: clamp(140px, 16vw, 190px) clamp(70px, 9vw, 110px);
+    overflow: clip;
+  }
+  .nf__inner { position: relative; max-width: 760px; }
+</style>

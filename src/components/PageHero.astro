@@ -1,0 +1,27 @@
+---
+/* Hero des pages intérieures : aurore douce + halo respirant discret. */
+interface Props { overline: string; sage?: boolean }
+const { overline, sage = false } = Astro.props;
+---
+<section class="phero" data-hero>
+  <div class="aurora" aria-hidden="true">
+    <div class="aurora__blob" style={`--blob-c: ${sage ? 'rgba(201,233,222,0.85)' : 'rgba(255,217,196,0.8)'}; width: 46vw; height: 46vw; top: -18vw; left: -10vw;`}></div>
+    <div class="aurora__blob aurora__blob--slow" style={`--blob-c: rgba(223,210,244,0.75); width: 40vw; height: 40vw; top: -12vw; right: -8vw;`}></div>
+    <div class="halo" style={`--halo-c: ${sage ? 'rgba(201,233,222,0.7)' : 'rgba(246,200,219,0.65)'}; width: 34vw; height: 34vw; top: -6vw; right: 14vw;`}></div>
+  </div>
+  <div class="container phero__inner">
+    <span class:list={['overline', { 'overline--sage': sage }]}>{overline}</span>
+    <h1 class="headline"><slot name="title" /></h1>
+    <p class="copy"><slot name="copy" /></p>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .phero {
+    position: relative;
+    padding-block: clamp(150px, 18vw, 220px) clamp(40px, 6vw, 70px);
+    overflow: clip;
+  }
+  .phero__inner { position: relative; max-width: 880px; }
+</style>

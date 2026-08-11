@@ -1,0 +1,94 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Wave from '../../components/Wave.astro';
+import Closing from '../../components/Closing.astro';
+import Domaines from '../../components/Domaines.astro';
+
+const domaines = [
+  {
+    titre: 'Troubles du comportement',
+    desc: 'Colères, oppositions, agitation : des comportements qui débordent et racontent souvent autre chose. On cherche ce qu’ils disent.',
+  },
+  {
+    titre: 'Difficultés d’intégration',
+    desc: 'À l’école, dans un groupe, au sein de la famille : quand votre enfant ne trouve pas sa place, on l’aide à la construire.',
+  },
+  {
+    titre: 'Exprimer ce qu’il vit',
+    desc: 'Les enfants ne disent pas toujours avec des mots : le dessin, le jeu et les moments créatifs deviennent leur langage en séance.',
+  },
+];
+---
+<Base
+  title="Enfants & Famille — Xénia Van Outryve, psychologue"
+  description="Troubles du comportement, difficultés d'intégration, émotions : un accompagnement psychologique des enfants et de leur famille, en Brabant wallon."
+>
+  <PageHero overline="Accompagnements · Enfants & Famille">
+    <Fragment slot="title">
+      Quand votre enfant ne va pas bien,<br /><em>toute la famille le sent</em>
+    </Fragment>
+    <Fragment slot="copy">
+      Vous connaissez votre enfant mieux que personne. Si quelque chose vous
+      inquiète — son comportement, ses émotions, sa place dans le groupe —
+      votre intuition mérite d'être écoutée.
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <Domaines items={domaines} />
+    </div>
+  </section>
+
+  <div class="soft-wrap">
+    <Wave fill="var(--ivory-soft)" />
+    <section class="section section--soft parents">
+      <div class="container parents__grid">
+        <div data-reveal>
+          <span class="overline">Et les parents ?</span>
+          <h2 class="headline headline--md">
+            Vous faites partie<br />de <em>la solution</em>
+          </h2>
+          <p class="copy">
+            Un enfant ne consulte jamais « tout seul » : votre regard, votre
+            histoire et votre quotidien font partie du travail. La place de
+            chacun se définit ensemble, selon l'âge de votre enfant et la
+            situation.
+          </p>
+        </div>
+        <div class="card card--glass parents__note" data-reveal>
+          <h3>Côté assiette aussi</h3>
+          <p>
+            Actuellement en formation en nutrition pédiatrique, je développe une
+            expertise spécifique pour accompagner les enfants et leurs familles
+            dans les questionnements autour de l'alimentation — en complément de
+            ma pratique de psychologue.
+          </p>
+          <a class="link-arrow" href="/nutrition-sante/">Voir le volet Nutrition & Santé</a>
+        </div>
+      </div>
+    </section>
+    <Wave fill="var(--ivory)" flip />
+  </div>
+
+  <Closing />
+</Base>
+
+<style>
+  .parents__grid {
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
+  }
+  .parents__note { padding: var(--pad-card); }
+  .parents__note h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem; font-weight: 620;
+    color: var(--sage-deep);
+  }
+  .parents__note p { margin: 12px 0 18px; color: var(--muted); font-size: 0.96rem; line-height: 1.6; }
+  @media (max-width: 960px) {
+    .parents__grid { grid-template-columns: 1fr; }
+  }
+</style>

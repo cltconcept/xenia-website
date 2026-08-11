@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Wave from '../../components/Wave.astro';
+import Closing from '../../components/Closing.astro';
+import Domaines from '../../components/Domaines.astro';
+
+const domaines = [
+  {
+    titre: 'Désir d’enfant et parcours de fertilité',
+    desc: 'Attente, parcours PMA, fausse couche, interruption de grossesse : des étapes souvent traversées en silence, qui méritent un vrai soutien.',
+  },
+  {
+    titre: 'Grossesse et anxiété maternelle',
+    desc: 'Quand l’inquiétude prend toute la place, que les questionnements tournent en boucle — pendant la grossesse ou après.',
+  },
+  {
+    titre: 'Dépression parentale et post-partum',
+    desc: 'Ne pas ressentir ce qu’on « devrait », s’épuiser, se perdre : ça se soigne, et ce n’est la faute de personne.',
+  },
+  {
+    titre: 'Burn-out parental',
+    desc: 'Aimer ses enfants et ne plus supporter son quotidien de parent : les deux coexistent. On travaille à sortir de l’épuisement.',
+  },
+  {
+    titre: 'Le corps qui change',
+    desc: 'Grossesse, post-partum : accepter un corps transformé prend du temps. Un espace pour en parler sans tabou.',
+  },
+  {
+    titre: 'Le couple à l’arrivée de l’enfant',
+    desc: 'Comprendre l’impact des histoires familiales sur votre parentalité, renforcer la relation et construire une dynamique familiale sereine.',
+  },
+];
+---
+<Base
+  title="Périnatalité & Parentalité — Xénia Van Outryve"
+  description="Désir d'enfant, PMA, grossesse, post-partum, burn-out parental : un soutien psychologique pour les futurs parents et les familles, en Brabant wallon."
+>
+  <PageHero overline="Accompagnements · Périnatalité & Parentalité">
+    <Fragment slot="title">
+      Devenir parent bouscule tout.<br /><em>Vous n'êtes pas seuls.</em>
+    </Fragment>
+    <Fragment slot="copy">
+      Conception, grossesse, post-partum, arrivée d'un enfant : ces périodes de
+      transformation s'accompagnent de changements émotionnels, physiques et
+      identitaires. Un soutien psychologique peut y être précieux.
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <Domaines items={domaines} />
+    </div>
+  </section>
+
+  <div class="soft-wrap">
+    <Wave fill="var(--ivory-soft)" />
+    <section class="section section--soft note">
+      <div class="container note__inner" data-reveal>
+        <h2 class="headline headline--md headline--center">
+          Il n'y a pas de « bon moment »<br />pour <em>demander de l'aide</em>
+        </h2>
+        <p class="copy copy--center">
+          Avant la conception, pendant la grossesse, trois mois ou trois ans
+          après la naissance : si quelque chose pèse — sur vous, sur votre couple,
+          sur votre famille — c'est le bon moment.
+        </p>
+        <div class="actions actions--center">
+          <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+        </div>
+      </div>
+    </section>
+    <Wave fill="var(--ivory)" flip />
+  </div>
+
+  <Closing />
+</Base>

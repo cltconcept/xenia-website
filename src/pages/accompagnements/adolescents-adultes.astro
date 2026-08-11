@@ -1,0 +1,113 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Wave from '../../components/Wave.astro';
+import Closing from '../../components/Closing.astro';
+import Domaines from '../../components/Domaines.astro';
+
+/* Motifs de consultation — liste du brief client, reformulée côté lecteur. */
+const domaines = [
+  {
+    titre: 'Stress, anxiété, émotions',
+    desc: 'Quand tout devient une montagne, que la tête ne s’arrête jamais, que les émotions débordent ou se figent.',
+  },
+  {
+    titre: 'Burn-out et épuisement',
+    desc: 'Vous avez tenu longtemps, et maintenant le corps et la tête disent stop. Comprendre, récupérer, repartir autrement.',
+  },
+  {
+    titre: 'Douleurs et maladies chroniques',
+    desc: 'Vivre avec la douleur ou une maladie qui dure change tout le quotidien. Un soutien pour tenir, sans minimiser ce que vous traversez.',
+  },
+  {
+    titre: 'Fatigue chronique et insomnies',
+    desc: 'Des nuits qui ne réparent plus, une énergie en berne : on travaille le sommeil comme un vrai levier, pas comme un détail.',
+  },
+  {
+    titre: 'Changer un comportement',
+    desc: 'Arrêter de fumer, bouger davantage, modifier une habitude qui vous pèse : un accompagnement pas à pas, sans culpabilisation.',
+  },
+];
+---
+<Base
+  title="Adolescents & Adultes — Xénia Van Outryve, psychologue"
+  description="Stress, anxiété, burn-out, insomnies, douleurs chroniques, TDAH : un accompagnement psychologique pour adolescents et adultes en Brabant wallon."
+>
+  <PageHero overline="Accompagnements · Adolescents & Adultes">
+    <Fragment slot="title">
+      Stress, anxiété, épuisement :<br /><em>en parler, avancer</em>
+    </Fragment>
+    <Fragment slot="copy">
+      Adolescents et adultes traversent parfois des périodes où tout pèse trop.
+      Vous n'avez pas à « mériter » de consulter : ce que vous vivez suffit.
+    </Fragment>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <Domaines items={domaines} />
+    </div>
+  </section>
+
+  <div class="soft-wrap" id="tdah">
+    <Wave fill="var(--ivory-soft)" />
+    <section class="section section--soft tdah">
+      <div class="container tdah__grid">
+        <div data-reveal>
+          <span class="overline">TDAH</span>
+          <h2 class="headline headline--md">
+            Le TDAH ne se « répare » pas.<br />Le quotidien, <em>si</em>.
+          </h2>
+          <p class="copy">
+            Pour les personnes présentant un TDAH, je propose un accompagnement
+            personnalisé sur trois fronts à la fois — parce qu'ils se renforcent
+            l'un l'autre.
+          </p>
+        </div>
+        <ul class="tdah__list" data-reveal data-reveal-stagger>
+          <li>
+            <h3>Psychologique</h3>
+            <p>Comprendre son fonctionnement, apprivoiser l'estime de soi, gérer la surcharge.</p>
+          </li>
+          <li>
+            <h3>Habitudes de vie</h3>
+            <p>Sommeil, routines, organisation : des habitudes adaptées à votre fonctionnement — pas des to-do lists de plus.</p>
+          </li>
+          <li>
+            <h3>Nutritionnel</h3>
+            <p>Des menus conçus pour soutenir la concentration, l'énergie et le bien-être au quotidien.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <Wave fill="var(--ivory)" flip />
+  </div>
+
+  <Closing />
+</Base>
+
+<style>
+  .tdah__grid {
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+  .tdah__list {
+    margin: 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .tdah__list li {
+    background: #fff; border-radius: var(--radius-media);
+    box-shadow: var(--shadow-card);
+    padding: 22px 26px;
+  }
+  .tdah__list h3 {
+    font-family: var(--font-display);
+    font-size: 1.12rem; font-weight: 640;
+    color: var(--framboise);
+  }
+  .tdah__list p { margin-top: 6px; color: var(--muted); font-size: 0.94rem; line-height: 1.55; }
+  @media (max-width: 960px) {
+    .tdah__grid { grid-template-columns: 1fr; }
+  }
+</style>

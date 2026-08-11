@@ -1,0 +1,104 @@
+---
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource-variable/hanken-grotesk';
+import '../styles/global.css';
+import frauncesWoff2 from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
+import hankenWoff2 from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { IDENTITE, LIEUX, RDV } from '../data/site';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = new URL('/media/og.png', Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalBusiness',
+  '@id': `${Astro.site?.toString()}#cabinet`,
+  name: 'Xénia Van Outryve — Psychologue clinicienne',
+  url: Astro.site?.toString(),
+  image: og.toString(),
+  telephone: IDENTITE.telephoneIntl,
+  email: IDENTITE.email,
+  // Factuel, tel qu'affiché sur le site — rien qui n'y figure pas
+  founder: {
+    '@type': 'Person',
+    name: 'Xénia Van Outryve',
+    jobTitle: 'Psychologue clinicienne',
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'UCLouvain' },
+    identifier: {
+      '@type': 'PropertyValue',
+      name: 'Numéro d’agrément de psychologue',
+      value: IDENTITE.agrement,
+    },
+  },
+  availableLanguage: ['fr'],
+  areaServed: LIEUX.map((l) => ({ '@type': 'City', name: l.ville })),
+  knowsAbout: [
+    'Psychologie clinique de la santé',
+    'Périnatalité et parentalité',
+    'Stress, anxiété et burn-out',
+    'TDAH — habitudes de vie et nutrition',
+    'Nutrition et comportements de santé',
+    'Accompagnement des enfants et des familles',
+  ],
+  address: LIEUX.map((l) => ({
+    '@type': 'PostalAddress',
+    streetAddress: `${l.nom}, ${l.adresse}`,
+    postalCode: l.codePostal,
+    addressLocality: l.ville,
+    addressCountry: 'BE',
+  })),
+  potentialAction: [
+    {
+      '@type': 'ReserveAction',
+      target: { '@type': 'EntryPoint', urlTemplate: RDV.doctoranytime },
+      result: { '@type': 'Reservation', name: 'Rendez-vous (Court-Saint-Étienne, Nivelles)' },
+    },
+    {
+      '@type': 'ReserveAction',
+      target: { '@type': 'EntryPoint', urlTemplate: RDV.rosa },
+      result: { '@type': 'Reservation', name: 'Rendez-vous (La Hulpe)' },
+    },
+  ],
+};
+---
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#FDFBF8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" as="font" type="font/woff2" href={frauncesWoff2} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={hankenWoff2} crossorigin />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:site_name" content="Xénia Van Outryve — Psychologue" />
+    <meta property="og:locale" content="fr_BE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <Header />
+    <slot />
+    <Footer />
+    <script>
+      import { REDUCED, loadGsap, onFirstIdle, bootReveals } from '../lib/motion';
+      if (!REDUCED) {
+        onFirstIdle(() => {
+          loadGsap().then(bootReveals);
+        });
+      }
+    </script>
+  </body>
+</html>
