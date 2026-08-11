@@ -85,6 +85,12 @@ const accompagnements = [
       </svg>
       <div class="hero__voile"></div>
     </div>
+    <!-- La traversée — 3 phrases pilotées par le scroll (desktop, scène épinglée) -->
+    <div class="hero__phases" aria-hidden="true">
+      <p class="hero__phase" data-phase="1">Parfois, tout pèse<br /><em>un peu trop</em>.</p>
+      <p class="hero__phase" data-phase="2"><em>Respirez.</em></p>
+      <p class="hero__phase" data-phase="3">La lumière revient,<br /><em>à votre rythme</em>.</p>
+    </div>
     <div class="container hero__inner">
       <p class="hero__eyebrow" data-h>{IDENTITE.titre} · {IDENTITE.sousTitre}</p>
       <h1 class="headline hero__title" data-h-title>
@@ -239,13 +245,16 @@ const accompagnements = [
 <script>
   import { REDUCED, isDesktop, loadGsap, onFirstIdle } from '../lib/motion';
 
-  /* ===== INTRO SIGNATURE « L'éclaircie » =====
-     Lancée tout de suite (pas à l'idle) : c'est l'ouverture du site.
+  /* ===== SIGNATURE « L'éclaircie » =====
+     Desktop : scène ÉPINGLÉE pilotée par le scroll (patron Capitale Cars) —
+     trois phrases traversent pendant que le voile se lève, puis le vrai hero
+     se lève mot à mot. Impossible à rater, rejouable en remontant.
+     Mobile : intro courte au chargement (les pins sont fragiles au tactile).
      GSAP reste en import dynamique — le voile CSS tient l'écran pendant
      le chargement, et le garde-fou inline lève tout après 3 s quoi qu'il
-     arrive. Sans JS ou en reduced-motion : hero complet, zéro intro. */
+     arrive. Sans JS ou en reduced-motion : hero complet, zéro animation. */
   if (!REDUCED && document.documentElement.classList.contains('js-intro')) {
-    loadGsap().then(({ gsap }) => {
+    loadGsap().then(({ gsap, ScrollTrigger }) => {
       const hero = document.querySelector('.hero');
       const title = document.querySelector<HTMLElement>('.hero__title');
       if (!hero || !title) return;
@@ -279,23 +288,53 @@ const accompagnements = [
       }
       title.append(wrap);
 
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      /* 1. L'éclaircie : le voile se dissout, la lumière revient */
-      tl.fromTo('.hero__voile', { opacity: 1 }, { autoAlpha: 0, duration: 1.7, ease: 'power2.inOut' }, 0)
-        .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }, 0.1)
-        /* 2. Les pétales du logo rejoignent l'aurore (opacité seule :
-           leur dérive est en CSS, on ne touche pas à leur transform) */
-        .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, duration: 1.1, stagger: 0.18 }, 0.5)
-        /* 3. Les mots se lèvent */
-        .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.55)
-        .set('.hero__title', { opacity: 1 }, 0.62)
-        .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.85, stagger: 0.055 }, 0.62)
-        /* 4. Le trait de pinceau souligne la promesse */
-        .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.inOut' }, 1.35)
-        /* 5. Le reste suit, en cascade */
-        .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.25)
-        .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.45)
-        .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.08 }, 1.6);
+      if (isDesktop()) {
+        /* ===== Desktop : la traversée épinglée, scrubée par le scroll ===== */
+        hero.classList.add('is-scene');
+        const tl = gsap.timeline({
+          defaults: { ease: 'power2.out' },
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            end: '+=190%',
+            scrub: 0.5,
+            pin: true,
+            anticipatePin: 1,
+          },
+        });
+        /* Acte 1 — tout pèse : phrase 1 posée sur le voile */
+        tl.to('[data-phase="1"]', { opacity: 0, y: -46, duration: 0.1, ease: 'power2.in' }, 0.1)
+          /* Acte 2 — l'éclaircie : le voile se lève avec le scroll */
+          .fromTo('.hero__voile', { opacity: 1 }, { opacity: 0, duration: 0.42, ease: 'none' }, 0.08)
+          .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'none' }, 0.08)
+          .fromTo('[data-phase="2"]', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.08 }, 0.2)
+          .to('[data-phase="2"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.35)
+          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, stagger: 0.03, duration: 0.16 }, 0.3)
+          .fromTo('[data-phase="3"]', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.08 }, 0.46)
+          .to('[data-phase="3"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.6)
+          /* Acte 3 — le vrai hero se lève, mot à mot */
+          .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.68)
+          .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.14, stagger: 0.012 }, 0.7)
+          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.1, ease: 'power2.inOut' }, 0.84)
+          .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.08 }, 0.78)
+          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.08 }, 0.84)
+          .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.06, stagger: 0.015 }, 0.9);
+        /* Duo obligatoire après chaque création de pin (cf. motion.ts) */
+        ScrollTrigger.sort();
+        ScrollTrigger.refresh();
+      } else {
+        /* ===== Mobile : intro courte au chargement ===== */
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tl.fromTo('.hero__voile', { opacity: 1 }, { autoAlpha: 0, duration: 1.7, ease: 'power2.inOut' }, 0)
+          .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }, 0.1)
+          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, duration: 1.1, stagger: 0.18 }, 0.5)
+          .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.55)
+          .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.85, stagger: 0.055 }, 0.62)
+          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.inOut' }, 1.35)
+          .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.25)
+          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.45)
+          .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.08 }, 1.6);
+      }
 
       /* GSAP a posé tous les états initiaux : le voile CSS peut tomber. */
       clearTimeout((window as any).__introSecours);
@@ -303,26 +342,12 @@ const accompagnements = [
     });
   }
 
-  /* ===== Parallax de sortie du hero + split-scroll nutrition =====
-     Scrubs sans pin, desktop, montés à l'idle. */
+  /* ===== Split-scroll nutrition — scrub sans pin, desktop, à l'idle.
+     (La sortie du hero est désormais gérée par la scène épinglée.) */
   if (!REDUCED) {
     onFirstIdle(() => {
       if (!isDesktop()) return;
       loadGsap().then(({ gsap, ScrollTrigger }) => {
-        const hero = document.querySelector('.hero');
-        if (hero) {
-          gsap.to(hero.querySelector('.aurora'), {
-            y: 110,
-            ease: 'none',
-            scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.4 },
-          });
-          gsap.to(hero.querySelector('.hero__inner'), {
-            y: -56,
-            opacity: 0.35,
-            ease: 'none',
-            scrollTrigger: { trigger: hero, start: 'center top', end: 'bottom top', scrub: 0.4 },
-          });
-        }
         const section = document.querySelector('.nutri');
         if (section) {
           const drift = (el: Element, from: number, to: number) =>
@@ -394,6 +419,38 @@ const accompagnements = [
     overflow: visible;
   }
   .hero__trait path { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+
+  /* La traversée — phrases de la scène épinglée (desktop, activées par JS) */
+  .hero__phases {
+    position: absolute; inset: 0;
+    display: none;
+    place-items: center;
+    pointer-events: none;
+    text-align: center;
+  }
+  .hero.is-scene .hero__phases { display: grid; }
+  .hero__phase {
+    grid-area: 1 / 1;
+    font-family: var(--font-display);
+    font-variation-settings: 'SOFT' 90, 'opsz' 80;
+    font-size: clamp(2rem, 4.6vw, 3.6rem);
+    font-weight: 560; line-height: 1.16; letter-spacing: -0.014em;
+    color: var(--ink);
+    opacity: 0;
+    padding-inline: var(--gutter);
+    text-wrap: balance;
+  }
+  .hero__phase em {
+    font-style: italic; font-weight: 480;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 80;
+    color: var(--framboise);
+  }
+  .hero__phase[data-phase="1"] { opacity: 1; }
+  /* En scène : le contenu du hero attend son acte 3 (GSAP pose les états
+     inline dès la création de la timeline — ceci n'est que le filet CSS) */
+  @media (min-width: 1024px) {
+    .hero.is-scene { min-height: 100svh; }
+  }
 
   /* États pré-paint (classe posée avant le premier rendu, retirée dès que
      GSAP a pris le relais — garde-fou 3 s dans le script inline) */
