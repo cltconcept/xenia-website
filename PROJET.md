@@ -70,6 +70,19 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-08-11 (nuit — le film d'aquarelle dans le hero)
+- 🎬 **Film génératif dans la traversée** (demande utilisateur « comme pour
+  capital car ») : Seedance 2.5 via Higgsfield (78 crédits, 12 s — encres
+  pastel qui fleurissent sur ivoire, l'arc de l'éclaircie) + upscale 4K
+  ByteDance. Couche profonde de l'aurore, révélé quand le voile se lève ;
+  desktop : préchargé en Blob, `currentTime` scrubé par la scène (cible via
+  `onUpdate`, lissage 0,14 en rAF) ; mobile : boucle ; sans JS : poster.
+- 🐛 **« Pas fluide du tout » (retour utilisateur) → réglé** : le film web
+  était en GOP par défaut → chaque seek décodait depuis la keyframe. Ré-encodé
+  **ALL-INTRA** 1280×720@20 depuis le master 4K (recette du journey-scrub de
+  capitale-cars, ffprobe : 100 % frames I, 6,6 Mo) + seuil de seek 1/30 s.
+- 📦 Masters livrés : film aquarelle 4K (27 Mo) + vidéo du hero complet 4K.
+
 ### 2026-08-11 (nuit — le stylo écrit « Respirez. »)
 - ✍️ **Écriture manuscrite scrubée** (demande utilisateur « comme un stylo qui
   écrit ») : l'acte 2 de la traversée écrit « Respirez. » lettre après lettre
