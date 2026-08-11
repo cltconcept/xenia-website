@@ -70,6 +70,19 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-08-11 (nuit — hero signature « L'éclaircie »)
+- ✨ **Chorégraphie d'ouverture GSAP** (~3 s) : voile qui se dissout, halo qui
+  s'allume, pétales du logo en dérive dans l'aurore, mots du H1 levés en
+  masques (split JS, aria-label intégral conservé), **trait de pinceau tracé**
+  sous « mieux-être durable » (SVG pathLength, dégradé framboise→rose).
+  Parallax de sortie scrubée (sans pin). Vérifié par captures à t≈0 / 0,8 s /
+  2,8 s + mesures (7 mots splittés, voile à 0, dashoffset 0, console propre).
+- 🛡️ Garde-fous : classe `js-intro` posée **avant le premier paint** (script
+  inline — zéro flash), timeout 3 s anti-voile-bloqué, reduced-motion et
+  sans-JS = hero complet statique, GSAP toujours en import dynamique.
+- 🖼️ **Aquarelle Approche** (Kie, 0,04 $ — arrosoir + jeune pousse : grandir
+  à son rythme) en médaillon du hero de la page.
+
 ### 2026-08-11 (soir — upgrade techniques + aquarelles générées)
 - ✨ **Upgrade techniques** (chapitre du skill redesign) : **grain** fixe global
   (feTurbulence 4 %), **spotlight borders** (liseré illuminé sous le curseur,

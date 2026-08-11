@@ -39,10 +39,22 @@ santé/vitalité, inédit dans le secteur.
 
 ## Signature
 
-**Le halo qui respire** : dans le hero, un dégradé radial pastel s'étend et se
-rétracte sur un cycle de ~7 s (inspiration ~3 s, expiration ~4 s — rythme de
-cohérence cardiaque). Décliné discrètement en pastille « respiration » dans le
-footer. Coupé si `prefers-reduced-motion`.
+**L'éclaircie, jouée à l'ouverture** : le hero raconte l'histoire du site en
+~3 secondes de chorégraphie GSAP — la page s'ouvre **voilée** (ce qui pèse),
+la lumière **revient** au rythme d'une respiration (le halo s'allume, le voile
+se dissout), les **pétales du logo** rejoignent l'aurore, les **mots se
+lèvent** de leurs masques, et un **trait de pinceau** (SVG tracé, dégradé
+framboise→rose) souligne « mieux-être durable ». C'est la promesse
+thérapeutique, incarnée : on n'efface pas ce qui pèse, on laisse revenir la
+lumière.
+
+**Le halo qui respire** : le dégradé radial du hero s'étend et se rétracte sur
+un cycle de ~7 s (inspiration ~3 s, expiration ~4 s — rythme de cohérence
+cardiaque), décliné en pastille dans le footer.
+
+Garde-fous : sans JS ou en `prefers-reduced-motion`, le hero est complet et
+statique (la classe `js-intro` n'est jamais posée) ; un timeout de 3 s lève le
+voile si GSAP n'arrive pas ; GSAP reste en import dynamique.
 
 Détails d'appui (quiets) : séparateurs de sections en vague organique SVG,
 cartes en verre dépoli sur fond d'aurore (la « transparence » demandée),
