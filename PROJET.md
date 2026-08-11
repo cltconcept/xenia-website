@@ -70,6 +70,24 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-08-11 (soir — upgrade techniques + aquarelles générées)
+- ✨ **Upgrade techniques** (chapitre du skill redesign) : **grain** fixe global
+  (feTurbulence 4 %), **spotlight borders** (liseré illuminé sous le curseur,
+  masque de bordure + `--sx/--sy` posés au pointermove/rAF — prouvé),
+  **split-scroll** opposé sur la section nutrition (dérives mesurées
+  +13,9 px / −1,9 px, scrub sans pin).
+- 🖼️ **Série de 4 aquarelles pastel** (palette charte, sur ivoire) : cartes
+  accueil (voile multiply) + médaillons organiques des heros intérieurs.
+  Higgsfield seedream 4.5 (chaussons, fruits-thé) + Kie nano-banana-pro
+  (fauteuil, crayons — 0,12 $). Webp via `scripts/convertir_illustrations.mjs`.
+  ⚠️ Modération Higgsfield **erratique** : « nsfw » en faux positif sur des
+  natures mortes ; les mots « baby/child/herbs/plant/powder/petal » bloquent en
+  entrée, et un classifieur de sortie retoque au hasard — reformuler en
+  scènes-objets et retenter, ou basculer sur Kie.
+- 🔎 Ancien site mindfoodyou.be inspecté : thème WordPress de démo (images
+  tyler.com), **aucune vraie photo** — seul upload : l'ancien logotype.
+  Le portrait attend toujours les photos de la cliente.
+
 ### 2026-08-11 (soir — itération design, skills elayadesign)
 - ✨ **Audit appliqué** (skills `redesign-existing-projects` + `landing-page-design`
   de github.com/elayadesign, installés dans `website/.claude/skills/`) en
