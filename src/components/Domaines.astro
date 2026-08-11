@@ -6,7 +6,7 @@ const { items } = Astro.props;
 ---
 <div class="domaines" data-reveal data-reveal-stagger>
   {items.map((d) => (
-    <article class="card domaines__card">
+    <article class="card card--spot domaines__card">
       <h2>{d.titre}</h2>
       <p>{d.desc}</p>
     </article>

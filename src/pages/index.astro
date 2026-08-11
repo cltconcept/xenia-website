@@ -25,18 +25,24 @@ const accompagnements = [
     titre: 'Adolescents & Adultes',
     desc: 'Stress, anxiété, burn-out, insomnies, douleurs chroniques, TDAH : reprendre pied quand le quotidien déborde.',
     tint: 'linear-gradient(135deg, #F3B1CE, #FFC9A8)',
+    illu: '/media/illu/ado-adultes-card.webp',
+    illuAlt: 'Aquarelle pastel : un fauteuil près d’une grande fenêtre lumineuse',
   },
   {
     href: '/accompagnements/perinatalite-parentalite/',
     titre: 'Périnatalité & Parentalité',
     desc: 'Désir d’enfant, grossesse, post-partum, burn-out parental : être soutenu·e dans ces périodes qui transforment tout.',
     tint: 'linear-gradient(135deg, #CBB5EE, #F3B1CE)',
+    illu: '/media/illu/perinatalite-card.webp',
+    illuAlt: 'Aquarelle pastel : deux pétales translucides, l’un abritant l’autre',
   },
   {
     href: '/accompagnements/enfants-famille/',
     titre: 'Enfants & Famille',
     desc: 'Comportement, intégration, émotions : aider votre enfant à dire ce qu’il vit, souvent par le jeu et la création.',
     tint: 'linear-gradient(135deg, #AEE0CE, #CBB5EE)',
+    illu: '/media/illu/enfants-card.webp',
+    illuAlt: 'Aquarelle pastel : des crayons de cire et un dessin de soleil',
   },
 ];
 ---
@@ -88,7 +94,7 @@ const accompagnements = [
       </p>
       <div class="amene__grid" data-reveal data-reveal-stagger>
         {situations.map((s) => (
-          <a class="card amene__card" href={s.href}>
+          <a class="card card--spot amene__card" href={s.href}>
             <p class="amene__txt">{s.txt}</p>
             <p class="amene__tag">{s.tag} <span aria-hidden="true">→</span></p>
           </a>
@@ -111,8 +117,10 @@ const accompagnements = [
         </h2>
         <div class="acc__grid" data-reveal data-reveal-stagger>
           {accompagnements.map((a) => (
-            <a class="card acc__card" href={a.href}>
-              <div class="acc__tint" style={`background: ${a.tint}`} aria-hidden="true"></div>
+            <a class="card card--spot acc__card" href={a.href}>
+              <div class="acc__tint" style={`background: ${a.tint}`}>
+                <img src={a.illu} alt={a.illuAlt} width="640" height="480" loading="lazy" />
+              </div>
               <div class="acc__body">
                 <h3 class="headline--sm acc__titre">{a.titre}</h3>
                 <p class="acc__desc">{a.desc}</p>
@@ -129,7 +137,7 @@ const accompagnements = [
   <!-- ===== NUTRITION & SANTÉ ===== -->
   <section class="section nutri">
     <div class="container nutri__grid">
-      <div class="nutri__txt" data-reveal>
+      <div class="nutri__txt" data-split="up">
         <span class="overline overline--sage">Nutrition & Santé</span>
         <h2 class="headline headline--md">
           Ce que vous mangez parle<br />aussi de <em>comment vous allez</em>
@@ -143,7 +151,7 @@ const accompagnements = [
           <a class="btn-pill btn-pill--sage" href="/nutrition-sante/">Explorer ce volet</a>
         </div>
       </div>
-      <div class="nutri__visual" data-reveal aria-hidden="true">
+      <div class="nutri__visual" data-split="down" aria-hidden="true">
         <div class="nutri__circle nutri__circle--1"><span>Sommeil</span></div>
         <div class="nutri__circle nutri__circle--2"><span>Alimentation</span></div>
         <div class="nutri__circle nutri__circle--3"><span>Mouvement</span></div>
@@ -200,6 +208,37 @@ const accompagnements = [
 
   <Closing />
 </Base>
+
+<script>
+  import { REDUCED, isDesktop, loadGsap, onFirstIdle } from '../lib/motion';
+  /* Split-scroll (upgrade technique) : les deux moitiés de la section
+     nutrition dérivent en sens opposés, scrubbées sur sa traversée.
+     Desktop seulement, aucun pin — donc sans danger pour les autres scrubs. */
+  if (!REDUCED) {
+    onFirstIdle(() => {
+      if (!isDesktop()) return;
+      loadGsap().then(({ gsap, ScrollTrigger }) => {
+        const section = document.querySelector('.nutri');
+        if (!section) return;
+        const drift = (el: Element, from: number, to: number) =>
+          gsap.fromTo(
+            el,
+            { y: from, opacity: 0.4 },
+            {
+              y: to,
+              opacity: 1,
+              ease: 'none',
+              scrollTrigger: { trigger: section, start: 'top 92%', end: 'bottom 30%', scrub: 0.5 },
+            }
+          );
+        document.querySelectorAll('[data-split="up"]').forEach((el) => drift(el, 64, -36));
+        document.querySelectorAll('[data-split="down"]').forEach((el) => drift(el, -48, 44));
+        ScrollTrigger.sort();
+        ScrollTrigger.refresh();
+      });
+    });
+  }
+</script>
 
 <style>
   /* ===== Hero ===== */
@@ -273,6 +312,14 @@ const accompagnements = [
     gap: var(--gap-grid);
   }
   .acc__card { text-decoration: none; display: flex; flex-direction: column; }
+  .acc__tint { position: relative; overflow: hidden; }
+  .acc__tint img {
+    width: 100%; height: 100%; object-fit: cover;
+    /* Voile de cohésion : l'illustration adopte la teinte de sa carte */
+    mix-blend-mode: multiply; opacity: 0.92;
+    transition: transform 0.6s var(--ease);
+  }
+  .acc__card:hover .acc__tint img { transform: scale(1.04); }
   /* Symétrie cassée : les trois cartes descendent en escalier (desktop) */
   @media (min-width: 961px) {
     .acc__card:nth-child(2) { transform: translateY(26px); }
@@ -281,7 +328,7 @@ const accompagnements = [
     .acc__card:nth-child(3):hover { transform: translateY(48px); }
     .acc__grid { padding-bottom: 52px; }
   }
-  .acc__tint { height: 130px; }
+  .acc__tint { height: 172px; }
   .acc__body {
     padding: var(--pad-card);
     display: flex; flex-direction: column; align-items: flex-start; gap: 14px; flex: 1;

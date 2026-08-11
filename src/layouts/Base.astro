@@ -95,12 +95,38 @@ const jsonLd = {
       <slot />
     </main>
     <Footer />
+    <div class="grain" aria-hidden="true"></div>
     <script>
       import { REDUCED, loadGsap, onFirstIdle, bootReveals } from '../lib/motion';
       if (!REDUCED) {
         onFirstIdle(() => {
           loadGsap().then(bootReveals);
         });
+      }
+
+      /* Spotlight borders : délégation d'un seul pointermove, throttlé au rAF.
+         Ne fait rien sur écran tactile (le CSS est déjà gated pointer:fine). */
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        let raf = 0;
+        let last: PointerEvent | null = null;
+        const paint = () => {
+          raf = 0;
+          if (!last) return;
+          const el = (last.target as Element | null)?.closest?.('.card--spot');
+          if (el instanceof HTMLElement) {
+            const r = el.getBoundingClientRect();
+            el.style.setProperty('--sx', `${last.clientX - r.left}px`);
+            el.style.setProperty('--sy', `${last.clientY - r.top}px`);
+          }
+        };
+        document.addEventListener(
+          'pointermove',
+          (e) => {
+            last = e;
+            if (!raf) raf = requestAnimationFrame(paint);
+          },
+          { passive: true }
+        );
       }
     </script>
   </body>

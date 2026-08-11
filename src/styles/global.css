@@ -214,6 +214,39 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 ::selection { background: rgba(246, 200, 219, 0.6); }
 :focus-visible { outline: 2.5px solid var(--framboise); outline-offset: 3px; border-radius: 6px; }
 
+/* Grain fixe — brise la platitude numérique (upgrade technique, cf. dossier).
+   Compositor-only : div fixe, aucune interaction, ~4 % d'opacité. */
+.grain {
+  position: fixed; inset: 0; z-index: 80;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
+}
+
+/* Spotlight border — le liseré s'illumine sous le curseur (desktop précis).
+   Anneau en dégradé radial masqué sur la bordure seule ; --sx/--sy posés
+   par le script de Base.astro. */
+@media (hover: hover) and (pointer: fine) {
+  .card--spot { position: relative; }
+  .card--spot::after {
+    content: ''; position: absolute; inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    border: 1.5px solid transparent;
+    background: radial-gradient(
+        240px circle at var(--sx, 50%) var(--sy, 50%),
+        rgba(193, 61, 99, 0.65), rgba(223, 210, 244, 0.35) 55%, transparent 75%
+      ) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.45s var(--ease);
+  }
+  .card--spot:hover::after { opacity: 1; }
+}
+
 /* Lien d'évitement clavier — visible uniquement au focus */
 .skip-link {
   position: fixed; top: -60px; left: 16px; z-index: 100;
