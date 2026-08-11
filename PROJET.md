@@ -70,6 +70,16 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-08-11 (nuit — le stylo écrit « Respirez. »)
+- ✍️ **Écriture manuscrite scrubée** (demande utilisateur « comme un stylo qui
+  écrit ») : l'acte 2 de la traversée écrit « Respirez. » lettre après lettre
+  en cursive liée — glyphes **single-stroke Hershey Script** (fonte de traceur
+  monoligne, domaine public — une vraie trajectoire de plume, pas un contour
+  de police), un `<path pathLength="1">` par lettre assemblé dans
+  `Manuscrit.astro`, `stroke-dashoffset` séquencé dans la timeline épinglée.
+  Recette réutilisable : `hersheytextjs` (JSON), décaler chaque glyphe de
+  l'avancement `o`, les liaisons cursives se recouvrent naturellement.
+
 ### 2026-08-11 (nuit — la traversée, scène épinglée au scroll)
 - ✨ **Le hero desktop devient une scène pin + scrub** (patron Capitale Cars,
   demandé par l'utilisateur — l'intro au chargement se ratait trop
