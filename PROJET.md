@@ -70,6 +70,16 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-08-11 (nuit — la traversée, scène épinglée au scroll)
+- ✨ **Le hero desktop devient une scène pin + scrub** (patron Capitale Cars,
+  demandé par l'utilisateur — l'intro au chargement se ratait trop
+  facilement) : « Parfois, tout pèse un peu trop. » sur le voile → le scroll
+  lève le voile et allume le halo → « Respirez. » → pétales + « La lumière
+  revient, à votre rythme. » → le vrai hero se lève mot à mot. ~2 écrans de
+  scroll, rejouable en remontant. `sort()+refresh()` après le pin.
+  Mobile : intro courte au chargement. Sans JS / reduced-motion : statique.
+- 📸 Vérifié par captures à 5 positions de scroll + console propre.
+
 ### 2026-08-11 (nuit — hero signature « L'éclaircie »)
 - ✨ **Chorégraphie d'ouverture GSAP** (~3 s) : voile qui se dissout, halo qui
   s'allume, pétales du logo en dérive dans l'aurore, mots du H1 levés en
