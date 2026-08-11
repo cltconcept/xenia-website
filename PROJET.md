@@ -70,6 +70,20 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-08-11 (soir — itération design, skills elayadesign)
+- ✨ **Audit appliqué** (skills `redesign-existing-projects` + `landing-page-design`
+  de github.com/elayadesign, installés dans `website/.claude/skills/`) en
+  **préservant la charte cliente** (aurore, italiques Fraunces — leurs Design
+  Values par défaut ne s'appliquent pas, la grille d'audit si) :
+  section **tagline reveal** sur l'accueil (mots activés un à un au scroll,
+  prouvé par opacités mesurées 0,45/0,22/0,22 en mi-parcours), **escalier**
+  des 3 cartes accompagnements (symétrie générique cassée), skip-link +
+  `<main>`, états `:active`, **FAQ 4 → 6** questions + JSON-LD synchronisé,
+  page **/mentions-legales/** (vie privée honnête : zéro cookie, zéro
+  collecte) + lien footer. 10 pages au build.
+- ⚠️ Piège documenté : `clearProps` ajouté à `bootReveals` — sans lui, le
+  transform inline résiduel de GSAP écrase les offsets CSS (escalier).
+
 ### 2026-08-11 (après-midi — maquette en ligne)
 - 🚀 **Maquette déployée : https://xenia.chris-ia.com** (dépôt public
   `cltconcept/xenia-website`, Docker → nginx, Coolify, HTTPS auto). Vérifié sur
