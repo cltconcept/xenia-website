@@ -1,0 +1,9 @@
+# Sans cette liste, COPY . . écrase le node_modules Linux du conteneur
+# par celui de la machine hôte (binaires incompatibles) et le build casse.
+node_modules
+dist
+.astro
+.git
+.gstack
+docs
+brief
