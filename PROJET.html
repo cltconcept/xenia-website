@@ -188,7 +188,7 @@ pnpm preview</pre>
         <tr><td>SEO/GEO : JSON-LD, FAQPage, sitemap, llms.txt, OG</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
         <tr><td>Dossier client PDF (5 planches)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
         <tr><td>Dockerfile + nginx (prêt à déployer)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
-        <tr><td>Dépôt GitHub public + déploiement Coolify</td><td><span class="status st-progress">🚧 In Progress</span></td><td>—</td></tr>
+        <tr><td>Dépôt GitHub public + déploiement Coolify (HTTPS)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
         <tr><td>Photos de la cliente (portrait « à venir »)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
         <tr><td>Domaine final + bascule DNS + Search Console</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
         <tr><td>Textes validés par la cliente</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
@@ -199,6 +199,14 @@ pnpm preview</pre>
       <h2><span class="ico">📆</span>Journal des changements</h2>
       <div class="timeline">
         <div class="tl-item">
+          <p class="tl-date">2026-08-11 — après-midi · maquette en ligne</p>
+          <ul>
+            <li>🚀 <b>Maquette déployée : https://xenia.chris-ia.com</b> — 9 pages + sitemap/robots/llms.txt/og/PDF en 200, JSON-LD dans le HTML livré, zéro erreur console.</li>
+            <li>🐛 <b>Vraie 404</b> : fallback SPA nginx corrigé (<code>try_files =404</code> + <code>error_page 404</code>), re-vérifié en prod.</li>
+            <li>📄 Dossier PDF servi : <code>/dossier-xenia-van-outryve.pdf</code>.</li>
+          </ul>
+        </div>
+        <div class="tl-item">
           <p class="tl-date">2026-08-11</p>
           <ul>
             <li>✨ <b>Création complète du site</b> : design system, 8 pages + 404, header à menu déroulant, animations différées — boucle visuelle /browse (desktop, mobile, burger, dropdown vérifiés).</li>
@@ -206,7 +214,7 @@ pnpm preview</pre>
             <li>✨ SEO/GEO : JSON-LD MedicalBusiness (3 adresses, 2 ReserveAction), FAQPage, sitemap, robots, llms.txt, OG rendue depuis la charte — vérifié dans le build.</li>
             <li>📄 <b>Dossier client PDF</b> — scores SEO 91 / GEO 86, gains rapides appliqués le jour même.</li>
             <li>🔧 Dockerfile multi-étages → nginx:alpine ; <code>brief/</code> exclu du dépôt et de l'image.</li>
-            <li>⏸️ Déploiement bloqué à <code>gh repo create</code> (permission) — commande à lancer par l'utilisateur.</li>
+            <li>🔧 Déploiement débloqué après accord utilisateur sur la création du dépôt public.</li>
           </ul>
         </div>
       </div>
@@ -220,23 +228,23 @@ pnpm preview</pre>
     </section>
 
     <section id="deploiement">
-      <h2><span class="ico">🌍</span>Déploiement (maquette)</h2>
+      <h2><span class="ico">🌍</span>Déploiement — en ligne depuis le 2026-08-11</h2>
       <div class="card">
-        <b>Cible</b> : Coolify maquettes <code>http://46.224.83.139:8000</code> (⚠️ jamais l'instance Noveo
-        <code>188.245.156.214</code>), serveur <code>zw8ck4ckcw08gg00g8wwkkso</code>, wildcard
-        <code>*.chris-ia.com</code> → HTTPS auto. <b>URL visée</b> : <code>https://xenia.chris-ia.com</code>.
+        <b>https://xenia.chris-ia.com</b> — HTTPS automatique (wildcard <code>*.chris-ia.com</code>), aucun DNS à créer.
+        Dossier client : <code>/dossier-xenia-van-outryve.pdf</code>.
       </div>
-      <pre># 1. (à débloquer — permission utilisateur)
-gh repo create cltconcept/xenia-website --public --source . --remote origin --push
-
-# 2. Coolify (jeton dans ~/.claude.json → mcpServers.coolify.env)
-POST $BASE/projects                {"name":"xenia", ...}
-POST $BASE/applications/public    {build_pack: dockerfile, ports: 80,
-                                   domains: https://xenia.chris-ia.com,
-                                   instant_deploy: true}
-
-# 3. Vérifier le site servi : 9 pages en 200, JSON-LD dans le HTML livré,
-#    console propre, /dossier-xenia-van-outryve.pdf accessible</pre>
+      <table>
+        <tr><th>Élément</th><th>Valeur</th></tr>
+        <tr><td>Coolify</td><td><code>http://46.224.83.139:8000</code> (instance <b>maquettes</b> — ⚠️ jamais la prod Noveo <code>188.245.156.214</code>)</td></tr>
+        <tr><td>Serveur</td><td><code>zw8ck4ckcw08gg00g8wwkkso</code></td></tr>
+        <tr><td>Projet</td><td><code>p124wf4ynk21bns4c8153iaj</code></td></tr>
+        <tr><td>Application</td><td><code>seetu6uqg4tnkjg8do4f1f8n</code></td></tr>
+        <tr><td>Dépôt</td><td><code>github.com/cltconcept/xenia-website</code> (public — requis par Coolify sans clé SSH)</td></tr>
+        <tr><td>Build pack</td><td><code>dockerfile</code> — multi-étages → nginx:alpine, port 80</td></tr>
+      </table>
+      <pre># Redéployer après un git push (jeton ~/.claude.json → mcpServers.coolify.env)
+GET http://46.224.83.139:8000/api/v1/deploy?uuid=seetu6uqg4tnkjg8do4f1f8n</pre>
+      <div class="card warn">⚠️ Les <code>canonical</code> et le sitemap pointent vers le domaine provisoire <code>xeniavanoutryve.be</code> : la maquette ne peut pas se faire indexer. Ne pas « corriger ». La copie du PDF de <code>docs/</code> vers <code>public/</code> est à refaire à chaque régénération.</div>
     </section>
   </main>
 </div>

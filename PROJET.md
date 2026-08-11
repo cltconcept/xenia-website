@@ -63,12 +63,23 @@ Aucune. Site 100 % statique, aucun secret.
 | SEO/GEO : JSON-LD, FAQPage, sitemap, llms.txt, OG | ✅ Done | 2026-08-11 |
 | Dossier client PDF (5 planches) | ✅ Done | 2026-08-11 |
 | Dockerfile + nginx (prêt à déployer) | ✅ Done | 2026-08-11 |
-| Dépôt GitHub public + déploiement Coolify | 🚧 In Progress | — |
+| Dépôt GitHub public + déploiement Coolify (HTTPS) | ✅ Done | 2026-08-11 |
 | Photos de la cliente (portrait « à venir ») | 📋 Planned | — |
 | Nom de domaine final + bascule DNS + Search Console | 📋 Planned | — |
 | Textes validés par la cliente | 📋 Planned | — |
 
 ## Journal des changements
+
+### 2026-08-11 (après-midi — maquette en ligne)
+- 🚀 **Maquette déployée : https://xenia.chris-ia.com** (dépôt public
+  `cltconcept/xenia-website`, Docker → nginx, Coolify, HTTPS auto). Vérifié sur
+  le site servi : les 9 pages + sitemap/robots/llms.txt/og.png/PDF en 200,
+  JSON-LD `MedicalBusiness` + `FAQPage` dans le HTML livré, canonical vers le
+  domaine provisoire, zéro erreur console.
+- 🐛 **Vraie 404** : le fallback SPA de nginx servait l'accueil en 200 pour
+  toute URL inconnue (soft-404) → `try_files =404` + `error_page 404 /404.html`,
+  re-vérifié en prod après redéploiement.
+- 📄 Dossier PDF servi : https://xenia.chris-ia.com/dossier-xenia-van-outryve.pdf
 
 ### 2026-08-11
 - ✨ Création complète du site (design system, 8 pages + 404, header à menu
@@ -86,9 +97,8 @@ Aucune. Site 100 % statique, aucun secret.
   (à refaire à chaque régénération), `Disallow` dans robots.txt.
 - 🔧 Dockerfile multi-étages → nginx:alpine + `.dockerignore` (piège
   node_modules hôte) ; `brief/` exclu du dépôt **et** de l'image (fil privé).
-- ⏸️ Déploiement : bloqué à `gh repo create cltconcept/xenia-website --public`
-  (permission refusée en mode auto) — commande à lancer par l'utilisateur,
-  la suite (Coolify API) est documentée ci-dessous.
+- 🔧 Déploiement débloqué après accord utilisateur sur la création du dépôt
+  public (le classifieur auto l'avait refusée une première fois).
 
 ## Problèmes connus / à confirmer cliente
 - **Nom de domaine non tranché** (Mindfoodyou.be abandonné) — placeholder
@@ -101,15 +111,26 @@ Aucune. Site 100 % statique, aucun secret.
   le site suit le brief (« Xenia Van Outryve ») ; à confirmer.
 - Réseaux sociaux « à venir » (brief) : rien d'affiché pour l'instant.
 
-## Déploiement (maquette)
-- **Cible** : Coolify maquettes `http://46.224.83.139:8000` (⚠️ jamais
-  l'instance Noveo `188.245.156.214`), serveur `zw8ck4ckcw08gg00g8wwkkso`,
-  wildcard `*.chris-ia.com` → HTTPS auto. Jeton : `~/.claude.json` →
-  `mcpServers.coolify.env.COOLIFY_ACCESS_TOKEN`.
-- **Étape 1 (à débloquer)** : `gh repo create cltconcept/xenia-website --public --source . --remote origin --push`
-- **Étape 2** : `POST /projects` (slug `xenia`) puis `POST /applications/public`
-  (build pack `dockerfile`, port 80, domaine `https://xenia.chris-ia.com`,
-  `instant_deploy: true`) — cf. skill `/deploy-maquette`.
-- **Étape 3** : vérifier le site servi (codes HTTP des 9 pages, JSON-LD dans le
-  HTML livré, console sans erreur, PDF accessible).
-- **URL visée** : `https://xenia.chris-ia.com` + `/dossier-xenia-van-outryve.pdf`.
+## Déploiement (maquette) — en ligne depuis le 2026-08-11
+**https://xenia.chris-ia.com** — HTTPS automatique (wildcard `*.chris-ia.com`),
+aucun DNS à créer.
+
+| Élément | Valeur |
+|---|---|
+| Coolify | `http://46.224.83.139:8000` (instance **maquettes**, ⚠️ jamais la prod Noveo `188.245.156.214`) |
+| Serveur | `zw8ck4ckcw08gg00g8wwkkso` |
+| Projet | `p124wf4ynk21bns4c8153iaj` |
+| Application | `seetu6uqg4tnkjg8do4f1f8n` |
+| Dépôt | `github.com/cltconcept/xenia-website` (**public** — requis par Coolify sans clé SSH) |
+| Build pack | `dockerfile` (multi-étages → nginx:alpine, port 80) |
+
+Redéployer après un `git push` : `GET {base}/api/v1/deploy?uuid=seetu6uqg4tnkjg8do4f1f8n`
+(jeton d'API Coolify requis — `~/.claude.json` → `mcpServers.coolify.env` —
+jamais stocké dans le dépôt).
+
+⚠️ Les `canonical` et le sitemap pointent volontairement vers le domaine
+provisoire `xeniavanoutryve.be` : la maquette ne peut pas se faire indexer.
+Ne pas « corriger ».
+📄 Dossier client en ligne : `https://xenia.chris-ia.com/dossier-xenia-van-outryve.pdf`
+(copie de `docs/` vers `public/` — **à refaire à chaque régénération** — et
+`Disallow` dans robots.txt).
