@@ -4,11 +4,46 @@ import PageHero from '../components/PageHero.astro';
 import Wave from '../components/Wave.astro';
 import LieuxCards from '../components/LieuxCards.astro';
 import { IDENTITE } from '../data/site';
+
+/* FAQ balisée — mêmes réponses que le bloc « Côté pratique » ci-dessous */
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Comment payer ?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Le paiement mobile est accepté en cabinet.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Les séances sont-elles remboursées ?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `Psychologue agréée (n° ${IDENTITE.agrement}) : la plupart des mutualités interviennent dans le coût des séances. Le montant varie selon la vôtre — un justificatif vous est fourni sur demande.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Faut-il une prescription ?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Non : vous pouvez prendre rendez-vous directement, sans passer par un médecin.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Doctoranytime ou Rosa ?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Cela dépend simplement du cabinet : Doctoranytime pour Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe. Les deux montrent les disponibilités en direct.',
+      },
+    },
+  ],
+};
 ---
 <Base
   title="Lieux & Contact — Xénia Van Outryve, psychologue"
   description="Trois cabinets : Court-Saint-Étienne, Nivelles, La Hulpe — et la visio. Rendez-vous en ligne via Doctoranytime ou Rosa. Tél. 0475 67 03 50."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
   <PageHero overline="Lieux & Contact">
     <Fragment slot="title">
       Trois cabinets en Brabant wallon<br />— et <em>la visio</em>
