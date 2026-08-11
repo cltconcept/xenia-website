@@ -351,7 +351,10 @@ const accompagnements = [
           rafFilm = 0;
           if (!film || !filmPret || !film.duration) return;
           courantFilm += (cibleFilm - courantFilm) * 0.14;
-          film.currentTime = courantFilm * film.duration;
+          const t = courantFilm * film.duration;
+          /* Seuil d'écriture : sous 1/30 s d'écart, un seek n'apporte rien
+             et coûte un décodage — on saute (film all-intra par ailleurs) */
+          if (Math.abs(t - film.currentTime) > 1 / 30) film.currentTime = t;
           if (Math.abs(cibleFilm - courantFilm) > 0.001) rafFilm = requestAnimationFrame(peindreFilm);
         };
         const tl = gsap.timeline({
