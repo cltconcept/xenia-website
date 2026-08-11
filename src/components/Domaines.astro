@@ -19,6 +19,8 @@ const { items } = Astro.props;
     gap: var(--gap-grid);
   }
   .domaines__card { padding: clamp(24px, 2.6vw, 34px); }
+  /* Nombre impair d'items : la dernière carte occupe toute la largeur */
+  .domaines__card:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .domaines__card h2 {
     font-family: var(--font-display);
     font-size: 1.25rem; font-weight: 620; letter-spacing: -0.01em;

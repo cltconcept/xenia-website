@@ -10,3 +10,4 @@ brief/
 # divers
 .DS_Store
 __MACOSX/
+.gstack/

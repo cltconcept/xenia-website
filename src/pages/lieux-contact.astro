@@ -96,7 +96,7 @@ import { IDENTITE } from '../data/site';
         </a>
         <a class="card coords__item" href={`mailto:${IDENTITE.email}`}>
           <p class="coords__label">E-mail</p>
-          <p class="coords__val">{IDENTITE.email}</p>
+          <p class="coords__val coords__val--mail">{IDENTITE.email}</p>
         </a>
         <div class="card coords__item">
           <p class="coords__label">Officiel</p>
@@ -154,6 +154,7 @@ import { IDENTITE } from '../data/site';
     overflow-wrap: anywhere;
   }
   .coords__val--sm { font-size: 1rem; line-height: 1.5; }
+  .coords__val--mail { font-size: 1.02rem; }
 
   @media (max-width: 960px) {
     .pratique__grid { grid-template-columns: 1fr; }
