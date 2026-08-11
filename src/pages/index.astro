@@ -4,6 +4,7 @@ import Wave from '../components/Wave.astro';
 import LieuxCards from '../components/LieuxCards.astro';
 import Closing from '../components/Closing.astro';
 import Tagline from '../components/Tagline.astro';
+import Manuscrit from '../components/Manuscrit.astro';
 import { IDENTITE } from '../data/site';
 
 /* « Ce qui vous amène » — le visiteur doit pouvoir se reconnaître (brief).
@@ -88,7 +89,7 @@ const accompagnements = [
     <!-- La traversée — 3 phrases pilotées par le scroll (desktop, scène épinglée) -->
     <div class="hero__phases" aria-hidden="true">
       <p class="hero__phase" data-phase="1">Parfois, tout pèse<br /><em>un peu trop</em>.</p>
-      <p class="hero__phase" data-phase="2"><em>Respirez.</em></p>
+      <p class="hero__phase hero__phase--manuscrit" data-phase="2"><Manuscrit /></p>
       <p class="hero__phase" data-phase="3">La lumière revient,<br /><em>à votre rythme</em>.</p>
     </div>
     <div class="container hero__inner">
@@ -296,29 +297,36 @@ const accompagnements = [
           scrollTrigger: {
             trigger: hero,
             start: 'top top',
-            end: '+=190%',
+            end: '+=215%',
             scrub: 0.5,
             pin: true,
             anticipatePin: 1,
           },
         });
         /* Acte 1 — tout pèse : phrase 1 posée sur le voile */
-        tl.to('[data-phase="1"]', { opacity: 0, y: -46, duration: 0.1, ease: 'power2.in' }, 0.1)
+        tl.to('[data-phase="1"]', { opacity: 0, y: -46, duration: 0.08, ease: 'power2.in' }, 0.08)
           /* Acte 2 — l'éclaircie : le voile se lève avec le scroll */
-          .fromTo('.hero__voile', { opacity: 1 }, { opacity: 0, duration: 0.42, ease: 'none' }, 0.08)
-          .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'none' }, 0.08)
-          .fromTo('[data-phase="2"]', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.08 }, 0.2)
-          .to('[data-phase="2"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.35)
-          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, stagger: 0.03, duration: 0.16 }, 0.3)
-          .fromTo('[data-phase="3"]', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.08 }, 0.46)
-          .to('[data-phase="3"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.6)
+          .fromTo('.hero__voile', { opacity: 1 }, { opacity: 0, duration: 0.42, ease: 'none' }, 0.07)
+          .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'none' }, 0.07)
+          /* Le stylo écrit « Respirez. » lettre après lettre */
+          .fromTo('[data-phase="2"]', { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.15)
+          .fromTo(
+            '.hero__manuscrit .ecrit',
+            { strokeDashoffset: 1 },
+            { strokeDashoffset: 0, duration: 0.05, stagger: 0.026, ease: 'none' },
+            0.17
+          )
+          .to('[data-phase="2"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.47)
+          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, stagger: 0.03, duration: 0.16 }, 0.34)
+          .fromTo('[data-phase="3"]', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.08 }, 0.57)
+          .to('[data-phase="3"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.69)
           /* Acte 3 — le vrai hero se lève, mot à mot */
-          .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.68)
-          .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.14, stagger: 0.012 }, 0.7)
-          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.1, ease: 'power2.inOut' }, 0.84)
-          .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.08 }, 0.78)
-          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.08 }, 0.84)
-          .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.06, stagger: 0.015 }, 0.9);
+          .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.06 }, 0.77)
+          .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.12, stagger: 0.01 }, 0.79)
+          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.09, ease: 'power2.inOut' }, 0.9)
+          .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.85)
+          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.9)
+          .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.05, stagger: 0.012 }, 0.94);
         /* Duo obligatoire après chaque création de pin (cf. motion.ts) */
         ScrollTrigger.sort();
         ScrollTrigger.refresh();
@@ -446,6 +454,7 @@ const accompagnements = [
     color: var(--framboise);
   }
   .hero__phase[data-phase="1"] { opacity: 1; }
+  .hero__phase--manuscrit { display: flex; justify-content: center; }
   /* En scène : le contenu du hero attend son acte 3 (GSAP pose les états
      inline dès la création de la timeline — ceci n'est que le filet CSS) */
   @media (min-width: 1024px) {
