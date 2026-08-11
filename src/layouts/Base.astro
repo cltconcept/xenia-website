@@ -89,8 +89,11 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
     <Header />
-    <slot />
+    <main id="contenu">
+      <slot />
+    </main>
     <Footer />
     <script>
       import { REDUCED, loadGsap, onFirstIdle, bootReveals } from '../lib/motion';

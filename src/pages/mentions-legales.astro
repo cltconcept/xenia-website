@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { IDENTITE, LIEUX } from '../data/site';
+---
+<Base
+  title="Mentions légales & vie privée — Xénia Van Outryve"
+  description="Éditrice du site, titre professionnel, agrément, TVA et politique de vie privée du site de Xénia Van Outryve, psychologue clinicienne en Brabant wallon."
+>
+  <PageHero overline="Informations légales">
+    <Fragment slot="title">
+      Mentions légales<br />&amp; <em>vie privée</em>
+    </Fragment>
+    <Fragment slot="copy">
+      Les informations obligatoires — et une politique de vie privée courte,
+      parce que ce site ne collecte presque rien.
+    </Fragment>
+  </PageHero>
+
+  <section class="section legal">
+    <div class="container legal__grid">
+      <article class="card legal__card">
+        <h2>Éditrice du site</h2>
+        <p>
+          <strong>{IDENTITE.nom}</strong> — {IDENTITE.titre}<br />
+          Titre protégé, agrément n° {IDENTITE.agrement}<br />
+          (Commission des psychologues, Belgique)<br />
+          TVA {IDENTITE.tva}
+        </p>
+        <p>
+          Tél. <a href={`tel:${IDENTITE.telephoneIntl}`}>{IDENTITE.telephone}</a><br />
+          <a href={`mailto:${IDENTITE.email}`}>{IDENTITE.email}</a>
+        </p>
+      </article>
+
+      <article class="card legal__card">
+        <h2>Lieux de consultation</h2>
+        {LIEUX.map((l) => (
+          <p>
+            <strong>{l.nom}</strong><br />
+            {l.adresse}, {l.codePostal} {l.ville}
+          </p>
+        ))}
+      </article>
+
+      <article class="card legal__card legal__card--wide">
+        <h2>Vie privée</h2>
+        <p>
+          Ce site est purement informatif : il ne dépose <strong>aucun cookie</strong>,
+          n'utilise <strong>aucun outil de mesure d'audience</strong> et ne comporte
+          aucun formulaire de collecte de données.
+        </p>
+        <p>
+          La prise de rendez-vous se fait sur les plateformes
+          <strong> Doctoranytime</strong> et <strong>Rosa</strong> : les données que vous y
+          renseignez sont traitées par ces plateformes, selon leurs propres
+          politiques de confidentialité. Si vous m'écrivez par e-mail ou par
+          téléphone, vos coordonnées ne servent qu'à vous répondre et à
+          organiser les consultations — elles ne sont jamais transmises à des
+          tiers.
+        </p>
+        <p>
+          Les échanges en consultation sont couverts par le
+          <strong> secret professionnel</strong> du psychologue.
+        </p>
+      </article>
+
+      <article class="card legal__card legal__card--wide">
+        <h2>Propriété intellectuelle</h2>
+        <p>
+          Les contenus de ce site (textes, identité visuelle) ne peuvent pas
+          être reproduits sans accord préalable. Les marques citées
+          (Doctoranytime, Rosa) appartiennent à leurs titulaires respectifs.
+        </p>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal__grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--gap-grid);
+    max-width: 880px;
+  }
+  .legal__card { padding: var(--pad-card); }
+  .legal__card--wide { grid-column: 1 / -1; }
+  .legal__card h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem; font-weight: 620; letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .legal__card p { color: var(--muted); font-size: 0.95rem; line-height: 1.65; }
+  .legal__card p + p { margin-top: 12px; }
+  .legal__card strong { color: var(--ink); }
+  .legal__card a { color: var(--framboise); text-decoration: none; }
+  .legal__card a:hover { text-decoration: underline; }
+  @media (max-width: 700px) {
+    .legal__grid { grid-template-columns: 1fr; }
+  }
+</style>

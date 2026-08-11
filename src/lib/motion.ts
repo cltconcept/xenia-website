@@ -52,6 +52,9 @@ export function bootReveals({ gsap, ScrollTrigger }: GsapModules) {
       duration: 0.8,
       ease: 'power3.out',
       stagger: 0.09,
+      /* Ne rien laisser en inline après coup : des offsets CSS (escalier des
+         cartes accompagnements) seraient écrasés par le transform résiduel. */
+      clearProps: 'transform,opacity',
       scrollTrigger: { trigger: el, start: 'top 84%', once: true },
     });
   });

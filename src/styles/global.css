@@ -214,6 +214,20 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 ::selection { background: rgba(246, 200, 219, 0.6); }
 :focus-visible { outline: 2.5px solid var(--framboise); outline-offset: 3px; border-radius: 6px; }
 
+/* Lien d'évitement clavier — visible uniquement au focus */
+.skip-link {
+  position: fixed; top: -60px; left: 16px; z-index: 100;
+  padding: 10px 18px; border-radius: var(--radius-pill);
+  background: var(--ink); color: var(--ivory);
+  font-size: 0.9rem; font-weight: 600; text-decoration: none;
+  transition: top 0.25s var(--ease);
+}
+.skip-link:focus-visible { top: 14px; }
+
+/* Retour physique au clic — sur tout ce qui se presse */
+.btn-pill:active { transform: scale(0.98); }
+a.card:active { transform: scale(0.99); }
+
 /* Pastille d'icône */
 .icon-badge {
   width: 46px; height: 46px; border-radius: 50%; flex: none;

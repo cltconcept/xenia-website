@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Wave from '../components/Wave.astro';
 import LieuxCards from '../components/LieuxCards.astro';
 import Closing from '../components/Closing.astro';
+import Tagline from '../components/Tagline.astro';
 import { IDENTITE } from '../data/site';
 
 /* « Ce qui vous amène » — le visiteur doit pouvoir se reconnaître (brief).
@@ -95,6 +96,9 @@ const accompagnements = [
       </div>
     </div>
   </section>
+
+  <!-- ===== TAGLINE — les mots s'activent au scroll ===== -->
+  <Tagline />
 
   <!-- ===== LES 3 ACCOMPAGNEMENTS ===== -->
   <div class="soft-wrap">
@@ -269,6 +273,14 @@ const accompagnements = [
     gap: var(--gap-grid);
   }
   .acc__card { text-decoration: none; display: flex; flex-direction: column; }
+  /* Symétrie cassée : les trois cartes descendent en escalier (desktop) */
+  @media (min-width: 961px) {
+    .acc__card:nth-child(2) { transform: translateY(26px); }
+    .acc__card:nth-child(3) { transform: translateY(52px); }
+    .acc__card:nth-child(2):hover { transform: translateY(22px); }
+    .acc__card:nth-child(3):hover { transform: translateY(48px); }
+    .acc__grid { padding-bottom: 52px; }
+  }
   .acc__tint { height: 130px; }
   .acc__body {
     padding: var(--pad-card);

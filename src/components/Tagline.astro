@@ -1,0 +1,76 @@
+---
+/* Section « tagline reveal » (skill landing-page-design B11) : une grande
+   phrase dont les mots s'activent un à un au fil du scroll — la respiration
+   du site, en mots. Sans JS : texte pleinement lisible (les mots naissent
+   atténués UNIQUEMENT via GSAP). */
+const LIGNES = [
+  'Vous n’avez pas à attendre',
+  'que ça aille vraiment mal',
+  'pour prendre soin de vous.',
+];
+---
+<section class="tagline" aria-label="Vous n'avez pas à attendre que ça aille vraiment mal pour prendre soin de vous.">
+  <p class="tagline__txt" data-tagline aria-hidden="true">
+    {LIGNES.map((ligne) => (
+      <span class="tagline__ligne">
+        {ligne.split(' ').map((mot) => <span class="tagline__mot">{mot}</span>)}
+      </span>
+    ))}
+  </p>
+</section>
+
+<script>
+  import { REDUCED, loadGsap, onFirstIdle } from '../lib/motion';
+  if (!REDUCED) {
+    onFirstIdle(() => {
+      loadGsap().then(({ gsap, ScrollTrigger }) => {
+        const bloc = document.querySelector('[data-tagline]');
+        if (!bloc) return;
+        /* Scrub sûr : aucune section épinglée sur le site (cf. piège
+           dentalexpert : un pin avale les scrubs suivants). */
+        gsap.fromTo(
+          bloc.querySelectorAll('.tagline__mot'),
+          { opacity: 0.22 },
+          {
+            opacity: 1,
+            stagger: 0.06,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: bloc,
+              start: 'top 78%',
+              end: 'bottom 45%',
+              scrub: 0.4,
+            },
+          }
+        );
+        ScrollTrigger.sort();
+        ScrollTrigger.refresh();
+      });
+    });
+  }
+</script>
+
+<style>
+  .tagline {
+    padding-block: clamp(70px, 10vw, 130px);
+  }
+  .tagline__txt {
+    max-width: 880px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    font-family: var(--font-display);
+    font-variation-settings: 'SOFT' 80, 'opsz' 72;
+    font-size: clamp(1.8rem, 4.2vw, 3.2rem);
+    font-weight: 560; line-height: 1.22; letter-spacing: -0.012em;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .tagline__ligne { display: block; }
+  .tagline__mot { display: inline-block; margin-inline: 0.14em; }
+  /* Le cœur de la phrase, en italique framboise — la voix du site */
+  .tagline__ligne:last-child .tagline__mot {
+    font-style: italic; font-weight: 480;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+    color: var(--framboise);
+  }
+</style>

@@ -52,7 +52,10 @@ const year = new Date().getFullYear();
 
   <div class="container footer__bottom">
     <p>© {year} Xénia Van Outryve — Psychologue clinicienne, Brabant wallon.</p>
-    <p>Consultations sur rendez-vous uniquement, en cabinet ou en visio.</p>
+    <p>
+      <a class="footer__legal-link" href="/mentions-legales/">Mentions légales &amp; vie privée</a>
+      · Consultations sur rendez-vous, en cabinet ou en visio.
+    </p>
   </div>
 </footer>
 
@@ -107,6 +110,8 @@ const year = new Date().getFullYear();
     display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
     font-size: 0.82rem; color: var(--muted);
   }
+  .footer__legal-link { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .footer__legal-link:hover { color: var(--framboise); }
   @media (max-width: 960px) {
     .footer__grid { grid-template-columns: 1fr 1fr; }
   }
