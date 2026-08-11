@@ -50,33 +50,60 @@ const accompagnements = [
   title="Xénia Van Outryve — Psychologue en Brabant wallon"
   description="Psychologue clinicienne à Nivelles, La Hulpe et Court-Saint-Étienne. Stress, burn-out, périnatalité, TDAH, nutrition. Rendez-vous en ligne, cabinet ou visio."
 >
-  <!-- ===== HERO — le halo qui respire ===== -->
-  <section class="hero">
+  <!-- Pré-paint : pose l'état « voilé » AVANT le premier rendu (jamais de flash).
+       Garde-fou : si GSAP ne démarre pas en 3 s, le voile se lève tout seul. -->
+  <script is:inline>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js-intro');
+      window.__introSecours = setTimeout(function () {
+        document.documentElement.classList.remove('js-intro');
+      }, 3000);
+    }
+  </script>
+
+  <!-- ===== HERO SIGNATURE — « L'éclaircie » =====
+       L'histoire en 3 secondes : la page s'ouvre voilée (ce qui pèse),
+       la lumière revient au rythme d'une respiration (le halo s'allume),
+       les mots se lèvent, un trait de pinceau souligne la promesse. -->
+  <section class="hero" id="hero">
     <div class="aurora" aria-hidden="true">
       <div class="aurora__blob" style="--blob-c: rgba(255,197,162,0.95); width: 60vw; height: 60vw; top: -22vw; left: -16vw;"></div>
       <div class="aurora__blob aurora__blob--slow" style="--blob-c: rgba(203,181,238,0.9); width: 54vw; height: 54vw; top: -16vw; right: -14vw;"></div>
       <div class="aurora__blob" style="--blob-c: rgba(174,224,206,0.85); width: 40vw; height: 40vw; bottom: -12vw; right: 18vw; animation-duration: 26s;"></div>
-      <div class="halo" style="--halo-c: rgba(243,177,206,0.9); width: 50vw; height: 50vw; top: 0; right: 2vw;"></div>
+      <div class="hero__halo-wrap" style="width: 50vw; height: 50vw; top: 0; right: 2vw;">
+        <div class="halo" style="--halo-c: rgba(243,177,206,0.9); width: 100%; height: 100%;"></div>
+      </div>
+      <!-- Les pétales du logo, échappés dans l'aurore -->
+      <svg class="hero__petale hero__petale--1" viewBox="0 0 64 32" style="width: 92px; top: 18%; right: 12%;">
+        <ellipse cx="32" cy="16" rx="30" ry="14" fill="#E8799F" opacity="0.5" />
+      </svg>
+      <svg class="hero__petale hero__petale--2" viewBox="0 0 64 32" style="width: 64px; top: 56%; right: 26%;">
+        <ellipse cx="32" cy="16" rx="30" ry="14" fill="#84C7AE" opacity="0.45" />
+      </svg>
+      <svg class="hero__petale hero__petale--3" viewBox="0 0 64 32" style="width: 48px; top: 34%; right: 40%;">
+        <ellipse cx="32" cy="16" rx="30" ry="14" fill="#CBB5EE" opacity="0.5" />
+      </svg>
+      <div class="hero__voile"></div>
     </div>
     <div class="container hero__inner">
-      <p class="hero__eyebrow">{IDENTITE.titre} · {IDENTITE.sousTitre}</p>
-      <h1 class="headline hero__title">
-        Psychologue en Brabant wallon,<br />vers un <em>mieux-être durable</em>
+      <p class="hero__eyebrow" data-h>{IDENTITE.titre} · {IDENTITE.sousTitre}</p>
+      <h1 class="headline hero__title" data-h-title>
+        Psychologue en Brabant wallon,<br />vers un <em class="hero__em">mieux-être durable<svg class="hero__trait" viewBox="0 0 220 12" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="trait-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C13D63" /><stop offset="1" stop-color="#F3B1CE" /></linearGradient></defs><path d="M3 9 C 42 3.5, 92 2.5, 132 5.5 C 166 8, 196 7, 217 4.5" pathLength="1" fill="none" stroke="url(#trait-grad)" stroke-width="4.5" stroke-linecap="round" /></svg></em>
       </h1>
-      <p class="copy hero__copy">
+      <p class="copy hero__copy" data-h>
         Stress, épuisement, parentalité, alimentation… Ce qui vous pèse mérite un
         espace d'écoute <strong>sécurisant et sans jugement</strong>. Je vous reçois à
         Nivelles, La Hulpe et Court-Saint-Étienne — ou en visio.
       </p>
-      <div class="actions">
+      <div class="actions" data-h>
         <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
         <a class="link-arrow" href="/approche/">Découvrir mon approche</a>
       </div>
       <ul class="hero__trust" aria-label="Repères">
-        <li>Agrément n° {IDENTITE.agrement}</li>
-        <li>Master UCLouvain</li>
-        <li>3 cabinets + visio</li>
-        <li>RDV en ligne</li>
+        <li data-h>Agrément n° {IDENTITE.agrement}</li>
+        <li data-h>Master UCLouvain</li>
+        <li data-h>3 cabinets + visio</li>
+        <li data-h>RDV en ligne</li>
       </ul>
     </div>
   </section>
@@ -211,28 +238,107 @@ const accompagnements = [
 
 <script>
   import { REDUCED, isDesktop, loadGsap, onFirstIdle } from '../lib/motion';
-  /* Split-scroll (upgrade technique) : les deux moitiés de la section
-     nutrition dérivent en sens opposés, scrubbées sur sa traversée.
-     Desktop seulement, aucun pin — donc sans danger pour les autres scrubs. */
+
+  /* ===== INTRO SIGNATURE « L'éclaircie » =====
+     Lancée tout de suite (pas à l'idle) : c'est l'ouverture du site.
+     GSAP reste en import dynamique — le voile CSS tient l'écran pendant
+     le chargement, et le garde-fou inline lève tout après 3 s quoi qu'il
+     arrive. Sans JS ou en reduced-motion : hero complet, zéro intro. */
+  if (!REDUCED && document.documentElement.classList.contains('js-intro')) {
+    loadGsap().then(({ gsap }) => {
+      const hero = document.querySelector('.hero');
+      const title = document.querySelector<HTMLElement>('.hero__title');
+      if (!hero || !title) return;
+
+      /* Split du H1 en mots masqués — l'em reste un seul bloc (son trait
+         SVG vit dedans). Lecteurs d'écran : le texte intégral en aria-label. */
+      title.setAttribute('aria-label', 'Psychologue en Brabant wallon, vers un mieux-être durable');
+      const nodes = Array.from(title.childNodes);
+      title.textContent = '';
+      const wrap = document.createElement('span');
+      wrap.setAttribute('aria-hidden', 'true');
+      const mot = (contenu: Node | string) => {
+        const sw = document.createElement('span');
+        sw.className = 'sw';
+        const swi = document.createElement('span');
+        swi.className = 'swi';
+        swi.append(contenu);
+        sw.append(swi);
+        return sw;
+      };
+      for (const n of nodes) {
+        if (n.nodeType === Node.TEXT_NODE) {
+          for (const w of (n.textContent || '').split(/\s+/).filter(Boolean)) {
+            wrap.append(mot(w), ' ');
+          }
+        } else if (n.nodeName === 'BR') {
+          wrap.append(document.createElement('br'));
+        } else {
+          wrap.append(mot(n));
+        }
+      }
+      title.append(wrap);
+
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      /* 1. L'éclaircie : le voile se dissout, la lumière revient */
+      tl.fromTo('.hero__voile', { opacity: 1 }, { autoAlpha: 0, duration: 1.7, ease: 'power2.inOut' }, 0)
+        .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }, 0.1)
+        /* 2. Les pétales du logo rejoignent l'aurore (opacité seule :
+           leur dérive est en CSS, on ne touche pas à leur transform) */
+        .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, duration: 1.1, stagger: 0.18 }, 0.5)
+        /* 3. Les mots se lèvent */
+        .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.55)
+        .set('.hero__title', { opacity: 1 }, 0.62)
+        .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.85, stagger: 0.055 }, 0.62)
+        /* 4. Le trait de pinceau souligne la promesse */
+        .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.inOut' }, 1.35)
+        /* 5. Le reste suit, en cascade */
+        .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.25)
+        .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.45)
+        .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.08 }, 1.6);
+
+      /* GSAP a posé tous les états initiaux : le voile CSS peut tomber. */
+      clearTimeout((window as any).__introSecours);
+      document.documentElement.classList.remove('js-intro');
+    });
+  }
+
+  /* ===== Parallax de sortie du hero + split-scroll nutrition =====
+     Scrubs sans pin, desktop, montés à l'idle. */
   if (!REDUCED) {
     onFirstIdle(() => {
       if (!isDesktop()) return;
       loadGsap().then(({ gsap, ScrollTrigger }) => {
+        const hero = document.querySelector('.hero');
+        if (hero) {
+          gsap.to(hero.querySelector('.aurora'), {
+            y: 110,
+            ease: 'none',
+            scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.4 },
+          });
+          gsap.to(hero.querySelector('.hero__inner'), {
+            y: -56,
+            opacity: 0.35,
+            ease: 'none',
+            scrollTrigger: { trigger: hero, start: 'center top', end: 'bottom top', scrub: 0.4 },
+          });
+        }
         const section = document.querySelector('.nutri');
-        if (!section) return;
-        const drift = (el: Element, from: number, to: number) =>
-          gsap.fromTo(
-            el,
-            { y: from, opacity: 0.4 },
-            {
-              y: to,
-              opacity: 1,
-              ease: 'none',
-              scrollTrigger: { trigger: section, start: 'top 92%', end: 'bottom 30%', scrub: 0.5 },
-            }
-          );
-        document.querySelectorAll('[data-split="up"]').forEach((el) => drift(el, 64, -36));
-        document.querySelectorAll('[data-split="down"]').forEach((el) => drift(el, -48, 44));
+        if (section) {
+          const drift = (el: Element, from: number, to: number) =>
+            gsap.fromTo(
+              el,
+              { y: from, opacity: 0.4 },
+              {
+                y: to,
+                opacity: 1,
+                ease: 'none',
+                scrollTrigger: { trigger: section, start: 'top 92%', end: 'bottom 30%', scrub: 0.5 },
+              }
+            );
+          document.querySelectorAll('[data-split="up"]').forEach((el) => drift(el, 64, -36));
+          document.querySelectorAll('[data-split="down"]').forEach((el) => drift(el, -48, 44));
+        }
         ScrollTrigger.sort();
         ScrollTrigger.refresh();
       });
@@ -259,6 +365,44 @@ const accompagnements = [
         rgba(201, 233, 222, 0.42));
   }
   .hero__inner { position: relative; max-width: 900px; }
+
+  /* ===== Signature « L'éclaircie » ===== */
+  /* Le voile : l'état d'avant. Inerte sans JS (opacity 0), levé par GSAP. */
+  .hero__voile {
+    position: absolute; inset: 0;
+    background: rgba(253, 251, 248, 0.88);
+    opacity: 0; pointer-events: none;
+  }
+  .hero__halo-wrap { position: absolute; }
+  /* Les pétales : dérive continue en CSS (GSAP n'anime que leur opacité) */
+  .hero__petale {
+    position: absolute; height: auto;
+    animation: petale-drift 11s ease-in-out infinite alternate;
+  }
+  .hero__petale--1 { rotate: -18deg; }
+  .hero__petale--2 { rotate: 24deg; animation-duration: 14s; animation-delay: -5s; }
+  .hero__petale--3 { rotate: -40deg; animation-duration: 9s; animation-delay: -2s; }
+  @keyframes petale-drift {
+    from { transform: translateY(0) rotate(0deg); }
+    to { transform: translateY(-22px) rotate(9deg); }
+  }
+  /* Le trait de pinceau sous la promesse */
+  .hero__em { position: relative; display: inline-block; }
+  .hero__trait {
+    position: absolute; left: -0.06em; right: -0.06em; bottom: -0.02em;
+    width: calc(100% + 0.12em); height: 0.16em;
+    overflow: visible;
+  }
+  .hero__trait path { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+
+  /* États pré-paint (classe posée avant le premier rendu, retirée dès que
+     GSAP a pris le relais — garde-fou 3 s dans le script inline) */
+  :global(html.js-intro) .hero__voile { opacity: 1; }
+  :global(html.js-intro) .hero__halo-wrap { opacity: 0; }
+  :global(html.js-intro) .hero__petale { opacity: 0; }
+  :global(html.js-intro) .hero__title,
+  :global(html.js-intro) .hero [data-h] { opacity: 0; }
+  :global(html.js-intro) .hero__trait path { stroke-dashoffset: 1; }
   .hero__eyebrow {
     font-size: 0.88rem; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--framboise);
