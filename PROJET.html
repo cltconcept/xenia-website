@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xénia Van Outryve — Documentation projet</title>
+<style>
+  :root {
+    --bg: #16121a; --panel: #201a26; --panel-2: #2a2231;
+    --text: #efe9f2; --muted: #a396ad; --sep: rgba(239, 233, 242, 0.1);
+    --framboise: #e05c85; --sage: #7fb598; --peach: #ffd9c4; --lilac: #dfd2f4;
+    --done: #2f7d4f; --progress: #b06a1f; --planned: #2f5d8f;
+  }
+  [data-theme="light"] {
+    --bg: #fdfbf8; --panel: #ffffff; --panel-2: #f7f2ec;
+    --text: #43324b; --muted: #7a6b82; --sep: rgba(67, 50, 75, 0.12);
+    --framboise: #c13d63; --sage: #47705c;
+    --done: #d9efe2; --progress: #fbe8cf; --planned: #d9e6f5;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
+  .layout { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
+  .side {
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    padding: 28px 20px; border-right: 1px solid var(--sep);
+  }
+  .side__brand { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 6px; }
+  .side__brand svg { width: 30px; height: 30px; }
+  .side__role { font-size: 0.78rem; color: var(--muted); margin-bottom: 22px; }
+  .side nav { display: flex; flex-direction: column; gap: 2px; }
+  .side nav a {
+    color: var(--muted); text-decoration: none; font-size: 0.88rem;
+    padding: 7px 10px; border-radius: 8px;
+  }
+  .side nav a:hover { background: var(--panel-2); color: var(--text); }
+  .theme-btn {
+    margin-top: 24px; padding: 7px 12px; border-radius: 999px; cursor: pointer;
+    background: var(--panel-2); color: var(--text); border: 1px solid var(--sep); font-size: 0.8rem;
+  }
+  main { padding: 40px clamp(20px, 5vw, 64px); max-width: 980px; }
+  .hero h1 { font-size: 1.9rem; letter-spacing: -0.02em; }
+  .hero p.lead { color: var(--muted); margin-top: 6px; max-width: 60ch; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .badge {
+    font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+    background: var(--panel-2); border: 1px solid var(--sep);
+  }
+  section { margin-top: 48px; scroll-margin-top: 20px; }
+  h2 {
+    font-size: 1.25rem; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--sep); margin-bottom: 18px;
+  }
+  h2 .ico { font-size: 1.05rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { text-align: left; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 10px; border-bottom: 1px solid var(--sep); }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--sep); vertical-align: top; }
+  code { background: var(--panel-2); padding: 1px 7px; border-radius: 6px; font-size: 0.84em; }
+  pre {
+    background: var(--panel); border: 1px solid var(--sep); border-radius: 12px;
+    padding: 16px 18px; overflow-x: auto; font-size: 0.85rem; line-height: 1.55;
+  }
+  .status { font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+  .st-done { background: var(--done); color: #fff; }
+  .st-progress { background: var(--progress); color: #fff; }
+  .st-planned { background: var(--planned); color: #fff; }
+  [data-theme="light"] .st-done { color: #1e5e3a; }
+  [data-theme="light"] .st-progress { color: #7d4a12; }
+  [data-theme="light"] .st-planned { color: #234a72; }
+  .card {
+    background: var(--panel); border: 1px solid var(--sep); border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 12px;
+  }
+  .warn { border-left: 3px solid var(--framboise); }
+  .timeline { position: relative; padding-left: 26px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--sep); }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-item::before {
+    content: ''; position: absolute; left: -24px; top: 7px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--framboise), var(--lilac));
+  }
+  .tl-date { font-weight: 700; font-size: 0.9rem; }
+  .tl-item ul { margin: 6px 0 0; padding-left: 18px; font-size: 0.88rem; color: var(--muted); }
+  .tl-item li { margin-bottom: 4px; }
+  .tl-item b { color: var(--text); }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--sep); }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <div class="side__brand">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g><g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g></svg>
+      Xénia Van Outryve
+    </div>
+    <p class="side__role">Site vitrine · documentation projet</p>
+    <nav>
+      <a href="#stack">🧱 Stack technique</a>
+      <a href="#demarrage">🚀 Démarrage rapide</a>
+      <a href="#architecture">🗂️ Architecture</a>
+      <a href="#env">🔐 Variables d'env.</a>
+      <a href="#roadmap">🗺️ Roadmap</a>
+      <a href="#journal">📆 Journal</a>
+      <a href="#problemes">⚠️ À confirmer</a>
+      <a href="#deploiement">🌍 Déploiement</a>
+    </nav>
+    <button class="theme-btn" onclick="const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'">☀️ / 🌙 Basculer le thème</button>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <h1>Xénia Van Outryve — site vitrine</h1>
+      <p class="lead">Site de présentation d'une psychologue clinicienne (santé, périnatalité, nutrition) en Brabant wallon — design « L'éclaircie », Astro statique.</p>
+      <div class="badges">
+        <span class="badge">Astro 5</span><span class="badge">GSAP + Lenis (différés)</span>
+        <span class="badge">Fraunces + Hanken Grotesk</span><span class="badge">Docker → nginx</span>
+        <span class="badge">Coolify · *.chris-ia.com</span><span class="badge">Port dev 4331</span>
+      </div>
+    </div>
+
+    <section id="stack">
+      <h2><span class="ico">🧱</span>Stack technique</h2>
+      <table>
+        <tr><th>Catégorie</th><th>Technologie</th></tr>
+        <tr><td>Framework</td><td>Astro 5 — statique, 9 pages HTML</td></tr>
+        <tr><td>Animations</td><td>GSAP 3 + ScrollTrigger, Lenis — <b>imports différés uniquement</b></td></tr>
+        <tr><td>Typographies</td><td>Fraunces Variable (display) · Hanken Grotesk Variable (body), Fontsource</td></tr>
+        <tr><td>Styles</td><td>CSS vanilla — tokens dans <code>src/styles/global.css</code></td></tr>
+        <tr><td>SEO</td><td>@astrojs/sitemap · JSON-LD MedicalBusiness + FAQPage · llms.txt</td></tr>
+        <tr><td>Conteneur</td><td>Docker multi-étages → nginx:alpine (EXPOSE 80)</td></tr>
+      </table>
+    </section>
+
+    <section id="demarrage">
+      <h2><span class="ico">🚀</span>Démarrage rapide</h2>
+      <pre># Installation
+pnpm install
+
+# Développement — port dédié 4331 (4330 = dentalexpert)
+pnpm dev          # http://localhost:4331
+
+# Build production + aperçu
+pnpm build
+pnpm preview</pre>
+    </section>
+
+    <section id="architecture">
+      <h2><span class="ico">🗂️</span>Architecture</h2>
+      <pre>xenia/
+├── brief/                  ← matériau client — GITIGNORÉ (fil privé)
+├── docs/                   ← DESIGN.md · dossier.html · dossier-xenia-van-outryve.pdf
+├── public/                 ← favicon · robots · llms.txt · og.png · copie du PDF
+└── src/
+    ├── data/site.ts        ← LA source : lieux, horaires, liens RDV, coordonnées
+    ├── layouts/Base.astro  ← SEO, OG, JSON-LD MedicalBusiness
+    ├── lib/motion.ts       ← socle GSAP différé (repris de dentalexpert)
+    ├── components/         ← Header (menu déroulant) · Footer · Wave · PageHero
+    │                          LieuxCards · Domaines · Closing · Logo
+    └── pages/              ← index · approche · accompagnements/×3
+                               nutrition-sante · a-propos · lieux-contact · 404</pre>
+      <div class="card">
+        <b>Design « L'éclaircie »</b> — aurore pastel (pêche <code>#FFD9C4</code>, rose <code>#F6C8DB</code>,
+        lilas <code>#DFD2F4</code>, eau <code>#C9E9DE</code>) + aubergine <code>#43324B</code> + framboise
+        <code>#C13D63</code> + sauge <code>#5E8E75</code> sur ivoire <code>#FDFBF8</code>.
+        Signature : le <b>halo qui respire</b> (cycle 7 s, coupé si <code>prefers-reduced-motion</code>).
+        Logo : deux pétales translucides croisés — le X de Xénia.
+      </div>
+    </section>
+
+    <section id="env">
+      <h2><span class="ico">🔐</span>Variables d'environnement</h2>
+      <div class="card">Aucune. Site 100 % statique, aucun secret.</div>
+    </section>
+
+    <section id="roadmap">
+      <h2><span class="ico">🗺️</span>Roadmap & Features</h2>
+      <table>
+        <tr><th>Feature</th><th>Statut</th><th>Date</th></tr>
+        <tr><td>Design system « L'éclaircie » + logo</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
+        <tr><td>8 pages + 404, contenus du mail cliente</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
+        <tr><td>SEO/GEO : JSON-LD, FAQPage, sitemap, llms.txt, OG</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
+        <tr><td>Dossier client PDF (5 planches)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
+        <tr><td>Dockerfile + nginx (prêt à déployer)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
+        <tr><td>Dépôt GitHub public + déploiement Coolify</td><td><span class="status st-progress">🚧 In Progress</span></td><td>—</td></tr>
+        <tr><td>Photos de la cliente (portrait « à venir »)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
+        <tr><td>Domaine final + bascule DNS + Search Console</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
+        <tr><td>Textes validés par la cliente</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
+      </table>
+    </section>
+
+    <section id="journal">
+      <h2><span class="ico">📆</span>Journal des changements</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <p class="tl-date">2026-08-11</p>
+          <ul>
+            <li>✨ <b>Création complète du site</b> : design system, 8 pages + 404, header à menu déroulant, animations différées — boucle visuelle /browse (desktop, mobile, burger, dropdown vérifiés).</li>
+            <li>✨ Liens de RDV <b>réels vérifiés en ligne</b> : Doctoranytime + Rosa. Bonus : Master en psychologie clinique de la santé (UCLouvain).</li>
+            <li>✨ SEO/GEO : JSON-LD MedicalBusiness (3 adresses, 2 ReserveAction), FAQPage, sitemap, robots, llms.txt, OG rendue depuis la charte — vérifié dans le build.</li>
+            <li>📄 <b>Dossier client PDF</b> — scores SEO 91 / GEO 86, gains rapides appliqués le jour même.</li>
+            <li>🔧 Dockerfile multi-étages → nginx:alpine ; <code>brief/</code> exclu du dépôt et de l'image.</li>
+            <li>⏸️ Déploiement bloqué à <code>gh repo create</code> (permission) — commande à lancer par l'utilisateur.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="problemes">
+      <h2><span class="ico">⚠️</span>Problèmes connus / à confirmer cliente</h2>
+      <div class="card warn"><b>Nom de domaine non tranché</b> (Mindfoodyou.be abandonné) — placeholder <code>xeniavanoutryve.be</code> dans les canonical/sitemap/JSON-LD.</div>
+      <div class="card warn"><b>Tarifs et paiement</b> : seule certitude vérifiée : « paiement mobile accepté » (Doctoranytime). Remboursement mutualité formulé prudemment.</div>
+      <div class="card warn"><b>Portrait</b> : placeholder en attendant les photos. <b>Nom</b> : le site suit le brief (« Xenia Van Outryve ») — l'état civil des annuaires est « van Outryve d'Ydewalle ». <b>Réseaux sociaux</b> « à venir ».</div>
+    </section>
+
+    <section id="deploiement">
+      <h2><span class="ico">🌍</span>Déploiement (maquette)</h2>
+      <div class="card">
+        <b>Cible</b> : Coolify maquettes <code>http://46.224.83.139:8000</code> (⚠️ jamais l'instance Noveo
+        <code>188.245.156.214</code>), serveur <code>zw8ck4ckcw08gg00g8wwkkso</code>, wildcard
+        <code>*.chris-ia.com</code> → HTTPS auto. <b>URL visée</b> : <code>https://xenia.chris-ia.com</code>.
+      </div>
+      <pre># 1. (à débloquer — permission utilisateur)
+gh repo create cltconcept/xenia-website --public --source . --remote origin --push
+
+# 2. Coolify (jeton dans ~/.claude.json → mcpServers.coolify.env)
+POST $BASE/projects                {"name":"xenia", ...}
+POST $BASE/applications/public    {build_pack: dockerfile, ports: 80,
+                                   domains: https://xenia.chris-ia.com,
+                                   instant_deploy: true}
+
+# 3. Vérifier le site servi : 9 pages en 200, JSON-LD dans le HTML livré,
+#    console propre, /dossier-xenia-van-outryve.pdf accessible</pre>
+    </section>
+  </main>
+</div>
+</body>
+</html>
