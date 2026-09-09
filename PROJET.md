@@ -95,14 +95,33 @@ Aucune. Site 100 % statique, aucun secret.
 | Dossier client PDF unifié et vulgarisé (8 pages, 2026-09-09) | ✅ Done | 2026-09-09 |
 | Dockerfile + nginx (prêt à déployer) | ✅ Done | 2026-08-11 |
 | Dépôt GitHub public + déploiement Coolify (HTTPS) | ✅ Done | 2026-08-11 |
-| Recomposition design (spec 2026-09-08) — implémentée en local, **non committée**, à valider à l'écran | 🚧 In Progress | 2026-09-09 |
-| Blocs et animations de l'accueil (spec 2026-09-09) — implémentés en local, **non committés** | 🚧 In Progress | 2026-09-09 |
+| Recomposition design (spec 2026-09-08) | ✅ Done | 2026-09-09 |
+| Blocs et animations de l'accueil (spec 2026-09-09) | ✅ Done | 2026-09-09 |
+| Mise en ligne de la maquette recomposée (GitHub + Coolify) | ✅ Done | 2026-09-09 |
 | Photo de la cliente dans le hero + bloc tarifs (attendent ses éléments) | 📋 Planned | — |
 | Photos de la cliente (portrait « à venir ») | 📋 Planned | — |
 | Nom de domaine final + bascule DNS + Search Console | 📋 Planned | — |
 | Textes validés par la cliente | 📋 Planned | — |
 
 ## Journal des changements
+
+### 2026-09-09 (mise en ligne de la maquette recomposée)
+- 🚀 **Poussé sur GitHub et redéployé** (demande utilisateur) : trois commits
+  sur `main` de `cltconcept/xenia-website` (`62c0199` le site, `a4bebd8` la
+  documentation, `ce66d45` les scripts de médias), puis déploiement de l'app
+  Coolify `seetu6uqg4tnkjg8do4f1f8n` — **25 s**, sur le sous-domaine existant
+  **https://xenia.chris-ia.com** (aucune nouvelle app créée).
+- ✅ Vérifié EN LIGNE : les 9 pages en 200, vraie 404, robots / llms.txt /
+  sitemap / favicon.ico / og.jpg / film mobile / aquarelle du hero servis
+  (l'ancien `og.png` répond bien 404) ; **les 5 en-têtes de sécurité sont
+  actifs** et `Server: nginx` n'annonce plus sa version ; JSON-LD `Service` +
+  `BreadcrumbList` présents sur les pages d'offre ; carrousel, bandeau, blobs
+  et parallaxe rendus, console vide, aucun débordement.
+- 🧹 Avant commit : audit SEO/GEO ramené de 4,6 Mo à 675 Ko (même cause que le
+  dossier : grain, ombres et dégradés arrondis rasterisés par Chromium) ; les
+  polices rapatriées de la charte sont gitignorées (re-téléchargeables depuis
+  `chartes/xenia/assets.json`). Contrôle anti-secret passé : aucune clé dans
+  les fichiers versionnés, `brief/` toujours hors dépôt.
 
 ### 2026-09-09 (soir — dossier client unifié, vulgarisé)
 - 📘 **Un seul document pour la cliente** (demande utilisateur, remplace le
@@ -139,7 +158,7 @@ Aucune. Site 100 % statique, aucun secret.
   **pypdfium2** (moteur de Chrome), pas avec PyMuPDF ni le lecteur Chrome
   headless (page blanche).
 
-### 2026-09-09 (soir — corrections du contrôle qualité, LOCAL, non committé)
+### 2026-09-09 (soir — corrections du contrôle qualité)
 - 🐛 **Cinq constats du rapport Noveo corrigés et revérifiés** (seconde passe
   complète du contrôle) : film du hero servi en **640×360 / 163 Ko** sur mobile
   (`hero-film-mobile.mp4`, rien en mode économie de données ; le master
@@ -188,7 +207,7 @@ Aucune. Site 100 % statique, aucun secret.
   d'état ambre et rouge sombre, textes vide/échec. Le wordmark n'existe
   qu'en HTML : le lockup livré est le symbole seul.
 
-### 2026-09-09 (soir — blocs et animations de l'accueil, LOCAL, non committé)
+### 2026-09-09 (soir — blocs et animations de l'accueil)
 - ✨ **Six pièces ajoutées** (spec `docs/superpowers/specs/2026-09-09-xenia-blocs-et-animations-design.md`,
   plan du même nom, sous-agents + double revue) après comparaison avec la
   référence aimée par la cliente (template « Yoga studio ») : **bandeau des
@@ -226,9 +245,8 @@ Aucune. Site 100 % statique, aucun secret.
   étapes exactement de centre à centre ; trait posé aussi sur « Qui je suis »
   (titre sorti du reveal). Textes du carrousel = les données (`accompagnements.ts`),
   spec alignée.
-- ⚠️ Toujours **non committé** : validation à l'écran d'abord.
 
-### 2026-09-09 (recomposition du site — LOCAL, non committé)
+### 2026-09-09 (recomposition du site)
 - ♻️ **Les blobs ne sont plus coupés aux bords des sections** (retour
   utilisateur : « le tronçage casse la fluidité ») : `.section--blob` et le
   `PageHero` perdent leur `overflow: clip`, les formes coulent d'une section à
