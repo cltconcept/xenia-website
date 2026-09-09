@@ -1,15 +1,16 @@
 ---
-import { LIEUX } from '../data/site';
-const TINTS = {
-  rose: 'linear-gradient(135deg, #F3B1CE, #FFC9A8)',
-  lilac: 'linear-gradient(135deg, #CBB5EE, #F3B1CE)',
-  aqua: 'linear-gradient(135deg, #AEE0CE, #CBB5EE)',
-};
+/* Les trois cabinets : carte teintée par lieu, horaires, itinéraire Google
+   Maps (URL de recherche, aucun embed, aucun cookie — cohérent avec la page
+   vie privée) et rendez-vous sur la plateforme du cabinet. */
+import { LIEUX, type Lieu } from '../data/site';
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+const itineraire = (l: Lieu) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${l.adresse}, ${l.codePostal} ${l.ville}, Belgique`)}`;
 ---
-<div class="lieux" data-reveal data-reveal-stagger>
+<div class:list={['lieux', { 'lieux--compact': compact }]} data-reveal data-reveal-stagger>
   {LIEUX.map((l) => (
-    <article class="card lieux__card">
-      <div class="lieux__tint" style={`background: ${TINTS[l.couleur]}`} aria-hidden="true"></div>
+    <article class:list={['card', 'card--spot', `card--${l.couleur}`, 'lieux__card']}>
       <div class="lieux__body">
         <p class="lieux__ville">{l.ville}</p>
         <p class="lieux__nom">{l.nom}</p>
@@ -17,7 +18,8 @@ const TINTS = {
         <ul class="lieux__horaires">
           {l.horaires.map((h) => <li>{h}</li>)}
         </ul>
-        <a class="btn-pill btn-pill--sm lieux__btn" href={l.lienRdv} target="_blank" rel="noopener">
+        <a class="link-arrow lieux__itin" href={itineraire(l)} target="_blank" rel="noopener" aria-label={`Itinéraire vers ${l.nom}, ${l.ville}`}>Itinéraire</a>
+        <a class="btn-pill btn-pill--sm lieux__btn" href={l.lienRdv} target="_blank" rel="noopener" aria-label={`Rendez-vous à ${l.ville} sur ${l.plateforme}`}>
           Rendez-vous sur {l.plateforme}
         </a>
       </div>
@@ -32,7 +34,6 @@ const TINTS = {
     margin-top: var(--headline-gap);
   }
   .lieux__card { display: flex; flex-direction: column; }
-  .lieux__tint { height: 12px; }
   .lieux__body {
     padding: var(--pad-card);
     display: flex; flex-direction: column; align-items: flex-start;
@@ -50,9 +51,17 @@ const TINTS = {
     font-size: 0.92rem; color: var(--ink);
   }
   .lieux__horaires li::before { content: '·'; color: var(--framboise); font-weight: 700; margin-right: 8px; }
-  .lieux__btn { margin-top: auto; padding-top: 9px; }
-  .lieux__body .lieux__btn { margin-top: 22px; }
+  .lieux__itin { margin-top: auto; padding-top: 16px; font-size: 0.9rem; }
+  .lieux__btn { margin-top: 14px; }
+  /* Variante compacte (à côté de la carte dessinée) : une carte par ligne, plus basse */
+  .lieux--compact { grid-template-columns: 1fr; gap: 14px; margin-top: 0; }
+  .lieux--compact .lieux__body { padding: clamp(18px, 2vw, 24px) clamp(20px, 2.4vw, 28px); }
+  .lieux--compact .lieux__ville { font-size: 1.25rem; }
+  .lieux--compact .lieux__horaires { margin-top: 10px; font-size: 0.88rem; }
+  .lieux--compact .lieux__itin { padding-top: 10px; }
+  .lieux--compact .lieux__btn { margin-top: 10px; }
   @media (max-width: 960px) {
     .lieux { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
+    .lieux--compact { max-width: none; }
   }
 </style>

@@ -1,13 +1,15 @@
 ---
-/* Grille des motifs de consultation d'une page accompagnement. */
+/* Grille des motifs de consultation d'une page accompagnement.
+   `teinte` : la couleur de la page (rose = ado-adultes, lilas = périnatalité,
+   eau = enfants) en dégradé haut de carte. */
 interface Item { titre: string; desc: string }
-interface Props { items: Item[] }
-const { items } = Astro.props;
+interface Props { items: Item[]; teinte: 'rose' | 'lilac' | 'aqua' }
+const { items, teinte } = Astro.props;
 ---
 <div class="domaines" data-reveal data-reveal-stagger>
   {items.map((d) => (
-    <article class="card card--spot domaines__card">
-      <h2>{d.titre}</h2>
+    <article class:list={['card', 'card--spot', `card--${teinte}`, 'domaines__card']}>
+      <h2 class="puce-petale">{d.titre}</h2>
       <p>{d.desc}</p>
     </article>
   ))}
@@ -24,12 +26,6 @@ const { items } = Astro.props;
   .domaines__card h2 {
     font-family: var(--font-display);
     font-size: 1.25rem; font-weight: 620; letter-spacing: -0.01em;
-    display: flex; align-items: flex-start; gap: 12px;
-  }
-  .domaines__card h2::before {
-    content: ''; width: 11px; height: 11px; border-radius: 50%; flex: none;
-    margin-top: 0.42em;
-    background: linear-gradient(135deg, var(--rose), var(--lilac));
   }
   .domaines__card p { margin-top: 10px; color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
   @media (max-width: 960px) {

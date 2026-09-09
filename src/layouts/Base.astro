@@ -9,11 +9,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { IDENTITE, LIEUX, RDV } from '../data/site';
 
-interface Props { title: string; description: string; }
-const { title, description } = Astro.props;
+interface Props { title: string; description: string; extraLd?: unknown[] }
+const { title, description, extraLd = [] } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const og = new URL('/media/og.png', Astro.site);
+const og = new URL('/media/og.jpg', Astro.site);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -75,9 +75,11 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#FDFBF8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" as="font" type="font/woff2" href={frauncesWoff2} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={hankenWoff2} crossorigin />
+    {Astro.url.pathname === '/' && <link rel="preload" as="image" href="/media/hero-film-poster.webp" />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -87,6 +89,7 @@ const jsonLd = {
     <meta property="og:locale" content="fr_BE" />
     <meta name="twitter:card" content="summary_large_image" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {extraLd.map((ld) => <script type="application/ld+json" set:html={JSON.stringify(ld)} />)}
   </head>
   <body>
     <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -97,10 +100,15 @@ const jsonLd = {
     <Footer />
     <div class="grain" aria-hidden="true"></div>
     <script>
-      import { REDUCED, loadGsap, onFirstIdle, bootReveals } from '../lib/motion';
+      import { REDUCED, loadGsap, onFirstIdle, bootReveals, bootTraits } from '../lib/motion';
+      import { bootBlobs } from '../lib/blobs';
+      bootTraits();
       if (!REDUCED) {
         onFirstIdle(() => {
-          loadGsap().then(bootReveals);
+          loadGsap().then((m) => {
+            bootReveals(m);
+            bootBlobs(m);
+          });
         });
       }
 

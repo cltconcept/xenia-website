@@ -1,0 +1,223 @@
+---
+/* Carrousel des accompagnements : 4 onglets (patron ARIA tabs), une carte
+   par panneau, flèches, défilement auto lent et pausable. Sans JS : les 4
+   panneaux se suivent, onglets/flèches/pause masqués. */
+import { ACCOMPAGNEMENTS, OU } from '../data/accompagnements';
+---
+<div class="carrousel" data-carrousel>
+  <div class="carrousel__onglets" role="tablist" aria-label="Accompagnements">
+    {ACCOMPAGNEMENTS.map((a, i) => (
+      <button
+        class:list={['carrousel__onglet', `carrousel__onglet--${a.teinte}`]}
+        role="tab"
+        type="button"
+        id={`onglet-${a.slug}`}
+        aria-controls={`panneau-${a.slug}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        tabindex={i === 0 ? 0 : -1}
+      >{a.onglet}</button>
+    ))}
+  </div>
+  <div class="carrousel__scene">
+    <button class="carrousel__fleche carrousel__fleche--prec" type="button" aria-label="Accompagnement précédent">‹</button>
+    <div class="carrousel__panneaux">
+      {ACCOMPAGNEMENTS.map((a, i) => (
+        <div
+          class:list={['carrousel__panneau', { 'is-actif': i === 0 }]}
+          role="tabpanel"
+          id={`panneau-${a.slug}`}
+          aria-labelledby={`onglet-${a.slug}`}
+        >
+          <article class="card card--spot carrousel__carte">
+            <figure class:list={['carrousel__illu', `carrousel__illu--${a.teinte}`]}>
+              <img src={a.illu} alt={a.illuAlt} width="640" height="480" loading="lazy" />
+            </figure>
+            <div class="carrousel__txt">
+              <span class:list={['overline', { 'overline--sage': a.teinte === 'sage' }]}>{a.onglet}</span>
+              <h3 class="headline headline--md">{a.titre} <em>{a.accroche}</em></h3>
+              <p class="carrousel__desc">{a.desc}</p>
+              <p class="carrousel__ou puce-petale">{OU}</p>
+              <a class="link-arrow" href={a.href}>Découvrir</a>
+            </div>
+          </article>
+        </div>
+      ))}
+    </div>
+    <button class="carrousel__fleche carrousel__fleche--suiv" type="button" aria-label="Accompagnement suivant">›</button>
+  </div>
+  <button class="carrousel__pause" type="button" aria-pressed="false">
+    <span class="carrousel__pause-ico" aria-hidden="true"></span>
+    <span class="carrousel__pause-txt">Pause</span>
+  </button>
+</div>
+
+<script>
+  import { REDUCED, loadGsap } from '../lib/motion';
+
+  const racine = document.querySelector<HTMLElement>('[data-carrousel]');
+  if (racine) {
+    racine.classList.add('is-js');
+    const onglets = Array.from(racine.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panneaux = Array.from(racine.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+    const scene = racine.querySelector<HTMLElement>('.carrousel__scene')!;
+    const pause = racine.querySelector<HTMLButtonElement>('.carrousel__pause')!;
+    const pauseTxt = pause.querySelector<HTMLElement>('.carrousel__pause-txt')!;
+    let actif = 0;
+    let enTransition = false;
+    let visible = false;
+    let reprise = 0;
+    let enPause = false;
+    let gsapRef: typeof import('gsap').default | null = null;
+    if (!REDUCED) loadGsap().then(({ gsap }) => { gsapRef = gsap; });
+
+    /* Toute interaction suspend le défilement automatique 20 s */
+    const interaction = () => { reprise = Date.now() + 20000; };
+
+    const montrer = (i: number, sens: 1 | -1) => {
+      if (i === actif || enTransition) return;
+      const sortant = panneaux[actif];
+      const entrant = panneaux[i];
+      onglets[actif].setAttribute('aria-selected', 'false');
+      onglets[actif].tabIndex = -1;
+      onglets[i].setAttribute('aria-selected', 'true');
+      onglets[i].tabIndex = 0;
+      if (gsapRef) {
+        const g = gsapRef;
+        enTransition = true;
+        scene.classList.add('is-transition');
+        entrant.classList.add('is-actif');
+        g.to(sortant, {
+          x: -24 * sens, opacity: 0, duration: 0.35, ease: 'power2.in',
+          onComplete: () => { sortant.classList.remove('is-actif'); g.set(sortant, { clearProps: 'all' }); },
+        });
+        g.fromTo(entrant, { x: 24 * sens, opacity: 0 }, {
+          x: 0, opacity: 1, duration: 0.45, ease: 'power3.out', delay: 0.12,
+          onComplete: () => { enTransition = false; scene.classList.remove('is-transition'); g.set(entrant, { clearProps: 'all' }); },
+        });
+      } else {
+        sortant.classList.remove('is-actif');
+        entrant.classList.add('is-actif');
+      }
+      actif = i;
+    };
+    const suivant = (d: 1 | -1) => montrer((actif + d + panneaux.length) % panneaux.length, d);
+
+    onglets.forEach((o, i) => {
+      o.addEventListener('click', () => { interaction(); montrer(i, i > actif ? 1 : -1); });
+      o.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        interaction();
+        suivant(e.key === 'ArrowRight' ? 1 : -1);
+        onglets[actif].focus();
+      });
+    });
+    racine.querySelector('.carrousel__fleche--prec')!.addEventListener('click', () => { interaction(); suivant(-1); });
+    racine.querySelector('.carrousel__fleche--suiv')!.addEventListener('click', () => { interaction(); suivant(1); });
+    pause.addEventListener('click', () => {
+      enPause = !enPause;
+      pause.setAttribute('aria-pressed', String(enPause));
+      pauseTxt.textContent = enPause ? 'Lecture' : 'Pause';
+    });
+
+    /* Auto : 7 s, seulement visible, non survolé, sans focus dedans, hors pause.
+       En reduced-motion : pas d'auto du tout, le bouton pause n'a plus de sens */
+    if (REDUCED) {
+      pause.hidden = true;
+    } else {
+      new IntersectionObserver((ents) => { visible = ents[0].isIntersecting; }, { threshold: 0.4 }).observe(racine);
+      window.setInterval(() => {
+        if (enPause || !visible || Date.now() < reprise) return;
+        if (racine.matches(':hover') || racine.contains(document.activeElement)) return;
+        suivant(1);
+      }, 7000);
+    }
+  }
+</script>
+
+<style>
+  .carrousel { position: relative; margin-top: var(--headline-gap); }
+  /* Onglets capsule */
+  .carrousel__onglets { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 28px; }
+  .carrousel__onglet {
+    padding: 10px 18px; border-radius: var(--radius-pill);
+    border: 1.5px solid var(--sep); background: transparent;
+    font-size: 0.92rem; font-weight: 600; color: var(--ink); cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s var(--ease);
+  }
+  .carrousel__onglet:hover { transform: translateY(-1px); }
+  .carrousel__onglet[aria-selected="true"] { border-color: transparent; }
+  .carrousel__onglet[aria-selected="true"] { box-shadow: var(--shadow-card); }
+  .carrousel__onglet--rose[aria-selected="true"] { background: var(--tint-rose); }
+  .carrousel__onglet--lilac[aria-selected="true"] { background: var(--tint-lilac); }
+  .carrousel__onglet--aqua[aria-selected="true"] { background: var(--tint-aqua); }
+  .carrousel__onglet--sage[aria-selected="true"] { background: var(--tint-aqua); color: var(--sage-deep); }
+  /* Scène : flèche | panneaux superposés | flèche */
+  .carrousel__scene { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; gap: 12px; }
+  .carrousel__panneaux { display: grid; }
+  .carrousel__panneau { grid-area: 1 / 1; }
+  .is-js .carrousel__panneau:not(.is-actif) { visibility: hidden; pointer-events: none; }
+  .is-transition .carrousel__panneau { pointer-events: none; }
+  /* Sans JS : les panneaux se suivent, les commandes disparaissent.
+     La scène quitte sa grille (sinon, flèches masquées, les panneaux tombent
+     dans la colonne de 48 px). */
+  .carrousel:not(.is-js) .carrousel__scene { display: block; }
+  .carrousel:not(.is-js) .carrousel__panneaux { display: block; }
+  .carrousel:not(.is-js) .carrousel__panneau + .carrousel__panneau { margin-top: var(--gap-grid); }
+  .carrousel:not(.is-js) .carrousel__onglets,
+  .carrousel:not(.is-js) .carrousel__fleche,
+  .carrousel:not(.is-js) .carrousel__pause { display: none; }
+  /* La carte */
+  .carrousel__carte {
+    display: grid; grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(24px, 4vw, 48px); align-items: center;
+    padding: var(--pad-card);
+  }
+  .carrousel__illu {
+    margin: 0; overflow: hidden; isolation: isolate; aspect-ratio: 4 / 3;
+    border-radius: var(--radius-organique);
+    background: linear-gradient(150deg, var(--tint-peach), var(--tint-rose));
+    outline: 1px solid var(--glass-border); outline-offset: -1px;
+    box-shadow: var(--shadow-card);
+  }
+  .carrousel__illu--lilac { background: linear-gradient(150deg, var(--tint-lilac), var(--tint-rose)); }
+  .carrousel__illu--aqua { background: linear-gradient(150deg, var(--tint-aqua), var(--tint-lilac)); }
+  .carrousel__illu--sage { background: linear-gradient(150deg, var(--tint-aqua), var(--tint-peach)); }
+  .carrousel__illu img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; opacity: 0.95; }
+  .carrousel__txt .headline { margin-top: 8px; }
+  .carrousel__desc { margin-top: 14px; color: var(--muted); font-size: 1.02rem; line-height: 1.6; }
+  .carrousel__ou { margin-top: 16px; font-size: 0.9rem; color: var(--muted); }
+  .carrousel__txt .link-arrow { margin-top: 20px; }
+  /* Flèches en verre */
+  .carrousel__fleche {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid var(--glass-border); background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-glass);
+    font-family: var(--font-display); font-size: 1.6rem; line-height: 1; color: var(--framboise);
+    cursor: pointer; transition: transform 0.25s var(--ease);
+  }
+  .carrousel__fleche:hover { transform: scale(1.06); }
+  /* Pause / lecture — discret, obligatoire pour un contenu qui bouge seul */
+  .carrousel__pause {
+    margin: 18px auto 0; display: flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border: 0; background: transparent; border-radius: var(--radius-pill);
+    color: var(--muted); font-size: 0.8rem; cursor: pointer;
+  }
+  .carrousel__pause:hover { color: var(--framboise); }
+  .carrousel__pause-ico { width: 10px; height: 10px; box-sizing: border-box; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+  .carrousel__pause[aria-pressed="true"] .carrousel__pause-ico {
+    width: 0; height: 0; border-left: 10px solid currentColor;
+    border-right: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+  }
+  @media (max-width: 960px) {
+    .carrousel__scene { grid-template-columns: 1fr 1fr; row-gap: 16px; }
+    .carrousel__panneaux { grid-column: 1 / -1; grid-row: 1; }
+    .carrousel__fleche { grid-row: 2; justify-self: center; }
+    .carrousel__carte { grid-template-columns: 1fr; }
+    .carrousel__illu { max-width: 240px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .carrousel__onglet, .carrousel__fleche { transition: none; }
+  }
+</style>

@@ -11,3 +11,7 @@ brief/
 .DS_Store
 __MACOSX/
 .gstack/
+
+# Polices rapatriées pour le rendu de la charte (Google Fonts, re-téléchargeables
+# par scripts/… : `node ~/.claude/skills/charte-url/scripts/fetch-assets.cjs chartes/xenia/assets.json`)
+chartes/*/assets/fonts/

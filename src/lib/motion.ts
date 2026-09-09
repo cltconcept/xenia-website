@@ -47,7 +47,9 @@ export function bootReveals({ gsap, ScrollTrigger }: GsapModules) {
       ? Array.from(el.children)
       : [el];
     gsap.from(children, {
-      y: 26,
+      /* Relatif : une carte qui porte déjà un translateY CSS (escalier) monte
+         de 26 px depuis SA position, au lieu de glisser vers 26 px */
+      y: '+=26',
       opacity: 0,
       duration: 0.8,
       ease: 'power3.out',
@@ -60,4 +62,28 @@ export function bootReveals({ gsap, ScrollTrigger }: GsapModules) {
   });
   ScrollTrigger.sort();
   ScrollTrigger.refresh();
+}
+
+/* Trait sous le mot pivot des titres de section (.headline--trait) : la classe
+   is-vu déclenche la transition CSS (scaleX 0 → 1), une fois, à 60 % de
+   visibilité. Sans IntersectionObserver ou en reduced-motion : posé d'emblée. */
+export function bootTraits() {
+  const titres = document.querySelectorAll<HTMLElement>('.headline--trait');
+  if (!titres.length) return;
+  if (REDUCED || !('IntersectionObserver' in window)) {
+    titres.forEach((t) => t.classList.add('is-vu'));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-vu');
+          io.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.6 }
+  );
+  titres.forEach((t) => io.observe(t));
 }

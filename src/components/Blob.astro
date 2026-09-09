@@ -1,0 +1,85 @@
+---
+/* Forme organique dégradée, posée en absolu derrière le contenu d'une section
+   `.section--blob` (position relative + isolation, cf. global.css). Le parent
+   la positionne (`position` = déclarations top/left/right/bottom) et la
+   dimensionne (`largeur`, plafonnée à 92vw en CSS pour le mobile).
+   Masque SVG en data-URI (déterministe, zéro id de gradient à dédoublonner),
+   dégradé en CSS, dérive lente en `translate` (desktop), coupée en reduced-motion ;
+   `transform` reste libre pour la parallaxe GSAP (`parallaxe`, cf. lib/blobs.ts).
+   Décorative : aria-hidden, pointer-events none. */
+const TEINTES = {
+  'lilac-aqua': 'linear-gradient(135deg, var(--lilac), var(--aqua))',
+  'peach-rose': 'linear-gradient(135deg, var(--peach), var(--rose))',
+  'rose-lilac': 'linear-gradient(135deg, var(--rose), var(--lilac))',
+  'aqua-peach': 'linear-gradient(135deg, var(--aqua), var(--peach))',
+  'peach-lilac': 'linear-gradient(135deg, var(--peach), var(--lilac))',
+  'aqua-lilac': 'linear-gradient(135deg, var(--aqua), var(--lilac))',
+  'lilac-rose': 'linear-gradient(135deg, var(--lilac), var(--rose))',
+} as const;
+/* Cinq formes fermées, viewBox 0 0 200 200 : rayon modulé par deux harmoniques
+   (graines 11, 37, 71, 13, 29), lissé en cubiques — figées ici, build reproductible */
+const FORMES = {
+  1: 'M177 100C175 118 166 133 156 147C146 161 131 181 115 186C99 190 71 183 58 173C45 162 47 140 39 122C31 105 7 82 11 68C15 53 45 39 61 33C78 27 94 30 112 31C130 32 160 29 171 41C181 52 179 82 177 100z',
+  2: 'M182 100C179 118 166 134 154 146C143 157 128 162 112 168C95 173 72 183 55 177C39 172 17 149 13 132C9 115 21 90 30 75C39 59 52 49 66 41C80 33 95 25 113 25C131 24 163 25 174 38C186 50 186 82 182 100z',
+  3: 'M174 100C177 118 183 147 173 161C163 175 132 182 114 182C96 182 78 171 65 161C51 152 39 140 32 125C24 110 18 89 21 71C25 53 37 25 53 18C68 11 95 23 113 29C130 35 146 41 156 53C166 65 172 82 174 100z',
+  4: 'M166 100C165 118 168 136 159 150C150 163 132 176 114 181C97 187 66 192 53 182C39 173 36 142 32 125C29 107 28 91 33 76C38 60 47 43 61 32C74 21 98 9 116 11C133 13 158 30 166 45C175 59 167 82 166 100z',
+  5: 'M183 100C179 117 161 126 150 142C139 158 131 191 117 194C102 198 76 177 62 165C48 154 40 141 33 125C25 108 11 85 15 69C20 54 44 38 60 31C76 25 94 29 112 31C130 33 157 31 169 42C180 54 186 83 183 100z',
+} as const;
+interface Props {
+  variante?: keyof typeof FORMES;
+  teinte?: keyof typeof TEINTES;
+  largeur?: string;   // ex. '52vw'
+  position?: string;  // ex. 'top: -8%; left: -14vw;'
+  opacite?: number;   // 0,5-0,7 (spec §4)
+  inverse?: boolean;  // dérive en sens contraire : alterner d'une section à l'autre
+  parallaxe?: number | boolean;  // amplitude px de la parallaxe scrubée (true = 40)
+  class?: string;
+}
+const {
+  variante = 1, teinte = 'lilac-aqua', largeur = '48vw', position = '',
+  opacite = 0.6, inverse = false, parallaxe = false, class: cls,
+} = Astro.props;
+const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><path d='${FORMES[variante]}'/></svg>`;
+const forme = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+---
+<div
+  class:list={['blob', { 'blob--inverse': inverse }, cls]}
+  aria-hidden="true"
+  data-parallaxe={parallaxe ? String(parallaxe === true ? 40 : parallaxe) : undefined}
+  style={`--blob-forme: ${forme}; --blob-grad: ${TEINTES[teinte]}; --blob-largeur: ${largeur}; --blob-opacite: ${opacite}; ${position}`}
+></div>
+
+<style>
+  .blob {
+    position: absolute; z-index: -1;
+    width: min(var(--blob-largeur), 92vw); aspect-ratio: 1;
+    pointer-events: none;
+    background: var(--blob-grad);
+    -webkit-mask: var(--blob-forme) center / 100% 100% no-repeat;
+    mask: var(--blob-forme) center / 100% 100% no-repeat;
+    opacity: var(--blob-opacite);
+    will-change: transform;
+  }
+  /* Dérive lente sur `translate` (desktop) : GSAP garde `transform` pour la parallaxe */
+  @media (min-width: 961px) {
+    .blob { animation: blob-derive 30s ease-in-out infinite alternate; }
+    .blob--inverse { animation-direction: alternate-reverse; animation-duration: 26s; }
+  }
+  @keyframes blob-derive {
+    from { translate: 0 0; rotate: 0deg; }
+    to { translate: 26px -20px; rotate: 3deg; }
+  }
+  /* Mobile : le contenu s'empile en une colonne, un lobe dans un coin ne
+     toucherait plus le verre. Le blob devient un grand lavis centré qui couvre
+     la section (le positionnement inline du parent est écrasé exprès). */
+  @media (max-width: 960px) {
+    .blob {
+      width: 130vw !important; height: 105% !important; aspect-ratio: auto;
+      inset: auto !important; left: 50% !important; top: 50% !important;
+      translate: -50% -50%;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blob { animation: none; will-change: auto; }
+  }
+</style>

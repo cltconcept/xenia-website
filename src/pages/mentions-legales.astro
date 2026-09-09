@@ -19,7 +19,7 @@ import { IDENTITE, LIEUX } from '../data/site';
 
   <section class="section legal">
     <div class="container legal__grid">
-      <article class="card legal__card">
+      <article class="card card--lilac-soft legal__card">
         <h2>Éditrice du site</h2>
         <p>
           <strong>{IDENTITE.nom}</strong> — {IDENTITE.titre}<br />
@@ -33,7 +33,7 @@ import { IDENTITE, LIEUX } from '../data/site';
         </p>
       </article>
 
-      <article class="card legal__card">
+      <article class="card card--lilac-soft legal__card">
         <h2>Lieux de consultation</h2>
         {LIEUX.map((l) => (
           <p>
@@ -43,7 +43,7 @@ import { IDENTITE, LIEUX } from '../data/site';
         ))}
       </article>
 
-      <article class="card legal__card legal__card--wide">
+      <article class="card card--lilac-soft legal__card legal__card--wide">
         <h2>Vie privée</h2>
         <p>
           Ce site est purement informatif : il ne dépose <strong>aucun cookie</strong>,
@@ -65,7 +65,17 @@ import { IDENTITE, LIEUX } from '../data/site';
         </p>
       </article>
 
-      <article class="card legal__card legal__card--wide">
+      <article class="card card--lilac-soft legal__card">
+        <h2>Hébergement</h2>
+        <p>
+          Site conçu et hébergé par <strong>Noveo Digital</strong> (noveodigital.be)
+          sur des serveurs <strong>Hetzner Online GmbH</strong>, Industriestr. 25,
+          91710 Gunzenhausen, Allemagne — données hébergées dans l'Union
+          européenne.
+        </p>
+      </article>
+
+      <article class="card card--lilac-soft legal__card">
         <h2>Propriété intellectuelle</h2>
         <p>
           Les contenus de ce site (textes, identité visuelle) ne peuvent pas

@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import Wave from '../components/Wave.astro';
+import Blob from '../components/Blob.astro';
 import LieuxCards from '../components/LieuxCards.astro';
 import { IDENTITE } from '../data/site';
 
@@ -70,7 +70,8 @@ const faqLd = {
     </Fragment>
   </PageHero>
 
-  <section class="section rdv" id="rdv">
+  <section class="section section--blob rdv" id="rdv">
+    <Blob variante={5} teinte="peach-lilac" largeur="44vw" position="bottom: -16%; right: -12vw;" opacite={0.6} />
     <div class="container">
       <LieuxCards />
       <div class="card card--glass rdv__visio" data-reveal>
@@ -86,85 +87,82 @@ const faqLd = {
     </div>
   </section>
 
-  <div class="soft-wrap">
-    <Wave fill="var(--ivory-soft)" />
-    <section class="section section--soft pratique">
-      <div class="container pratique__grid">
-        <div data-reveal>
-          <span class="overline">Côté pratique</span>
-          <h2 class="headline headline--md">
-            Les questions qu'on<br />me pose <em>avant de venir</em>
-          </h2>
-          <div class="actions">
-            <a class="btn-pill" href={`tel:${IDENTITE.telephoneIntl}`}>Appeler le {IDENTITE.telephone}</a>
-            <a class="link-arrow" href={`mailto:${IDENTITE.email}`}>Écrire un e-mail</a>
-          </div>
+  <section class="section section--blob pratique">
+    <Blob variante={1} teinte="lilac-rose" largeur="52vw" position="top: -8%; right: -10vw;" opacite={0.6} inverse />
+    <div class="container pratique__grid">
+      <div data-reveal>
+        <span class="overline">Côté pratique</span>
+        <h2 class="headline headline--md">
+          Les questions qu'on<br />me pose <em>avant de venir</em>
+        </h2>
+        <div class="actions">
+          <a class="btn-pill" href={`tel:${IDENTITE.telephoneIntl}`}>Appeler le {IDENTITE.telephone}</a>
+          <a class="link-arrow" href={`mailto:${IDENTITE.email}`}>Écrire un e-mail</a>
         </div>
-        <dl class="pratique__faq" data-reveal data-reveal-stagger>
-          <div class="pratique__qa">
-            <dt>Comment payer ?</dt>
-            <dd>
-              Le paiement mobile est accepté en cabinet.
-              <!-- À CONFIRMER CLIENTE : tarifs exacts + autres moyens de paiement -->
-            </dd>
-          </div>
-          <div class="pratique__qa">
-            <dt>Les séances sont-elles remboursées ?</dt>
-            <dd>
-              Psychologue agréée (n° {IDENTITE.agrement}) : la plupart des
-              mutualités interviennent dans le coût des séances. Le montant varie
-              selon la vôtre — un justificatif vous est fourni sur demande.
-            </dd>
-          </div>
-          <div class="pratique__qa">
-            <dt>Faut-il une prescription ?</dt>
-            <dd>
-              Non : vous pouvez prendre rendez-vous directement, sans passer par
-              un médecin.
-            </dd>
-          </div>
-          <div class="pratique__qa">
-            <dt>Doctoranytime ou Rosa ?</dt>
-            <dd>
-              Cela dépend simplement du cabinet : Doctoranytime pour
-              Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe. Les deux
-              montrent mes disponibilités en direct.
-            </dd>
-          </div>
-          <div class="pratique__qa">
-            <dt>Proposez-vous des consultations en visio ?</dt>
-            <dd>
-              Oui : quand la distance, l'agenda ou la situation compliquent le
-              déplacement, la consultation peut se faire en vidéo. Demandez-le
-              par e-mail ou par téléphone.
-            </dd>
-          </div>
-          <div class="pratique__qa">
-            <dt>Qui consultez-vous ?</dt>
-            <dd>
-              Les enfants, les adolescents et les adultes — ainsi que les futurs
-              et jeunes parents. Si vous hésitez sur la formule, contactez-moi.
-            </dd>
-          </div>
-        </dl>
       </div>
-    </section>
-    <Wave fill="var(--ivory)" flip />
-  </div>
+      <dl class="pratique__faq" data-reveal data-reveal-stagger>
+        <div class="card card--glass pratique__qa">
+          <dt>Comment payer ?</dt>
+          <dd>
+            Le paiement mobile est accepté en cabinet.
+            <!-- À CONFIRMER CLIENTE : tarifs exacts + autres moyens de paiement -->
+          </dd>
+        </div>
+        <div class="card card--glass pratique__qa">
+          <dt>Les séances sont-elles remboursées ?</dt>
+          <dd>
+            Psychologue agréée (n° {IDENTITE.agrement}) : la plupart des
+            mutualités interviennent dans le coût des séances. Le montant varie
+            selon la vôtre — un justificatif vous est fourni sur demande.
+          </dd>
+        </div>
+        <div class="card card--glass pratique__qa">
+          <dt>Faut-il une prescription ?</dt>
+          <dd>
+            Non : vous pouvez prendre rendez-vous directement, sans passer par
+            un médecin.
+          </dd>
+        </div>
+        <div class="card card--glass pratique__qa">
+          <dt>Doctoranytime ou Rosa ?</dt>
+          <dd>
+            Cela dépend simplement du cabinet : Doctoranytime pour
+            Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe. Les deux
+            montrent mes disponibilités en direct.
+          </dd>
+        </div>
+        <div class="card card--glass pratique__qa">
+          <dt>Proposez-vous des consultations en visio ?</dt>
+          <dd>
+            Oui : quand la distance, l'agenda ou la situation compliquent le
+            déplacement, la consultation peut se faire en vidéo. Demandez-le
+            par e-mail ou par téléphone.
+          </dd>
+        </div>
+        <div class="card card--glass pratique__qa">
+          <dt>Qui consultez-vous ?</dt>
+          <dd>
+            Les enfants, les adolescents et les adultes — ainsi que les futurs
+            et jeunes parents. Si vous hésitez sur la formule, contactez-moi.
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
 
   <section class="section coords">
     <div class="container coords__inner" data-reveal>
       <h2 class="headline headline--md headline--center">Me <em>contacter</em></h2>
       <div class="coords__grid">
-        <a class="card coords__item" href={`tel:${IDENTITE.telephoneIntl}`}>
+        <a class="card card--spot card--rose coords__item" href={`tel:${IDENTITE.telephoneIntl}`}>
           <p class="coords__label">Téléphone</p>
           <p class="coords__val">{IDENTITE.telephone}</p>
         </a>
-        <a class="card coords__item" href={`mailto:${IDENTITE.email}`}>
+        <a class="card card--spot card--lilac coords__item" href={`mailto:${IDENTITE.email}`}>
           <p class="coords__label">E-mail</p>
           <p class="coords__val coords__val--mail">{IDENTITE.email}</p>
         </a>
-        <div class="card coords__item">
+        <div class="card card--spot card--aqua coords__item">
           <p class="coords__label">Officiel</p>
           <p class="coords__val coords__val--sm">Agrément {IDENTITE.agrement}<br />TVA {IDENTITE.tva}</p>
         </div>
@@ -189,11 +187,7 @@ const faqLd = {
     align-items: start;
   }
   .pratique__faq { margin: 0; display: flex; flex-direction: column; gap: 14px; }
-  .pratique__qa {
-    background: #fff; border-radius: var(--radius-media);
-    box-shadow: var(--shadow-card);
-    padding: 22px 26px;
-  }
+  .pratique__qa { border-radius: var(--radius-media); padding: 22px 26px; }
   .pratique__qa dt {
     font-family: var(--font-display);
     font-size: 1.1rem; font-weight: 640;

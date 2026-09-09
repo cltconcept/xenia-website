@@ -1,9 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import Wave from '../../components/Wave.astro';
+import Blob from '../../components/Blob.astro';
 import Closing from '../../components/Closing.astro';
 import Domaines from '../../components/Domaines.astro';
+import { ACCOMPAGNEMENTS } from '../../data/accompagnements';
+import { serviceLd, breadcrumbLd } from '../../lib/schema';
 
 const domaines = [
   {
@@ -16,7 +18,7 @@ const domaines = [
   },
   {
     titre: 'Dépression parentale et post-partum',
-    desc: 'Ne pas ressentir ce qu’on « devrait », s’épuiser, se perdre : ça se soigne, et ce n’est la faute de personne.',
+    desc: 'Ne pas ressentir ce qu’on «\u00A0devrait\u00A0», s’épuiser, se perdre : ça se soigne, et ce n’est la faute de personne.',
   },
   {
     titre: 'Burn-out parental',
@@ -31,8 +33,14 @@ const domaines = [
     desc: 'Comprendre l’impact des histoires familiales sur votre parentalité, renforcer la relation et construire une dynamique familiale sereine.',
   },
 ];
+const offre = ACCOMPAGNEMENTS.find((a) => a.slug === 'perinatalite')!;
+const extraLd = [
+  serviceLd(Astro.site, { nom: offre.onglet, description: offre.desc, chemin: '/accompagnements/perinatalite-parentalite/', public: 'Futurs parents, jeunes parents et familles' }),
+  breadcrumbLd(Astro.site, [{ nom: 'Accueil', chemin: '/' }, { nom: 'Accompagnements', chemin: '/#accompagnements' }, { nom: 'Périnatalité & Parentalité', chemin: '/accompagnements/perinatalite-parentalite/' }]),
+];
 ---
 <Base
+  extraLd={extraLd}
   title="Périnatalité & Parentalité — Xénia Van Outryve"
   description="Désir d'enfant, PMA, grossesse, post-partum, burn-out parental : un soutien psychologique pour les futurs parents et les familles, en Brabant wallon."
 >
@@ -53,26 +61,29 @@ const domaines = [
 
   <section class="section">
     <div class="container">
-      <Domaines items={domaines} />
+      <Domaines items={domaines} teinte="lilac" />
     </div>
   </section>
 
-  <div class="soft-wrap">
-    <Wave fill="var(--ivory-soft)" />
-    <section class="section section--soft note">
-      <div class="container note__inner" data-reveal>
-        <h2 class="headline headline--md headline--center">
-          Il n'y a pas de « bon moment »<br />pour <em>demander de l'aide</em>
-        </h2>
-        <p class="copy copy--center">
-          Avant la conception, pendant la grossesse, trois mois ou trois ans
-          après la naissance : si quelque chose pèse — sur vous, sur votre couple,
-          sur votre famille — c'est le bon moment.
-        </p>
-      </div>
-    </section>
-    <Wave fill="var(--ivory)" flip />
-  </div>
+  <section class="section section--blob note">
+    <Blob variante={1} teinte="lilac-rose" largeur="52vw" position="top: -30%; left: 24vw;" opacite={0.55} />
+    <div class="halo" style="--halo-c: rgba(246,200,219,0.55); width: 34vw; height: 34vw; top: 10%; right: 8vw;" aria-hidden="true"></div>
+    <div class="container note__inner" data-reveal>
+      <h2 class="headline headline--md headline--center">
+        Il n'y a pas de «&nbsp;bon moment&nbsp;»<br />pour <em>demander de l'aide</em>
+      </h2>
+      <p class="copy copy--center">
+        Avant la conception, pendant la grossesse, trois mois ou trois ans
+        après la naissance : si quelque chose pèse — sur vous, sur votre couple,
+        sur votre famille — c'est le bon moment.
+      </p>
+    </div>
+  </section>
 
   <Closing />
 </Base>
+
+<style>
+  .note { padding-block: clamp(80px, 10vw, 130px); }
+  .note__inner { position: relative; }
+</style>

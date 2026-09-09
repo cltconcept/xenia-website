@@ -1,15 +1,23 @@
 ---
-/* Hero des pages intérieures : aurore douce + halo respirant discret.
-   `image` (optionnelle) : illustration en médaillon organique à droite. */
+/* Hero des pages intérieures : aurore douce + halo respirant + un Blob derrière
+   le médaillon (ou seul, à droite, pour les pages sans image).
+   `image` (optionnelle) : illustration fondue sur un dégradé d'aurore
+   (mix-blend multiply) dans un médaillon organique à anneau de verre. */
+import Blob from './Blob.astro';
 interface Props { overline: string; sage?: boolean; image?: string; imageAlt?: string }
 const { overline, sage = false, image, imageAlt = '' } = Astro.props;
 ---
 <section class="phero" data-hero>
-  <div class="aurora" aria-hidden="true">
+  <div class="aurora phero__aurora" aria-hidden="true">
     <div class="aurora__blob" style={`--blob-c: ${sage ? 'rgba(201,233,222,0.85)' : 'rgba(255,217,196,0.8)'}; width: 46vw; height: 46vw; top: -18vw; left: -10vw;`}></div>
     <div class="aurora__blob aurora__blob--slow" style={`--blob-c: rgba(223,210,244,0.75); width: 40vw; height: 40vw; top: -12vw; right: -8vw;`}></div>
     <div class="halo" style={`--halo-c: ${sage ? 'rgba(201,233,222,0.7)' : 'rgba(246,200,219,0.65)'}; width: 34vw; height: 34vw; top: -6vw; right: 14vw;`}></div>
   </div>
+  {image ? (
+    <Blob variante={2} teinte={sage ? 'aqua-lilac' : 'peach-rose'} largeur="36vw" position="top: 6%; right: -6vw;" opacite={0.6} />
+  ) : (
+    <Blob variante={3} teinte={sage ? 'aqua-peach' : 'peach-lilac'} largeur="40vw" position="top: -6%; right: -10vw;" opacite={0.55} />
+  )}
   <div class:list={['container', 'phero__inner', { 'phero__inner--media': !!image }]}>
     <div class="phero__txt">
       <span class:list={['overline', { 'overline--sage': sage }]}>{overline}</span>
@@ -18,7 +26,7 @@ const { overline, sage = false, image, imageAlt = '' } = Astro.props;
       <slot />
     </div>
     {image && (
-      <figure class="phero__media" data-reveal>
+      <figure class:list={['phero__media', { 'phero__media--sage': sage }]} data-reveal>
         <img src={image} alt={imageAlt} width="800" height="600" loading="eager" fetchpriority="high" />
       </figure>
     )}
@@ -27,10 +35,12 @@ const { overline, sage = false, image, imageAlt = '' } = Astro.props;
 
 <style>
   .phero {
-    position: relative;
-    padding-block: clamp(150px, 18vw, 220px) clamp(40px, 6vw, 70px);
-    overflow: clip;
+    position: relative; isolation: isolate;
+    padding-block: clamp(120px, 14vw, 168px) clamp(40px, 6vw, 70px);
+    /* pas de clip : le blob du hero coule dans la section suivante (l'aurore se clippe elle-même) */
   }
+  /* L'aurore passe SOUS le blob (z-index -1), le contenu au-dessus des deux */
+  .phero__aurora { z-index: -2; }
   .phero__inner { position: relative; max-width: 880px; }
   /* Variante avec médaillon : deux colonnes sur desktop */
   .phero__inner--media {
@@ -39,12 +49,18 @@ const { overline, sage = false, image, imageAlt = '' } = Astro.props;
     gap: clamp(32px, 5vw, 64px);
     align-items: center;
   }
-  .phero__media { margin: 0; }
+  /* Médaillon fondu : dégradé d'aurore sous l'aquarelle (multiply), anneau de verre */
+  .phero__media {
+    margin: 0; isolation: isolate; overflow: hidden;
+    border-radius: var(--radius-organique);
+    background: linear-gradient(150deg, var(--peach), var(--lilac));
+    box-shadow: 0 18px 48px rgba(67, 50, 75, 0.14);
+    outline: 1px solid var(--glass-border); outline-offset: -1px;
+  }
+  .phero__media--sage { background: linear-gradient(150deg, var(--aqua), var(--lilac)); }
   .phero__media img {
     width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover;
-    /* Médaillon organique — « pas trop carré », comme le portrait */
-    border-radius: 58% 42% 55% 45% / 48% 55% 45% 52%;
-    box-shadow: 0 18px 48px rgba(67, 50, 75, 0.14);
+    mix-blend-mode: multiply;
   }
   @media (max-width: 960px) {
     .phero__inner--media { grid-template-columns: 1fr; }

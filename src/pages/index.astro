@@ -1,50 +1,27 @@
 ---
 import Base from '../layouts/Base.astro';
-import Wave from '../components/Wave.astro';
+import Blob from '../components/Blob.astro';
+import Portrait from '../components/Portrait.astro';
+import Bandeau from '../components/Bandeau.astro';
+import Carrousel from '../components/Carrousel.astro';
+import Etapes from '../components/Etapes.astro';
+import CarteCabinets from '../components/CarteCabinets.astro';
 import LieuxCards from '../components/LieuxCards.astro';
 import Closing from '../components/Closing.astro';
 import Tagline from '../components/Tagline.astro';
-import Manuscrit from '../components/Manuscrit.astro';
 import { IDENTITE } from '../data/site';
 
 /* « Ce qui vous amène » — le visiteur doit pouvoir se reconnaître (brief).
    Chaque situation est formulée dans SES mots, pas ceux du métier. */
 const situations = [
-  { txt: '« Je suis épuisé·e, je n’y arrive plus. »', href: '/accompagnements/adolescents-adultes/', tag: 'Burn-out' },
-  { txt: '« Tout me stresse, même les petites choses. »', href: '/accompagnements/adolescents-adultes/', tag: 'Stress & anxiété' },
-  { txt: '« On attend un enfant, et tout bouge. »', href: '/accompagnements/perinatalite-parentalite/', tag: 'Périnatalité' },
-  { txt: '« Être parent me dépasse en ce moment. »', href: '/accompagnements/perinatalite-parentalite/', tag: 'Parentalité' },
-  { txt: '« Mon enfant ne va pas bien, je le sens. »', href: '/accompagnements/enfants-famille/', tag: 'Enfants' },
-  { txt: '« Le TDAH complique notre quotidien. »', href: '/accompagnements/adolescents-adultes/#tdah', tag: 'TDAH' },
-  { txt: '« Je veux manger et dormir mieux, sans me battre. »', href: '/nutrition-sante/', tag: 'Nutrition & sommeil' },
-  { txt: '« Je vis avec la douleur ou la maladie. »', href: '/accompagnements/adolescents-adultes/', tag: 'Maladie chronique' },
-];
-
-const accompagnements = [
-  {
-    href: '/accompagnements/adolescents-adultes/',
-    titre: 'Adolescents & Adultes',
-    desc: 'Stress, anxiété, burn-out, insomnies, douleurs chroniques, TDAH : reprendre pied quand le quotidien déborde.',
-    tint: 'linear-gradient(135deg, #F3B1CE, #FFC9A8)',
-    illu: '/media/illu/ado-adultes-card.webp',
-    illuAlt: 'Aquarelle pastel : un fauteuil près d’une grande fenêtre lumineuse',
-  },
-  {
-    href: '/accompagnements/perinatalite-parentalite/',
-    titre: 'Périnatalité & Parentalité',
-    desc: 'Désir d’enfant, grossesse, post-partum, burn-out parental : être soutenu·e dans ces périodes qui transforment tout.',
-    tint: 'linear-gradient(135deg, #CBB5EE, #F3B1CE)',
-    illu: '/media/illu/perinatalite-card.webp',
-    illuAlt: 'Aquarelle pastel : deux pétales translucides, l’un abritant l’autre',
-  },
-  {
-    href: '/accompagnements/enfants-famille/',
-    titre: 'Enfants & Famille',
-    desc: 'Comportement, intégration, émotions : aider votre enfant à dire ce qu’il vit, souvent par le jeu et la création.',
-    tint: 'linear-gradient(135deg, #AEE0CE, #CBB5EE)',
-    illu: '/media/illu/enfants-card.webp',
-    illuAlt: 'Aquarelle pastel : des crayons de cire et un dessin de soleil',
-  },
+  { txt: '«\u00A0Je suis épuisé·e, je n’y arrive plus.\u00A0»', href: '/accompagnements/adolescents-adultes/', tag: 'Burn-out', teinte: 'rose' },
+  { txt: '«\u00A0Tout me stresse, même les petites choses.\u00A0»', href: '/accompagnements/adolescents-adultes/', tag: 'Stress & anxiété', teinte: 'rose' },
+  { txt: '«\u00A0On attend un enfant, et tout bouge.\u00A0»', href: '/accompagnements/perinatalite-parentalite/', tag: 'Périnatalité', teinte: 'lilac' },
+  { txt: '«\u00A0Être parent me dépasse en ce moment.\u00A0»', href: '/accompagnements/perinatalite-parentalite/', tag: 'Parentalité', teinte: 'lilac' },
+  { txt: '«\u00A0Mon enfant ne va pas bien, je le sens.\u00A0»', href: '/accompagnements/enfants-famille/', tag: 'Enfants', teinte: 'aqua' },
+  { txt: '«\u00A0Le TDAH complique notre quotidien.\u00A0»', href: '/accompagnements/adolescents-adultes/#tdah', tag: 'TDAH', teinte: 'aqua' },
+  { txt: '«\u00A0Je veux manger et dormir mieux, sans me battre.\u00A0»', href: '/nutrition-sante/', tag: 'Nutrition & sommeil', teinte: 'peach' },
+  { txt: '«\u00A0Je vis avec la douleur ou la maladie.\u00A0»', href: '/accompagnements/adolescents-adultes/', tag: 'Maladie chronique', teinte: 'peach' },
 ];
 ---
 <Base
@@ -63,14 +40,13 @@ const accompagnements = [
   </script>
 
   <!-- ===== HERO SIGNATURE — « L'éclaircie » =====
-       L'histoire en 3 secondes : la page s'ouvre voilée (ce qui pèse),
-       la lumière revient au rythme d'une respiration (le halo s'allume),
-       les mots se lèvent, un trait de pinceau souligne la promesse. -->
+       Desktop : la traversée (scène épinglée, 3 phrases au fil du scroll), puis
+       le vrai hero se lève : texte à gauche sur son scrim, médaillon aquarelle
+       à droite. L'écran 0 est coloré (voile à 0,55, poster du film visible). -->
   <section class="hero" id="hero">
-    <div class="aurora" aria-hidden="true">
-      <!-- Le film d'aquarelle (généré) — couche la plus profonde, révélé par
-           l'éclaircie ; scrubé par le scroll en desktop, joué en mobile.
-           Sans JS : rien (le src n'est posé que par le script). -->
+    <div class="aurora hero__aurora" aria-hidden="true">
+      <!-- Le film d'aquarelle (généré) — couche la plus profonde ; poster visible
+           dès le pré-paint, scrubé par le scroll en desktop, joué en mobile. -->
       <video
         class="hero__film"
         muted
@@ -78,68 +54,94 @@ const accompagnements = [
         preload="none"
         poster="/media/hero-film-poster.webp"
         data-film="/media/hero-film.mp4"
+        data-film-mobile="/media/hero-film-mobile.mp4"
       ></video>
-      <div class="aurora__blob" style="--blob-c: rgba(255,197,162,0.95); width: 60vw; height: 60vw; top: -22vw; left: -16vw;"></div>
-      <div class="aurora__blob aurora__blob--slow" style="--blob-c: rgba(203,181,238,0.9); width: 54vw; height: 54vw; top: -16vw; right: -14vw;"></div>
-      <div class="aurora__blob" style="--blob-c: rgba(174,224,206,0.85); width: 40vw; height: 40vw; bottom: -12vw; right: 18vw; animation-duration: 26s;"></div>
+      <div class="aurora__blob" style="--blob-c: rgba(255,197,162,0.7); width: 60vw; height: 60vw; top: -22vw; left: -16vw;"></div>
+      <div class="aurora__blob aurora__blob--slow" style="--blob-c: rgba(203,181,238,0.65); width: 54vw; height: 54vw; top: -16vw; right: -14vw;"></div>
+      <div class="aurora__blob" style="--blob-c: rgba(174,224,206,0.6); width: 40vw; height: 40vw; bottom: -12vw; right: 18vw; animation-duration: 26s;"></div>
       <div class="hero__halo-wrap" style="width: 50vw; height: 50vw; top: 0; right: 2vw;">
         <div class="halo" style="--halo-c: rgba(243,177,206,0.9); width: 100%; height: 100%;"></div>
       </div>
-      <!-- Les pétales du logo, échappés dans l'aurore -->
-      <svg class="hero__petale hero__petale--1" viewBox="0 0 64 32" style="width: 92px; top: 18%; right: 12%;">
-        <ellipse cx="32" cy="16" rx="30" ry="14" fill="#E8799F" opacity="0.5" />
-      </svg>
-      <svg class="hero__petale hero__petale--2" viewBox="0 0 64 32" style="width: 64px; top: 56%; right: 26%;">
-        <ellipse cx="32" cy="16" rx="30" ry="14" fill="#84C7AE" opacity="0.45" />
-      </svg>
-      <svg class="hero__petale hero__petale--3" viewBox="0 0 64 32" style="width: 48px; top: 34%; right: 40%;">
-        <ellipse cx="32" cy="16" rx="30" ry="14" fill="#CBB5EE" opacity="0.5" />
-      </svg>
+      <!-- Les pétales du logo, échappés dans l'aurore : deux « rencontres » -->
+      <div class="hero__petale hero__petale--1">
+        <svg viewBox="0 0 64 64"><g style="mix-blend-mode: multiply;"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" style="fill: var(--petale-rose);" /></g><g style="mix-blend-mode: multiply;"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" style="fill: var(--petale-sage);" /></g></svg>
+      </div>
+      <div class="hero__petale hero__petale--2">
+        <svg viewBox="0 0 64 64"><g style="mix-blend-mode: multiply;"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" style="fill: var(--petale-rose);" /></g><g style="mix-blend-mode: multiply;"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" style="fill: var(--petale-sage);" /></g></svg>
+      </div>
       <div class="hero__voile"></div>
     </div>
-    <!-- La traversée — 3 phrases pilotées par le scroll (desktop, scène épinglée) -->
+    <!-- Le scrim : ivoire derrière la colonne texte, quoi que montre le film -->
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <!-- La traversée — 2 phrases pilotées par le scroll (desktop, scène épinglée) -->
     <div class="hero__phases" aria-hidden="true">
       <p class="hero__phase" data-phase="1">Parfois, tout pèse<br /><em>un peu trop</em>.</p>
-      <p class="hero__phase hero__phase--manuscrit" data-phase="2"><Manuscrit /></p>
-      <p class="hero__phase" data-phase="3">La lumière revient,<br /><em>à votre rythme</em>.</p>
+      <p class="hero__phase" data-phase="2">La lumière revient,<br /><em>à votre rythme</em>.</p>
+    </div>
+    <!-- L'indice de défilement : la scène est épinglée, il faut le dire (desktop, en scène) -->
+    <div class="hero__indice" aria-hidden="true">
+      <span class="hero__indice-txt">Faites défiler</span>
+      <span class="hero__indice-souris"><span class="hero__indice-point"></span></span>
     </div>
     <div class="container hero__inner">
-      <p class="hero__eyebrow" data-h>{IDENTITE.titre} · {IDENTITE.sousTitre}</p>
-      <h1 class="headline hero__title" data-h-title>
-        Psychologue en Brabant wallon,<br />vers un <em class="hero__em">mieux-être durable<svg class="hero__trait" viewBox="0 0 220 12" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="trait-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C13D63" /><stop offset="1" stop-color="#F3B1CE" /></linearGradient></defs><path d="M3 9 C 42 3.5, 92 2.5, 132 5.5 C 166 8, 196 7, 217 4.5" pathLength="1" fill="none" stroke="url(#trait-grad)" stroke-width="4.5" stroke-linecap="round" /></svg></em>
-      </h1>
-      <p class="copy hero__copy" data-h>
-        Stress, épuisement, parentalité, alimentation… Ce qui vous pèse mérite un
-        espace d'écoute <strong>sécurisant et sans jugement</strong>. Je vous reçois à
-        Nivelles, La Hulpe et Court-Saint-Étienne — ou en visio.
-      </p>
-      <div class="actions" data-h>
-        <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
-        <a class="link-arrow" href="/approche/">Découvrir mon approche</a>
+      <div class="hero__txt">
+        <p class="hero__eyebrow" data-h>{IDENTITE.titre} · {IDENTITE.sousTitre}</p>
+        <h1 class="headline hero__title" data-h-title>
+          Psychologue en Brabant wallon,<br />vers un <em class="hero__em">mieux-être durable<svg class="hero__trait" viewBox="0 0 220 12" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="trait-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C13D63" /><stop offset="1" stop-color="#F3B1CE" /></linearGradient></defs><path d="M3 9 C 42 3.5, 92 2.5, 132 5.5 C 166 8, 196 7, 217 4.5" pathLength="1" fill="none" stroke="url(#trait-grad)" stroke-width="4.5" stroke-linecap="round" /></svg></em>
+        </h1>
+        <p class="copy hero__copy" data-h>
+          Stress, épuisement, parentalité, alimentation… Ce qui vous pèse mérite un
+          espace d'écoute <strong>sécurisant et sans jugement</strong>. Je vous reçois à
+          Nivelles, La Hulpe et Court-Saint-Étienne — ou en visio.
+        </p>
+        <div class="actions" data-h>
+          <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+          <a class="link-arrow" href="/approche/">Découvrir mon approche</a>
+        </div>
+        <ul class="hero__trust" aria-label="Repères">
+          <li data-h>Agrément n° {IDENTITE.agrement}</li>
+          <li data-h>Master UCLouvain</li>
+          <li data-h>3 cabinets + visio</li>
+          <li data-h>RDV en ligne</li>
+        </ul>
       </div>
-      <ul class="hero__trust" aria-label="Repères">
-        <li data-h>Agrément n° {IDENTITE.agrement}</li>
-        <li data-h>Master UCLouvain</li>
-        <li data-h>3 cabinets + visio</li>
-        <li data-h>RDV en ligne</li>
-      </ul>
+      <!-- Le médaillon : l'aquarelle permanente du cabinet (le portrait vit dans « Qui je suis ») -->
+      <div class="hero__visuel">
+        <div class="halo hero__visuel-halo" style="--halo-c: rgba(246,200,219,0.8); width: 60%; height: 60%; top: -12%; right: -10%;" aria-hidden="true"></div>
+        <figure class="hero__medaillon">
+          <img
+            src="/media/illu/hero-cabinet-1040.webp"
+            srcset="/media/illu/hero-cabinet-640.webp 640w, /media/illu/hero-cabinet-1040.webp 1040w, /media/illu/hero-cabinet-1600.webp 1600w"
+            sizes="(min-width: 1024px) 402px, 300px"
+            width="1040"
+            height="1300"
+            alt="Aquarelle pastel : un coin de cabinet baigné de lumière du matin, fauteuil doux, voilage et coussin framboise"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </figure>
+      </div>
     </div>
   </section>
 
+  <!-- ===== BANDEAU DES THÈMES ===== -->
+  <Bandeau />
+
   <!-- ===== CE QUI VOUS AMÈNE ===== -->
-  <section class="section amene">
+  <section class="section section--blob amene">
+    <Blob variante={1} teinte="lilac-aqua" largeur="52vw" position="top: -10%; left: -16vw;" opacite={0.55} parallaxe />
     <div class="container">
       <span class="overline overline--center">Ce qui vous amène</span>
-      <h2 class="headline headline--md headline--center">
+      <h2 class="headline headline--md headline--center headline--trait">
         Vous vous reconnaissez<br />dans <em>l'une de ces phrases</em> ?
       </h2>
       <p class="copy copy--center">
-        Il n'y a pas de « bonne raison » de consulter. Il y a ce que vous vivez,
+        Il n'y a pas de «&nbsp;bonne raison&nbsp;» de consulter. Il y a ce que vous vivez,
         maintenant — et c'est suffisant.
       </p>
       <div class="amene__grid" data-reveal data-reveal-stagger>
         {situations.map((s) => (
-          <a class="card card--spot amene__card" href={s.href}>
+          <a class:list={['card', 'card--spot', `card--${s.teinte}`, 'amene__card']} href={s.href}>
             <p class="amene__txt">{s.txt}</p>
             <p class="amene__tag">{s.tag} <span aria-hidden="true">→</span></p>
           </a>
@@ -148,43 +150,87 @@ const accompagnements = [
     </div>
   </section>
 
-  <!-- ===== TAGLINE — les mots s'activent au scroll ===== -->
-  <Tagline />
+  <!-- ===== LES ACCOMPAGNEMENTS — carrousel ===== -->
+  <section class="section section--blob acc" id="accompagnements">
+    <Blob variante={2} teinte="peach-rose" largeur="44vw" position="top: 20%; right: -12vw;" opacite={0.6} inverse parallaxe />
+    <div class="container">
+      <span class="overline overline--center">Accompagnements</span>
+      <h2 class="headline headline--md headline--center headline--trait">
+        Un accompagnement <em>selon l'âge et la vie</em>
+      </h2>
+      <Carrousel />
+    </div>
+  </section>
 
-  <!-- ===== LES 3 ACCOMPAGNEMENTS ===== -->
-  <div class="soft-wrap">
-    <Wave fill="var(--ivory-soft)" />
-    <section class="section section--soft acc">
-      <div class="container">
-        <span class="overline">Accompagnements</span>
-        <h2 class="headline headline--md">
-          Trois espaces, <em>selon l'âge et la vie</em>
+  <!-- ===== QUI JE SUIS (remplace le teaser « Mon approche ») ===== -->
+  <section class="section section--blob qui" id="qui-je-suis">
+    <Blob variante={3} teinte="rose-lilac" largeur="42vw" position="top: -8%; left: -10vw;" opacite={0.6} parallaxe />
+    <div class="container qui__grid">
+      <div class="qui__portrait" data-reveal>
+        <Portrait legende="Xénia Van Outryve — psychologue clinicienne en santé et périnatalité" />
+      </div>
+      <div class="qui__txt">
+        <span class="overline">Qui je suis</span>
+        <h2 class="headline headline--md headline--trait">
+          Xénia Van Outryve,<br /><em>psychologue clinicienne</em>
         </h2>
-        <div class="acc__grid" data-reveal data-reveal-stagger>
-          {accompagnements.map((a) => (
-            <a class="card card--spot acc__card" href={a.href}>
-              <div class="acc__tint" style={`background: ${a.tint}`}>
-                <img src={a.illu} alt={a.illuAlt} width="640" height="480" loading="lazy" />
-              </div>
-              <div class="acc__body">
-                <h3 class="headline--sm acc__titre">{a.titre}</h3>
-                <p class="acc__desc">{a.desc}</p>
-                <span class="link-arrow">Découvrir</span>
-              </div>
-            </a>
-          ))}
+        <div data-reveal>
+        <blockquote class="qui__citation">
+          «&nbsp;Je suis avant tout passionnée par chaque personne, avec son
+          histoire, ses forces et ses fragilités.&nbsp;»
+        </blockquote>
+        <ul class="qui__reperes">
+          <li>
+            <h3 class="puce-petale">Intégrative</h3>
+            <p>Des outils choisis pour votre situation, votre histoire, vos ressources — pas une méthode unique.</p>
+          </li>
+          <li>
+            <h3 class="puce-petale">Corps et esprit</h3>
+            <p>Sommeil, alimentation, mouvement font partie du travail : ils pèsent sur l'humeur et l'énergie.</p>
+          </li>
+          <li>
+            <h3 class="puce-petale">À votre rythme</h3>
+            <p>Vos besoins et vos valeurs fixent le cap, dans un espace sécurisant et sans jugement.</p>
+          </li>
+        </ul>
+        <p class="qui__faits">Master UCLouvain · Agrément n°&nbsp;{IDENTITE.agrement}</p>
+        <div class="actions">
+          <a class="link-arrow" href="/a-propos/">En savoir plus sur moi</a>
+          <a class="link-arrow" href="/approche/">Comprendre ma façon de travailler</a>
+        </div>
         </div>
       </div>
-    </section>
-    <Wave fill="var(--ivory)" flip />
-  </div>
+    </div>
+  </section>
 
-  <!-- ===== NUTRITION & SANTÉ ===== -->
-  <section class="section nutri">
+  <!-- ===== LA PREMIÈRE SÉANCE — 3 étapes ===== -->
+  <section class="section section--blob premiere-home">
+    <Blob variante={4} teinte="lilac-aqua" largeur="44vw" position="top: -12%; right: -10vw;" opacite={0.55} inverse parallaxe />
+    <div class="container">
+      <span class="overline overline--center">La première séance</span>
+      <h2 class="headline headline--md headline--center headline--trait">
+        Et si je ne sais pas<br /><em>par où commencer</em> ?
+      </h2>
+      <p class="copy copy--center">
+        C'est très fréquent — et ce n'est pas un problème. La première
+        rencontre sert justement à ça : poser ce qui vous amène, avec vos
+        mots, sans ordre imposé. Nous définissons ensemble la suite, à votre
+        rythme.
+      </p>
+      <div class="premiere-home__frise"><Etapes /></div>
+      <div class="actions actions--center">
+        <a class="link-arrow" href="/approche/">Découvrir mon approche</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NUTRITION & SANTÉ — la rencontre ===== -->
+  <section class="section section--blob nutri">
+    <Blob variante={4} teinte="aqua-peach" largeur="46vw" position="top: -4%; right: -8vw;" opacite={0.55} inverse parallaxe />
     <div class="container nutri__grid">
       <div class="nutri__txt" data-split="up">
         <span class="overline overline--sage">Nutrition & Santé</span>
-        <h2 class="headline headline--md">
+        <h2 class="headline headline--md headline--trait">
           Ce que vous mangez parle<br />aussi de <em>comment vous allez</em>
         </h2>
         <p class="copy">
@@ -197,57 +243,36 @@ const accompagnements = [
         </div>
       </div>
       <div class="nutri__visual" data-split="down" aria-hidden="true">
-        <div class="nutri__circle nutri__circle--1"><span>Sommeil</span></div>
-        <div class="nutri__circle nutri__circle--2"><span>Alimentation</span></div>
-        <div class="nutri__circle nutri__circle--3"><span>Mouvement</span></div>
-        <div class="nutri__circle nutri__circle--core"><span>Équilibre<br />psychologique</span></div>
+        <!-- Trois pétales en verre qui se recouvrent : leur intersection, c'est l'équilibre -->
+        <div class="rencontre">
+          <div class="rencontre__petale rencontre__petale--sommeil" style="--a: -90deg;"><span>Sommeil</span></div>
+          <div class="rencontre__petale rencontre__petale--alim" style="--a: 30deg;"><span>Alimentation</span></div>
+          <div class="rencontre__petale rencontre__petale--mouv" style="--a: 150deg;"><span>Mouvement</span></div>
+          <div class="rencontre__coeur"><span>Équilibre<br />psychologique</span></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== APPROCHE (teaser) ===== -->
-  <div class="soft-wrap">
-    <Wave fill="var(--ivory-soft)" />
-    <section class="section section--soft appr">
-      <div class="container">
-        <span class="overline overline--center">Mon approche</span>
-        <h2 class="headline headline--md headline--center">
-          Vous êtes une personne entière,<br />pas <em>un symptôme</em>
-        </h2>
-        <div class="appr__grid" data-reveal data-reveal-stagger>
-          <div class="appr__item">
-            <h3>Intégrative</h3>
-            <p>Pas de méthode unique plaquée sur tout le monde : des outils choisis pour votre situation, votre histoire, vos ressources.</p>
-          </div>
-          <div class="appr__item">
-            <h3>Corps et esprit</h3>
-            <p>Sommeil, alimentation, mouvement font partie du travail, parce qu'ils pèsent directement sur l'humeur, l'énergie et l'anxiété.</p>
-          </div>
-          <div class="appr__item">
-            <h3>À votre rythme</h3>
-            <p>Vos besoins et vos valeurs fixent le cap. Mon rôle : un espace sécurisant, sans jugement, où l'on avance pas à pas.</p>
-          </div>
-        </div>
-        <div class="actions actions--center">
-          <a class="link-arrow" href="/approche/">Comprendre ma façon de travailler</a>
-        </div>
-      </div>
-    </section>
-    <Wave fill="var(--ivory)" flip />
-  </div>
+  <!-- ===== TAGLINE — la respiration avant les lieux ===== -->
+  <Tagline />
 
   <!-- ===== LIEUX ===== -->
-  <section class="section lieux-home" id="lieux">
+  <section class="section section--blob lieux-home" id="lieux">
+    <Blob variante={5} teinte="peach-lilac" largeur="40vw" position="bottom: -14%; right: -12vw;" opacite={0.55} parallaxe />
     <div class="container">
       <span class="overline overline--center">Où me trouver</span>
-      <h2 class="headline headline--md headline--center">
+      <h2 class="headline headline--md headline--center headline--trait">
         Trois cabinets <em>près de chez vous</em>
       </h2>
       <p class="copy copy--center">
         Court-Saint-Étienne, Nivelles, La Hulpe — et la visio quand la route ou
         l'agenda compliquent les choses.
       </p>
-      <LieuxCards />
+      <div class="lieux-home__grille">
+        <div class="lieux-home__carte"><CarteCabinets /></div>
+        <LieuxCards compact />
+      </div>
     </div>
   </section>
 
@@ -327,11 +352,15 @@ const accompagnements = [
             })
             .catch(() => {});
         } else {
+          /* Mobile : version 640×360 (~1 Mo) au lieu du master all-intra de 6,9 Mo ;
+             rien du tout si l'utilisateur a demandé l'économie de données (le
+             poster reste en fond) */
+          if ((navigator as any).connection?.saveData) return;
           film.loop = true;
           film.autoplay = true;
           film.preload = 'auto';
           film.addEventListener('loadeddata', () => film.classList.add('is-pret'), { once: true });
-          film.src = src;
+          film.src = film.dataset.filmMobile || src;
           film.load();
           film.play().catch(() => {});
         }
@@ -362,7 +391,7 @@ const accompagnements = [
           scrollTrigger: {
             trigger: hero,
             start: 'top top',
-            end: '+=215%',
+            end: '+=100%',
             scrub: 0.5,
             pin: true,
             anticipatePin: 1,
@@ -372,31 +401,28 @@ const accompagnements = [
             },
           },
         });
-        /* Acte 1 — tout pèse : phrase 1 posée sur le voile */
-        tl.fromTo('.hero__film', { opacity: 0 }, { opacity: 0.55, duration: 0.4, ease: 'none' }, 0.08)
-          .to('[data-phase="1"]', { opacity: 0, y: -46, duration: 0.08, ease: 'power2.in' }, 0.08)
-          /* Acte 2 — l'éclaircie : le voile se lève avec le scroll */
-          .fromTo('.hero__voile', { opacity: 1 }, { opacity: 0, duration: 0.42, ease: 'none' }, 0.07)
-          .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'none' }, 0.07)
-          /* Le stylo écrit « Respirez. » lettre après lettre */
-          .fromTo('[data-phase="2"]', { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.15)
-          .fromTo(
-            '.hero__manuscrit .ecrit',
-            { strokeDashoffset: 1 },
-            { strokeDashoffset: 0, duration: 0.05, stagger: 0.026, ease: 'none' },
-            0.17
-          )
-          .to('[data-phase="2"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.47)
-          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, stagger: 0.03, duration: 0.16 }, 0.34)
-          .fromTo('[data-phase="3"]', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.08 }, 0.57)
-          .to('[data-phase="3"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.69)
-          /* Acte 3 — le vrai hero se lève, mot à mot */
-          .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.06 }, 0.77)
-          .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.12, stagger: 0.01 }, 0.79)
-          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.09, ease: 'power2.inOut' }, 0.9)
-          .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.85)
-          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.9)
-          .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.05, stagger: 0.012 }, 0.94);
+        /* Acte 1 — tout pèse : phrase 1 sur le voile, le film s'éveille (0,35 → 0,75) ;
+           l'indice de défilement s'efface dès que le visiteur a compris */
+        tl.fromTo('.hero__film', { opacity: 0.35 }, { opacity: 0.75, duration: 0.4, ease: 'none' }, 0)
+          .to('.hero__indice', { opacity: 0, y: 10, duration: 0.05, ease: 'none' }, 0.02)
+          .to('[data-phase="1"]', { opacity: 0, y: -46, duration: 0.08, ease: 'power2.in' }, 0.12)
+          /* Acte 2 — l'éclaircie : le voile se lève, le halo s'allume, les pétales arrivent */
+          .fromTo('.hero__voile', { opacity: 1 }, { opacity: 0, duration: 0.36, ease: 'none' }, 0.1)
+          .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'none' }, 0.1)
+          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 0.42, stagger: 0.04, duration: 0.14 }, 0.22)
+          .fromTo('[data-phase="2"]', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.08 }, 0.28)
+          .to('[data-phase="2"]', { opacity: 0, y: -46, duration: 0.09, ease: 'power2.in' }, 0.5)
+          /* Le film redescend (0,45) : le scrim fait le reste */
+          .to('.hero__film', { opacity: 0.45, duration: 0.15, ease: 'none' }, 0.5)
+          /* Acte 3 — le vrai hero se lève, mot à mot, sur son scrim ; le médaillon monte */
+          .fromTo('.hero__scrim', { opacity: 0 }, { opacity: 1, duration: 0.1, ease: 'none' }, 0.58)
+          .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.06 }, 0.6)
+          .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.12, stagger: 0.01 }, 0.62)
+          .fromTo('.hero__visuel', { y: 24, opacity: 0, rotation: -3 }, { y: 0, opacity: 1, rotation: 0, duration: 0.16 }, 0.64)
+          .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.68)
+          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.73)
+          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.09, ease: 'power2.inOut' }, 0.74)
+          .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.05, stagger: 0.012 }, 0.78);
         /* Duo obligatoire après chaque création de pin (cf. motion.ts) */
         ScrollTrigger.sort();
         ScrollTrigger.refresh();
@@ -405,11 +431,13 @@ const accompagnements = [
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
         tl.fromTo('.hero__voile', { opacity: 1 }, { autoAlpha: 0, duration: 1.7, ease: 'power2.inOut' }, 0)
           .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }, 0.1)
-          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 1, duration: 1.1, stagger: 0.18 }, 0.5)
+          .fromTo('.hero__scrim', { opacity: 0 }, { opacity: 1, duration: 1.2, ease: 'none' }, 0.3)
+          .fromTo('.hero__petale', { opacity: 0 }, { opacity: 0.42, duration: 1.1, stagger: 0.18 }, 0.5)
           .fromTo('.hero__eyebrow', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.55)
           .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.85, stagger: 0.055 }, 0.62)
-          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.inOut' }, 1.35)
           .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.25)
+          .fromTo('.hero__visuel', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, 1.3)
+          .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.inOut' }, 1.35)
           .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.45)
           .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.08 }, 1.6);
       }
@@ -436,7 +464,7 @@ const accompagnements = [
                 y: to,
                 opacity: 1,
                 ease: 'none',
-                scrollTrigger: { trigger: section, start: 'top 92%', end: 'bottom 30%', scrub: 0.5 },
+                scrollTrigger: { trigger: section, start: 'top 92%', end: 'center 50%', scrub: 0.5 },
               }
             );
           document.querySelectorAll('[data-split="up"]').forEach((el) => drift(el, 64, -36));
@@ -455,10 +483,9 @@ const accompagnements = [
     position: relative;
     min-height: 92svh;
     display: flex; align-items: center;
-    padding-block: clamp(140px, 16vw, 190px) clamp(70px, 9vw, 110px);
+    padding-block: clamp(120px, 14vw, 168px) clamp(56px, 7vw, 90px);
     overflow: clip;
-    /* Nappe d'aurore générale — le « dégradé » demandé, par-dessous les blobs,
-       fondue vers l'ivoire en bas pour une couture douce avec la suite */
+    /* Nappe d'aurore générale, fondue vers l'ivoire en bas : la couture douce */
     background:
       linear-gradient(180deg, transparent 62%, var(--ivory)),
       linear-gradient(160deg,
@@ -467,43 +494,71 @@ const accompagnements = [
         rgba(223, 210, 244, 0.3) 62%,
         rgba(201, 233, 222, 0.42));
   }
-  .hero__inner { position: relative; max-width: 900px; }
+  /* Deux colonnes : texte 1,15 / médaillon 0,85 */
+  .hero__inner {
+    position: relative; width: 100%;
+    display: grid; grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .hero__txt { max-width: 620px; }
 
   /* ===== Signature « L'éclaircie » ===== */
-  /* Le film d'aquarelle — couche profonde, fondu dans l'aurore */
+  /* L'aurore (film, blobs, halo, pétales, voile) s'efface en bas : plus de ligne droite */
+  .hero__aurora {
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  }
+  /* Le film d'aquarelle — couche profonde ; poster visible dès le pré-paint (0,35) */
   .hero__film {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    opacity: 0;
+    opacity: 0.35;
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
     transition: opacity 0.6s ease;
   }
-  /* En mobile (pas de scène) : visible dès qu'il est prêt */
+  /* En mobile (pas de scène) : un peu plus présent dès qu'il joue */
   .hero__film.is-pret { opacity: 0.5; }
   @media (min-width: 1024px) {
-    /* En scène, c'est la timeline qui pilote l'opacité */
+    /* En scène, c'est la timeline qui pilote l'opacité (état inline) */
     .hero__film { transition: none; }
-    .hero__film.is-pret { opacity: 0; }
+    .hero__film.is-pret { opacity: 0.35; }
   }
 
-  /* Le voile : l'état d'avant. Inerte sans JS (opacity 0), levé par GSAP. */
+  /* Le voile : l'état d'avant (ivoire à 0,55 — l'écran 0 reste coloré).
+     Inerte sans JS (opacity 0), levé par GSAP. */
   .hero__voile {
     position: absolute; inset: 0;
-    background: rgba(253, 251, 248, 0.88);
+    background: rgba(253, 251, 248, 0.55);
     opacity: 0; pointer-events: none;
   }
+  /* Le scrim : lisibilité du texte garantie. Statique = visible ; en scène,
+     GSAP le fait monter à l'acte 3. */
+  .hero__scrim {
+    position: absolute; inset: 0;
+    background: var(--scrim-hero);
+    pointer-events: none;
+  }
   .hero__halo-wrap { position: absolute; }
-  /* Les pétales : dérive continue en CSS (GSAP n'anime que leur opacité) */
+  /* Les pétales : deux rencontres du logo, floutées, dérive continue en CSS
+     (GSAP n'anime que leur opacité) */
   .hero__petale {
-    position: absolute; height: auto;
+    position: absolute; opacity: 0.42;
+    filter: blur(0.6px);
     animation: petale-drift 11s ease-in-out infinite alternate;
   }
-  .hero__petale--1 { rotate: -18deg; }
-  .hero__petale--2 { rotate: 24deg; animation-duration: 14s; animation-delay: -5s; }
-  .hero__petale--3 { rotate: -40deg; animation-duration: 9s; animation-delay: -2s; }
+  .hero__petale svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .hero__petale--1 { width: 140px; top: 16%; right: 10%; rotate: -14deg; }
+  .hero__petale--2 { width: 96px; top: 58%; right: 30%; rotate: 22deg; animation-duration: 14s; animation-delay: -5s; }
   @keyframes petale-drift {
     from { transform: translateY(0) rotate(0deg); }
     to { transform: translateY(-22px) rotate(9deg); }
+  }
+  @media (max-width: 1023px) {
+    .hero__petale--1 { width: 96px; right: 4%; }   /* hors des lignes du H1 */
+    .hero__petale--2 { display: none; }            /* sous l'ivoire du scrim, invisible de toute façon */
   }
   /* Le trait de pinceau sous la promesse */
   .hero__em { position: relative; display: inline-block; }
@@ -513,6 +568,20 @@ const accompagnements = [
     overflow: visible;
   }
   .hero__trait path { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+
+  /* Le médaillon : aquarelle permanente du cabinet, fondue sur pêche→rose,
+     anneau de verre, halo respirant derrière (haut-droite) */
+  .hero__visuel { position: relative; width: 100%; max-width: 520px; justify-self: end; }
+  .hero__visuel-halo { z-index: 0; }
+  .hero__medaillon {
+    position: relative; margin: 0; overflow: hidden;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-organique);
+    background: linear-gradient(150deg, var(--peach), var(--rose));
+    box-shadow: 0 24px 64px rgba(67, 50, 75, 0.16);
+    outline: 1px solid var(--glass-border); outline-offset: -1px;
+  }
+  .hero__medaillon img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
 
   /* La traversée — phrases de la scène épinglée (desktop, activées par JS) */
   .hero__phases {
@@ -540,11 +609,37 @@ const accompagnements = [
     color: var(--framboise);
   }
   .hero__phase[data-phase="1"] { opacity: 1; }
-  .hero__phase--manuscrit { display: flex; justify-content: center; }
-  /* En scène : le contenu du hero attend son acte 3 (GSAP pose les états
-     inline dès la création de la timeline — ceci n'est que le filet CSS) */
+
+  /* L'indice de défilement — visible seulement en scène, s'efface au premier scroll */
+  .hero__indice {
+    position: absolute; left: 50%; bottom: 28px; z-index: 1;
+    display: none; flex-direction: column; align-items: center; gap: 10px;
+    translate: -50% 0;
+    pointer-events: none;
+  }
+  .hero.is-scene .hero__indice { display: flex; }
+  .hero__indice-txt {
+    font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--framboise);
+  }
+  .hero__indice-souris {
+    position: relative; width: 24px; height: 38px;
+    border: 1.5px solid var(--framboise); border-radius: 14px; opacity: 0.85;
+  }
+  .hero__indice-point {
+    position: absolute; left: 50%; top: 7px; width: 4px; height: 8px; border-radius: 3px;
+    background: var(--framboise); translate: -50% 0;
+    animation: indice-point 1.6s ease-in-out infinite;
+  }
+  @keyframes indice-point {
+    0% { transform: translateY(0); opacity: 1; }
+    70%, 100% { transform: translateY(14px); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__indice-point { animation: none; }
+  }
   @media (min-width: 1024px) {
-    .hero.is-scene { min-height: 100svh; }
+    .hero.is-scene { min-height: 100svh; padding-block: clamp(96px, 10vw, 120px) 48px; }
   }
 
   /* États pré-paint (classe posée avant le premier rendu, retirée dès que
@@ -552,6 +647,8 @@ const accompagnements = [
   :global(html.js-intro) .hero__voile { opacity: 1; }
   :global(html.js-intro) .hero__halo-wrap { opacity: 0; }
   :global(html.js-intro) .hero__petale { opacity: 0; }
+  :global(html.js-intro) .hero__scrim { opacity: 0; }
+  :global(html.js-intro) .hero__visuel { opacity: 0; }
   :global(html.js-intro) .hero__title,
   :global(html.js-intro) .hero [data-h] { opacity: 0; }
   :global(html.js-intro) .hero__trait path { stroke-dashoffset: 1; }
@@ -559,17 +656,27 @@ const accompagnements = [
     font-size: 0.88rem; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--framboise);
   }
-  .hero__title { margin-top: 18px; font-size: clamp(2.4rem, 5.4vw, 4.15rem); }
-  .hero__copy { font-size: clamp(1.1rem, 1.6vw, 1.28rem); }
+  .hero__title { margin-top: 18px; font-size: clamp(2.3rem, 4.6vw, 3.6rem); }
+  .hero__copy { font-size: clamp(1.05rem, 1.4vw, 1.15rem); color: var(--muted-hero); }
   .hero__trust {
-    margin: 44px 0 0; padding: 0; list-style: none;
-    display: flex; gap: 10px 26px; flex-wrap: wrap;
-    font-size: 0.86rem; color: var(--muted);
+    margin: 40px 0 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(2, max-content); gap: 10px 26px;
+    font-size: 0.86rem; color: var(--muted-hero);
   }
   .hero__trust li { display: flex; align-items: center; gap: 8px; }
   .hero__trust li::before {
     content: ''; width: 7px; height: 7px; border-radius: 50%;
     background: linear-gradient(135deg, var(--rose), var(--lilac));
+  }
+  /* Mobile : médaillon sous le texte, film limité au haut, scrim vertical */
+  @media (max-width: 1023px) {
+    .hero__inner { grid-template-columns: 1fr; }
+    .hero__visuel { max-width: 300px; justify-self: center; margin-top: 8px; }
+    .hero__film {
+      -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 55%);
+      mask-image: linear-gradient(to bottom, #000 35%, transparent 55%);
+    }
+    .hero__scrim { background: var(--scrim-hero-mobile); }
   }
 
   /* ===== Ce qui vous amène ===== */
@@ -590,6 +697,7 @@ const accompagnements = [
     font-variation-settings: 'SOFT' 100, 'opsz' 30;
     font-size: 1.06rem; line-height: 1.35;
     color: var(--ink);
+    text-wrap: pretty;
   }
   .amene__tag {
     margin-top: auto;
@@ -600,94 +708,105 @@ const accompagnements = [
   .amene__tag span { transition: transform 0.2s var(--ease); }
   .amene__card:hover .amene__tag span { transform: translateX(4px); }
 
-  /* ===== Accompagnements ===== */
-  .soft-wrap { position: relative; }
-  .acc__grid {
-    margin-top: var(--headline-gap);
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: var(--gap-grid);
+  /* ===== Qui je suis ===== */
+  .qui__grid {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
   }
-  .acc__card { text-decoration: none; display: flex; flex-direction: column; }
-  .acc__tint { position: relative; overflow: hidden; }
-  .acc__tint img {
-    width: 100%; height: 100%; object-fit: cover;
-    /* Voile de cohésion : l'illustration adopte la teinte de sa carte */
-    mix-blend-mode: multiply; opacity: 0.92;
-    transition: transform 0.6s var(--ease);
+  .qui__portrait { width: 100%; max-width: 400px; justify-self: center; }
+  .qui__citation {
+    margin: 22px 0 0;
+    font-family: var(--font-display); font-style: italic; font-weight: 480;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 40;
+    font-size: clamp(1.15rem, 1.8vw, 1.4rem); line-height: 1.4;
+    color: var(--framboise);
+    text-wrap: pretty;
   }
-  .acc__card:hover .acc__tint img { transform: scale(1.04); }
-  /* Symétrie cassée : les trois cartes descendent en escalier (desktop) */
-  @media (min-width: 961px) {
-    .acc__card:nth-child(2) { transform: translateY(26px); }
-    .acc__card:nth-child(3) { transform: translateY(52px); }
-    .acc__card:nth-child(2):hover { transform: translateY(22px); }
-    .acc__card:nth-child(3):hover { transform: translateY(48px); }
-    .acc__grid { padding-bottom: 52px; }
+  .qui__reperes {
+    margin: 28px 0 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 16px;
   }
-  .acc__tint { height: 172px; }
-  .acc__body {
-    padding: var(--pad-card);
-    display: flex; flex-direction: column; align-items: flex-start; gap: 14px; flex: 1;
-  }
-  .acc__titre { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
-  .acc__desc { color: var(--muted); font-size: 0.97rem; line-height: 1.55; }
-  .acc__body .link-arrow { margin-top: auto; }
+  .qui__reperes h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 620; letter-spacing: -0.01em; }
+  .qui__reperes p { margin-top: 4px; padding-left: 28px; color: var(--muted); font-size: 0.97rem; line-height: 1.55; text-wrap: pretty; }
+  .qui__faits { margin-top: 24px; font-size: 0.88rem; font-weight: 600; letter-spacing: 0.02em; color: var(--muted); }
+  .qui .actions { margin-top: 22px; gap: 14px 28px; }
 
-  /* ===== Nutrition ===== */
+  /* ===== La première séance ===== */
+  .premiere-home__frise { margin-top: var(--headline-gap); max-width: 960px; margin-inline: auto; }
+  .premiere-home .actions { margin-top: 40px; }
+
+  /* ===== Lieux : carte dessinée + cartes compactes ===== */
+  .lieux-home__grille {
+    margin-top: var(--headline-gap);
+    display: grid; grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(28px, 4vw, 56px); align-items: start;
+  }
+  /* La carte reste en vue pendant qu'on parcourt les trois cabinets (conteneur
+     de la page : la racine du composant ne reçoit pas le scope Astro d'ici) */
+  .lieux-home__carte { position: sticky; top: 120px; }
+
+  /* ===== Nutrition — la rencontre ===== */
   .nutri__grid {
     display: grid; grid-template-columns: 1.1fr 1fr;
     gap: clamp(40px, 6vw, 80px);
     align-items: center;
   }
-  .nutri__visual {
-    position: relative; aspect-ratio: 1;
-    max-width: 440px; justify-self: center; width: 100%;
+  .nutri__visual { max-width: 440px; justify-self: center; width: 100%; }
+  .rencontre {
+    position: relative; aspect-ratio: 1; width: 100%;
+    animation: rencontre-respire 7s cubic-bezier(0.45, 0, 0.4, 1) infinite;
   }
-  .nutri__circle {
-    position: absolute; border-radius: 50%;
-    display: grid; place-items: center; text-align: center;
-    font-size: 0.88rem; font-weight: 650; color: var(--ink);
+  /* Trois ellipses (comme le logo) à 120°, décalées le long de leur axe pour
+     se recouvrir au centre ; verre dépoli, bord blanc */
+  .rencontre__petale {
+    position: absolute; left: 50%; top: 50%;
+    width: 64%; height: 38%; border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(var(--a)) translateX(17%);
     -webkit-backdrop-filter: var(--glass-blur);
     backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
   }
-  .nutri__circle--1 { width: 42%; aspect-ratio: 1; top: 2%; left: 6%; background: rgba(223, 210, 244, 0.5); }
-  .nutri__circle--2 { width: 46%; aspect-ratio: 1; top: 8%; right: 2%; background: rgba(255, 217, 196, 0.55); }
-  .nutri__circle--3 { width: 40%; aspect-ratio: 1; bottom: 4%; left: 12%; background: rgba(246, 200, 219, 0.5); }
-  .nutri__circle--core {
-    width: 46%; aspect-ratio: 1; bottom: 10%; right: 8%;
-    background: rgba(201, 233, 222, 0.75);
-    font-family: var(--font-display); font-weight: 640; font-size: 1rem;
+  .rencontre__petale--sommeil { background: rgba(223, 210, 244, 0.5); }
+  .rencontre__petale--alim { background: rgba(255, 217, 196, 0.55); }
+  .rencontre__petale--mouv { background: rgba(246, 200, 219, 0.5); }
+  /* Le libellé vit sur la moitié extérieure du pétale, remis à l'horizontale */
+  .rencontre__petale span {
+    position: absolute; left: 80%; top: 50%;
+    transform: translate(-50%, -50%) rotate(calc(-1 * var(--a)));
+    font-size: 0.88rem; font-weight: 650; color: var(--ink); white-space: nowrap;
+  }
+  .rencontre__coeur {
+    position: absolute; left: 50%; top: 50%;
+    width: 36%; aspect-ratio: 1; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(201, 233, 222, 0.9);
+    border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-card);
+    display: grid; place-items: center; text-align: center;
+    font-family: var(--font-display); font-weight: 640; font-size: 1rem; line-height: 1.2;
+    color: var(--ink);
   }
-
-  /* ===== Approche ===== */
-  .appr__grid {
-    margin-top: var(--headline-gap);
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: clamp(24px, 3.4vw, 48px);
+  @keyframes rencontre-respire {
+    0%, 100% { transform: scale(0.98); }
+    43% { transform: scale(1.02); }
   }
-  .appr__item h3 {
-    font-family: var(--font-display);
-    font-size: 1.3rem; font-weight: 620; letter-spacing: -0.01em;
-    display: flex; align-items: center; gap: 12px;
+  @media (prefers-reduced-motion: reduce) {
+    .rencontre { animation: none; }
   }
-  .appr__item h3::before {
-    content: ''; width: 12px; height: 12px; border-radius: 50%; flex: none;
-    background: linear-gradient(135deg, var(--rose), var(--lilac));
-  }
-  .appr__item p { margin-top: 12px; color: var(--muted); font-size: 0.97rem; line-height: 1.6; }
-  .appr__grid + .actions { margin-top: 48px; }
 
   /* ===== Responsive ===== */
   @media (max-width: 960px) {
     .amene__grid { grid-template-columns: repeat(2, 1fr); }
-    .acc__grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+    .qui__grid { grid-template-columns: 1fr; }
+    .qui__portrait { max-width: 320px; }
     .nutri__grid { grid-template-columns: 1fr; }
-    .appr__grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+    .nutri__visual { max-width: 360px; }
+    .lieux-home__grille { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
     .amene__grid { grid-template-columns: 1fr; }
     .hero { min-height: auto; }
+    .rencontre__petale span { font-size: 0.8rem; }
   }
 </style>

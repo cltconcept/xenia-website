@@ -1,8 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import Wave from '../components/Wave.astro';
+import Blob from '../components/Blob.astro';
 import Closing from '../components/Closing.astro';
+import Logo from '../components/Logo.astro';
+import Etapes from '../components/Etapes.astro';
 ---
 <Base
   title="Mon approche — Xénia Van Outryve, psychologue"
@@ -17,7 +19,7 @@ import Closing from '../components/Closing.astro';
       Une approche <em>intégrative</em>,<br />qui vous considère en entier
     </Fragment>
     <Fragment slot="copy">
-      Vous n'êtes pas « un symptôme à corriger ». Vous êtes une personne, avec
+      Vous n'êtes pas «&nbsp;un symptôme à corriger&nbsp;». Vous êtes une personne, avec
       son histoire, ses forces et ses fragilités — et c'est avec tout cela que
       nous travaillons.
     </Fragment>
@@ -26,7 +28,8 @@ import Closing from '../components/Closing.astro';
   <section class="section piliers">
     <div class="container">
       <div class="piliers__grid" data-reveal data-reveal-stagger>
-        <article class="card piliers__card">
+        <article class="card card--spot card--rose piliers__card">
+          <span class="icon-badge" aria-hidden="true"><Logo size={24} /></span>
           <h2>Holistique, concrètement</h2>
           <p>
             Une approche <strong>intégrative et holistique</strong>, qui considère la
@@ -35,7 +38,8 @@ import Closing from '../components/Closing.astro';
             situation — pas l'inverse.
           </p>
         </article>
-        <article class="card piliers__card">
+        <article class="card card--spot card--lilac piliers__card">
+          <span class="icon-badge" aria-hidden="true"><Logo size={24} /></span>
           <h2>Le corps fait partie du travail</h2>
           <p>
             La santé mentale est <strong>étroitement liée à la santé physique</strong>.
@@ -44,7 +48,8 @@ import Closing from '../components/Closing.astro';
             à petits pas réalistes.
           </p>
         </article>
-        <article class="card piliers__card">
+        <article class="card card--spot card--aqua piliers__card">
+          <span class="icon-badge icon-badge--sage" aria-hidden="true"><Logo size={24} /></span>
           <h2>Sans jugement, à votre rythme</h2>
           <p>
             Un espace d'écoute <strong>bienveillant, sécurisant et sans jugement</strong>,
@@ -57,49 +62,24 @@ import Closing from '../components/Closing.astro';
     </div>
   </section>
 
-  <div class="soft-wrap">
-    <Wave fill="var(--ivory-soft)" />
-    <section class="section section--soft premiere">
-      <div class="container premiere__grid">
-        <div data-reveal>
-          <span class="overline">La première séance</span>
-          <h2 class="headline headline--md">
-            Et si je ne sais pas<br /><em>par où commencer</em> ?
-          </h2>
-          <p class="copy">
-            C'est très fréquent — et ce n'est pas un problème. La première
-            rencontre sert justement à ça : poser ce qui vous amène, avec vos
-            mots, sans ordre imposé. Nous définissons ensemble la suite, à votre
-            rythme.
-          </p>
-        </div>
-        <ul class="premiere__steps" data-reveal data-reveal-stagger>
-          <li>
-            <span class="premiere__num" aria-hidden="true"></span>
-            <div>
-              <h3>Vous arrivez comme vous êtes</h3>
-              <p>Pas besoin de préparer quoi que ce soit, ni d'avoir « les bons mots ».</p>
-            </div>
-          </li>
-          <li>
-            <span class="premiere__num" aria-hidden="true"></span>
-            <div>
-              <h3>On fait connaissance</h3>
-              <p>Ce qui vous amène, votre contexte, ce que vous attendez — et vos questions.</p>
-            </div>
-          </li>
-          <li>
-            <span class="premiere__num" aria-hidden="true"></span>
-            <div>
-              <h3>On décide ensemble</h3>
-              <p>La fréquence, les priorités, la manière de travailler : rien n'est figé d'avance.</p>
-            </div>
-          </li>
-        </ul>
+  <section class="section section--blob premiere">
+    <Blob variante={2} teinte="peach-rose" largeur="46vw" position="top: -6%; left: -12vw;" opacite={0.6} />
+    <div class="container premiere__grid">
+      <div class="card card--glass premiere__intro" data-reveal>
+        <span class="overline">La première séance</span>
+        <h2 class="headline headline--md">
+          Et si je ne sais pas<br /><em>par où commencer</em> ?
+        </h2>
+        <p class="copy">
+          C'est très fréquent — et ce n'est pas un problème. La première
+          rencontre sert justement à ça : poser ce qui vous amène, avec vos
+          mots, sans ordre imposé. Nous définissons ensemble la suite, à votre
+          rythme.
+        </p>
       </div>
-    </section>
-    <Wave fill="var(--ivory)" flip />
-  </div>
+      <div data-reveal><Etapes vertical /></div>
+    </div>
+  </section>
 
   <section class="section pourqui">
     <div class="container">
@@ -111,8 +91,19 @@ import Closing from '../components/Closing.astro';
         Chaque âge a sa porte d'entrée : retrouvez le détail dans les trois
         accompagnements, ou contactez-moi si vous hésitez sur la formule.
       </p>
-      <div class="actions actions--center">
-        <a class="link-arrow" href="/accompagnements/adolescents-adultes/">Voir les accompagnements</a>
+      <div class="pourqui__grid" data-reveal data-reveal-stagger>
+        <a class="card card--spot card--rose pourqui__card" href="/accompagnements/adolescents-adultes/">
+          <span class="pourqui__titre">Adolescents &amp; Adultes</span>
+          <span class="link-arrow">Découvrir</span>
+        </a>
+        <a class="card card--spot card--lilac pourqui__card" href="/accompagnements/perinatalite-parentalite/">
+          <span class="pourqui__titre">Périnatalité &amp; Parentalité</span>
+          <span class="link-arrow">Découvrir</span>
+        </a>
+        <a class="card card--spot card--aqua pourqui__card" href="/accompagnements/enfants-famille/">
+          <span class="pourqui__titre">Enfants &amp; Famille</span>
+          <span class="link-arrow">Découvrir</span>
+        </a>
       </div>
     </div>
   </section>
@@ -127,6 +118,7 @@ import Closing from '../components/Closing.astro';
   }
   .piliers__card { padding: var(--pad-card); }
   .piliers__card h2 {
+    margin-top: 18px;
     font-family: var(--font-display);
     font-size: 1.35rem; font-weight: 620; letter-spacing: -0.01em;
   }
@@ -135,27 +127,31 @@ import Closing from '../components/Closing.astro';
 
   .premiere__grid {
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: clamp(40px, 6vw, 80px);
+    gap: clamp(32px, 5vw, 64px);
     align-items: start;
   }
-  .premiere__steps {
-    margin: 0; padding: 0; list-style: none;
-    display: flex; flex-direction: column; gap: 26px;
-    counter-reset: step;
+  .premiere__intro { padding: var(--pad-card); }
+
+  .pourqui__grid {
+    margin-top: var(--headline-gap);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap-grid);
   }
-  .premiere__steps li { display: flex; gap: 18px; counter-increment: step; }
-  .premiere__num {
-    width: 46px; height: 46px; border-radius: 50%; flex: none;
-    display: grid; place-items: center;
-    background: linear-gradient(135deg, rgba(246,200,219,0.55), rgba(223,210,244,0.55));
-    font-family: var(--font-display); font-weight: 640; color: var(--framboise);
+  .pourqui__card {
+    padding: clamp(22px, 2.4vw, 30px);
+    text-decoration: none;
+    display: flex; flex-direction: column; gap: 14px; align-items: flex-start;
+    border-radius: var(--radius-media);
   }
-  .premiere__num::after { content: counter(step); }
-  .premiere__steps h3 { font-size: 1.05rem; font-weight: 700; }
-  .premiere__steps p { margin-top: 4px; color: var(--muted); font-size: 0.94rem; line-height: 1.55; }
+  .pourqui__card:hover .link-arrow::after { transform: translateX(4px); }
+  .pourqui__titre {
+    font-family: var(--font-display);
+    font-size: 1.2rem; font-weight: 620; letter-spacing: -0.01em;
+  }
 
   @media (max-width: 960px) {
     .piliers__grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
     .premiere__grid { grid-template-columns: 1fr; }
+    .pourqui__grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
   }
 </style>

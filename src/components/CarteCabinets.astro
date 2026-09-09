@@ -1,0 +1,75 @@
+---
+/* La carte dessinée des cabinets : contour simplifié du Brabant wallon, trois
+   pastilles et la courbe qui les relie, sur un lavis pastel. Décorative
+   (aria-hidden) : les cartes de lieux portent l'information. Au scroll
+   (desktop) : le contour se trace, la courbe se dessine, les pastilles
+   s'allument une à une. Reduced-motion et sans JS : tout dessiné. */
+import { CONTOUR, LIAISON, POINTS } from '../lib/carte';
+---
+<div class="carte" data-carte aria-hidden="true">
+  <svg class="carte__svg" viewBox="0 0 400 240">
+    <path class="carte__contour" d={CONTOUR} pathLength="1" />
+    <mask id="carte-liaison-masque">
+      <path class="carte__liaison-masque" d={LIAISON} pathLength="1" />
+    </mask>
+    <path class="carte__liaison" d={LIAISON} mask="url(#carte-liaison-masque)" />
+    {POINTS.map((p) => (
+      <g class="carte__point">
+        <circle class="carte__halo" cx={p.x} cy={p.y} r="14" />
+        <circle class="carte__pastille" cx={p.x} cy={p.y} r="6" />
+        <text class="carte__nom" x={p.x + p.dx} y={p.y + p.dy} text-anchor={p.ancre}>{p.nom}</text>
+      </g>
+    ))}
+    <text class="carte__titre" x="392" y="230" text-anchor="end">Brabant wallon</text>
+  </svg>
+</div>
+
+<script>
+  import { REDUCED, loadGsap, onFirstIdle } from '../lib/motion';
+  if (!REDUCED) {
+    onFirstIdle(() => {
+      loadGsap().then(({ gsap, ScrollTrigger }) => {
+        const carte = document.querySelector<HTMLElement>('[data-carte]');
+        if (!carte) return;
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: carte, start: 'top 80%', end: 'top 20%', scrub: 0.6 },
+        });
+        tl.fromTo(carte.querySelector('.carte__contour'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, ease: 'none' }, 0)
+          .fromTo(carte.querySelector('.carte__liaison-masque'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, ease: 'none' }, 0.35);
+        carte.querySelectorAll<SVGGElement>('.carte__point').forEach((g, i) => {
+          const t = 0.45 + i * 0.2;
+          tl.fromTo(g.querySelector('.carte__pastille'), { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.1, ease: 'back.out(2)' }, t)
+            .fromTo(g.querySelector('.carte__halo'), { scale: 0.4, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 0.22, duration: 0.15, ease: 'power2.out' }, t)
+            .fromTo(g.querySelector('.carte__nom'), { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.1 }, t + 0.05);
+        });
+        ScrollTrigger.sort();
+        ScrollTrigger.refresh();
+      });
+    });
+  }
+</script>
+
+<style>
+  .carte { position: relative; isolation: isolate; }
+  /* Le lavis derrière la carte */
+  .carte::before {
+    content: ''; position: absolute; inset: 6% -4%; z-index: -1;
+    border-radius: var(--radius-organique);
+    background: linear-gradient(135deg, var(--peach), var(--lilac));
+    opacity: 0.6;
+  }
+  .carte__svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .carte__contour {
+    fill: var(--ivory); fill-opacity: 0.55;
+    stroke: var(--ink); stroke-opacity: 0.8; stroke-width: 1.6; stroke-linejoin: round;
+    stroke-dasharray: 1 1; stroke-dashoffset: 0;
+  }
+  /* Le masque se trace (dasharray sur pathLength 1) et révèle la liaison,
+     qui garde son vrai pointillé */
+  .carte__liaison-masque { fill: none; stroke: #fff; stroke-width: 4; stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+  .carte__liaison { fill: none; stroke: var(--framboise); stroke-opacity: 0.6; stroke-width: 1.2; stroke-dasharray: 3 3; }
+  .carte__pastille { fill: var(--framboise); }
+  .carte__halo { fill: var(--framboise); opacity: 0.22; }
+  .carte__nom { font-family: var(--font-sans); font-size: 11px; font-weight: 600; fill: var(--ink); }
+  .carte__titre { font-family: var(--font-display); font-style: italic; font-size: 12px; fill: var(--muted); }
+</style>

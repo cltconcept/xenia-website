@@ -1,0 +1,55 @@
+---
+/* Bandeau des thèmes : capsules teintées qui défilent lentement sous le hero.
+   Tout en CSS : piste = deux copies de la liste, translateX(-50 %) en boucle,
+   pause au survol et au focus (on ne perd pas un lien en tabulant), fondu aux
+   bords. Reduced-motion : liste statique en flex-wrap. La copie porte
+   aria-hidden et ses liens sortent du tab order. */
+import { THEMES } from '../data/themes';
+---
+<nav class="bandeau" aria-label="Thèmes">
+  <div class="bandeau__piste">
+    {[0, 1].map((copie) => (
+      <ul class="bandeau__liste" aria-hidden={copie === 1 ? 'true' : undefined}>
+        {THEMES.map((t) => (
+          <li>
+            <a class:list={['chip', `chip--${t.teinte}`]} href={t.href} tabindex={copie === 1 ? -1 : undefined}>{t.label}</a>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</nav>
+
+<style>
+  .bandeau {
+    position: relative; padding-block: 18px;
+    overflow: clip; /* clip, pas hidden : le focus clavier ne peut pas faire défiler le conteneur */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .bandeau__piste {
+    display: flex; width: max-content;
+    animation: bandeau-defile 60s linear infinite;
+    will-change: transform;
+  }
+  .bandeau:hover .bandeau__piste { animation-play-state: paused; }
+  /* Au clavier : la piste se replie en liste statique (comme en reduced-motion),
+     toutes les capsules restent visibles quelle que soit la largeur */
+  .bandeau:focus-within { -webkit-mask-image: none; mask-image: none; }
+  .bandeau:focus-within .bandeau__piste { animation: none; width: auto; justify-content: center; will-change: auto; }
+  .bandeau:focus-within .bandeau__liste { flex-wrap: wrap; justify-content: center; padding-inline: var(--gutter); }
+  .bandeau:focus-within .bandeau__liste[aria-hidden] { display: none; }
+  /* padding 6 px de chaque côté + gap 12 px : la couture entre les deux copies
+     mesure exactement un gap, la boucle est invisible */
+  .bandeau__liste { display: flex; gap: 12px; margin: 0; padding: 0 6px; list-style: none; }
+  @keyframes bandeau-defile {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bandeau { -webkit-mask-image: none; mask-image: none; }
+    .bandeau__piste { animation: none; width: auto; justify-content: center; will-change: auto; }
+    .bandeau__liste { flex-wrap: wrap; justify-content: center; padding-inline: var(--gutter); }
+    .bandeau__liste[aria-hidden] { display: none; }
+  }
+</style>
