@@ -2,239 +2,122 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Dossier de site — Xénia Van Outryve</title>
+<title>Votre site, expliqué simplement — Xénia Van Outryve</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ivory: #FDFBF8; --ivory-soft: #F7F2EC;
-    --ink: #43324B; --muted: #7A6B82;
-    --framboise: #C13D63; --framboise-deep: #A83355;
-    --sage: #5E8E75; --sage-deep: #47705C;
+    --ivory: #FDFBF8; --ivory-soft: #F7F2EC; --ink: #43324B; --muted: #7A6B82;
+    --framboise: #C13D63; --framboise-deep: #A83355; --sage: #5E8E75; --sage-deep: #47705C;
     --peach: #FFD9C4; --rose: #F6C8DB; --lilac: #DFD2F4; --aqua: #C9E9DE;
     --sep: rgba(67, 50, 75, 0.1);
-    --display: 'Fraunces', Georgia, serif;
-    --sans: 'Hanken Grotesk', system-ui, sans-serif;
+    --display: 'Fraunces', Georgia, serif; --sans: 'Hanken Grotesk', system-ui, sans-serif;
   }
   * { margin: 0; box-sizing: border-box; }
   @page { size: A4; margin: 0; }
-  body {
-    font-family: var(--sans); color: var(--ink); background: #fff;
-    -webkit-print-color-adjust: exact; print-color-adjust: exact;
-  }
-  .page {
-    position: relative; width: 210mm; height: 297mm;
-    page-break-after: always; overflow: hidden;
-    padding: 16mm 17mm 13mm;
-    display: flex; flex-direction: column;
-    background: var(--ivory);
-  }
-  /* grain doux, comme le voile du site */
-  .page::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.045;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
-  }
-  .foot {
-    margin-top: auto; padding-top: 6mm;
-    display: flex; justify-content: space-between; align-items: baseline;
-    font-size: 8.2pt; color: var(--muted); letter-spacing: 0.04em;
-  }
-  .kicker {
-    font-size: 8.6pt; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--framboise); margin-bottom: 5mm;
-  }
-  h2.ptitle {
-    font-family: var(--display); font-weight: 560; font-size: 25pt; letter-spacing: -0.015em;
-    line-height: 1.06; margin-bottom: 2.5mm;
-  }
-  h2.ptitle em { font-style: italic; color: var(--framboise); font-weight: 480; }
-  .plede { color: var(--muted); font-size: 10pt; line-height: 1.5; max-width: 125mm; margin-bottom: 7mm; }
+  body { font-family: var(--sans); color: var(--ink); background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { position: relative; width: 210mm; height: 297mm; page-break-after: always; overflow: hidden; padding: 15mm 17mm 12mm; display: flex; flex-direction: column; background: var(--ivory); }
+  /* grain retiré : rastérisé en pleine page par Chromium à l'impression (457 Ko × 8) */
+  .foot { margin-top: auto; padding-top: 5mm; display: flex; justify-content: space-between; align-items: baseline; font-size: 8pt; color: var(--muted); letter-spacing: 0.04em; }
+  .kicker { font-size: 8.4pt; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--framboise); margin-bottom: 4mm; }
+  h2.ptitle { font-family: var(--display); font-weight: 560; font-size: 24pt; letter-spacing: -0.015em; line-height: 1.06; margin-bottom: 2.5mm; }
+  h2.ptitle em, h1 em, h3 em { font-style: italic; color: var(--framboise); font-weight: 480; }
+  .plede { color: var(--muted); font-size: 10pt; line-height: 1.5; max-width: 150mm; margin-bottom: 5.5mm; }
+  h3 { font-family: var(--display); font-weight: 600; font-size: 12pt; letter-spacing: -0.01em; margin: 4.5mm 0 2mm; }
+  p, li { font-size: 9.2pt; line-height: 1.5; }
+  .muted { color: var(--muted); }
+  b { font-weight: 700; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; }
+  .card { background: #fff; border: 0.3mm solid var(--sep); border-radius: 5mm; padding: 4.2mm 4.8mm; }
+  .card--rose { background: #FCF0F5; }
+  .card--lilac { background: #F5F1FC; }
+  .card--aqua { background: #EEF8F4; }
+  .card--peach { background: #FFF2EA; }
+  .card h4 { font-family: var(--display); font-weight: 600; font-size: 10.8pt; margin-bottom: 1.4mm; }
+  .card p { font-size: 8.7pt; color: var(--muted); }
+  .card p b { color: var(--ink); }
+  ul.list { padding-left: 4.5mm; } ul.list li { margin-bottom: 1.5mm; }
+  .chip { display: inline-block; padding: 0.6mm 2.4mm; border-radius: 99px; font-size: 7.2pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; vertical-align: middle; }
+  .chip--ok { background: var(--aqua); color: var(--sage-deep); }
+  .chip--warn { background: var(--peach); color: #8C5A2B; }
+  .chip--client { background: var(--rose); color: var(--framboise-deep); }
+  code { font-family: ui-monospace, Consolas, monospace; font-size: 0.92em; background: var(--ivory-soft); border-radius: 1mm; padding: 0 1mm; }
 
-  /* ============ COUVERTURE ============ */
-  .cover {
-    background:
-      radial-gradient(circle at 10% 12%, rgba(255,197,162,0.85), transparent 42%),
-      radial-gradient(circle at 92% 8%, rgba(203,181,238,0.8), transparent 44%),
-      radial-gradient(circle at 85% 80%, rgba(174,224,206,0.7), transparent 40%),
-      radial-gradient(circle at 30% 70%, rgba(243,177,206,0.55), transparent 46%),
-      var(--ivory);
-  }
-  .cover__mark { display: flex; align-items: center; gap: 6mm; margin-top: 8mm; }
+  /* Couverture */
+  .cover { background: linear-gradient(150deg, #FFE3D2 0%, #FBE2EA 30%, #EBE3F7 62%, #DFF1EA 100%); }
+  .cover__mark { display: flex; align-items: center; gap: 6mm; margin-top: 6mm; }
   .cover__mark svg { width: 22mm; height: 22mm; }
   .cover__brand { font-size: 9pt; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--framboise); }
-  .cover h1 {
-    margin-top: 14mm;
-    font-family: var(--display); font-weight: 560; font-size: 41pt;
-    line-height: 1.04; letter-spacing: -0.018em;
-  }
-  .cover h1 em { font-style: italic; font-weight: 460; color: var(--framboise); }
-  .cover__sub { margin-top: 6mm; font-size: 11.5pt; color: var(--muted); max-width: 120mm; line-height: 1.55; }
-  /* Sommaire « respiration » : rail de halos concentriques */
-  .toc { margin-top: 13mm; display: flex; flex-direction: column; gap: 4.6mm; }
-  .toc__item { display: flex; align-items: center; gap: 5mm; }
-  .toc__halo {
-    width: 8.4mm; height: 8.4mm; border-radius: 50%; flex: none;
-    display: grid; place-items: center;
-    background: radial-gradient(circle, var(--h1c), var(--h2c));
-  }
-  .toc__halo::after {
-    content: ''; width: 12.6mm; height: 12.6mm; border-radius: 50%;
-    border: 0.5mm solid var(--h1c); opacity: 0.5;
-    position: absolute;
-  }
-  .toc__item { position: relative; }
-  .toc__num { font-family: var(--display); font-style: italic; font-size: 10pt; color: var(--muted); width: 8mm; }
-  .toc__label { font-family: var(--display); font-weight: 560; font-size: 13.5pt; letter-spacing: -0.01em; }
+  .cover h1 { margin-top: 12mm; font-family: var(--display); font-weight: 560; font-size: 38pt; line-height: 1.04; letter-spacing: -0.018em; }
+  .cover__sub { margin-top: 5mm; font-size: 11pt; color: var(--muted); max-width: 130mm; line-height: 1.55; }
+  .toc { margin-top: 11mm; display: flex; flex-direction: column; gap: 3.4mm; }
+  .toc__item { display: flex; align-items: center; gap: 4mm; }
+  .toc__dot { width: 7mm; height: 7mm; border-radius: 50%; flex: none; background: radial-gradient(circle, var(--c1), var(--c2)); }
+  .toc__num { font-family: var(--display); font-style: italic; font-size: 10pt; color: var(--muted); width: 7mm; }
+  .toc__label { font-family: var(--display); font-weight: 560; font-size: 12.5pt; }
   .toc__dots { flex: 1; border-bottom: 0.4mm dotted rgba(67,50,75,0.28); margin: 0 3mm; }
   .toc__pg { font-size: 9.5pt; color: var(--muted); }
 
-  /* ============ CHARTE ============ */
-  .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-bottom: 7mm; }
-  .swatch { border-radius: 5mm; overflow: hidden; border: 0.3mm solid var(--sep); background: #fff; }
-  .swatch__chip { height: 15mm; }
-  .swatch__body { padding: 2.6mm 3.2mm; }
-  .swatch__hex { font-size: 8.4pt; font-weight: 700; letter-spacing: 0.06em; }
-  .swatch__role { font-size: 7.8pt; color: var(--muted); line-height: 1.35; margin-top: 0.8mm; }
-  .typocards { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-bottom: 7mm; }
+  /* Demande → réponse */
+  table.req { width: 100%; border-collapse: collapse; font-size: 8.9pt; margin-bottom: 4mm; }
+  table.req th { text-align: left; font-size: 7.2pt; letter-spacing: 0.12em; text-transform: uppercase; color: var(--framboise); padding: 1.6mm 2mm; border-bottom: 0.4mm solid var(--sep); }
+  table.req td { padding: 2mm 2mm; border-bottom: 0.3mm solid var(--sep); vertical-align: top; line-height: 1.45; }
+  table.req td:first-child { font-family: var(--display); font-style: italic; font-size: 10pt; width: 52mm; }
+  .refs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; margin-top: 3mm; }
+  .ref { background: #fff; border: 0.3mm solid var(--sep); border-radius: 4mm; overflow: hidden; }
+  .ref img { display: block; width: 100%; height: 44mm; object-fit: cover; object-position: top; }
+  .ref figcaption { padding: 2.4mm 3mm; font-size: 7.9pt; color: var(--muted); line-height: 1.4; }
+  .ref figcaption b { color: var(--ink); }
+
+  /* Couleurs */
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3.2mm; margin-bottom: 5mm; }
+  .swatch { border-radius: 4mm; overflow: hidden; border: 0.3mm solid var(--sep); background: #fff; }
+  .swatch__chip { height: 14mm; }
+  .swatch__body { padding: 2.2mm 2.6mm; }
+  .swatch__name { font-size: 8.4pt; font-weight: 700; }
+  .swatch__role { font-size: 7.4pt; color: var(--muted); line-height: 1.35; margin-top: 0.6mm; }
+  .aurore { height: 12mm; border-radius: 99mm; background: linear-gradient(115deg, var(--peach), var(--rose) 34%, var(--lilac) 68%, var(--aqua)); margin: 2mm 0 4mm; }
+
+  /* Typo & logo */
   .typocard { border-radius: 5mm; background: #fff; border: 0.3mm solid var(--sep); padding: 5mm; }
-  .typocard__specimen { font-size: 26pt; line-height: 1.1; margin-bottom: 2.5mm; }
+  .typocard__specimen { font-size: 24pt; line-height: 1.12; margin-bottom: 2.5mm; }
   .typocard--display .typocard__specimen { font-family: var(--display); font-weight: 560; }
   .typocard--display .typocard__specimen em { font-style: italic; color: var(--framboise); font-weight: 460; }
-  .typocard--sans .typocard__specimen { font-family: var(--sans); font-weight: 650; }
-  .typocard h3 { font-size: 10.5pt; font-weight: 700; }
-  .typocard p { font-size: 8.6pt; color: var(--muted); line-height: 1.45; margin-top: 1.4mm; }
-  table.scale { width: 100%; border-collapse: collapse; font-size: 8.8pt; }
-  table.scale th {
-    text-align: left; font-size: 7.6pt; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--framboise); padding: 1.6mm 2mm; border-bottom: 0.4mm solid var(--sep);
-  }
-  table.scale td { padding: 1.7mm 2mm; border-bottom: 0.3mm solid var(--sep); vertical-align: baseline; }
-  table.scale td.ex { font-family: var(--display); }
+  .typocard--sans .typocard__specimen { font-family: var(--sans); font-weight: 600; font-size: 20pt; }
+  .typocard h4 { font-size: 10pt; font-weight: 700; }
+  .typocard p { font-size: 8.5pt; color: var(--muted); line-height: 1.45; margin-top: 1.2mm; }
+  .logos { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 4mm; margin-top: 3mm; }
+  .logos figure { border-radius: 5mm; display: grid; place-items: center; padding: 5mm; min-height: 34mm; border: 0.3mm solid var(--sep); }
+  .logos svg { width: 22mm; height: 22mm; }
+  .logos figcaption { font-size: 7.6pt; margin-top: 2mm; text-align: center; color: var(--muted); }
 
-  /* ============ SPÉCIMENS ============ */
-  .spec-zone {
-    border-radius: 6mm; padding: 6mm;
-    background:
-      radial-gradient(circle at 15% 20%, rgba(255,197,162,0.55), transparent 50%),
-      radial-gradient(circle at 85% 30%, rgba(203,181,238,0.5), transparent 52%),
-      radial-gradient(circle at 60% 90%, rgba(174,224,206,0.45), transparent 48%),
-      var(--ivory-soft);
-    display: flex; flex-direction: column; gap: 5mm; margin-bottom: 6mm;
-  }
-  .spec-label { font-size: 7.6pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 1.6mm; }
-  /* capsule nav */
-  .spec-nav {
-    align-self: center;
-    display: flex; align-items: center; gap: 5mm;
-    padding: 2.4mm 2.4mm 2.4mm 5mm; border-radius: 99mm;
-    background: rgba(253, 251, 248, 0.62);
-    border: 0.35mm solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0.3mm 0 rgba(255,255,255,0.9) inset, 0 4mm 10mm rgba(67, 50, 75, 0.12);
-  }
-  .spec-nav__brand { display: flex; align-items: center; gap: 2.2mm; font-family: var(--display); font-weight: 640; font-size: 9.5pt; }
-  .spec-nav__brand svg { width: 6.5mm; height: 6.5mm; }
-  .spec-nav__links { display: flex; gap: 4mm; font-size: 7.8pt; font-weight: 550; color: var(--muted); }
-  .spec-nav__cta {
-    padding: 2mm 4mm; border-radius: 99mm; background: var(--framboise); color: #fff;
-    font-size: 7.8pt; font-weight: 600;
-  }
-  .spec-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
-  /* carte situation */
-  .spec-situation {
-    background: #fff; border-radius: 5.5mm; padding: 5mm;
-    box-shadow: 0 2.5mm 8mm rgba(67, 50, 75, 0.08);
-    display: flex; flex-direction: column; gap: 3.5mm;
-  }
-  .spec-situation__txt { font-family: var(--display); font-style: italic; font-size: 11.5pt; line-height: 1.35; }
-  .spec-situation__tag { font-size: 7.8pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--framboise); }
-  /* carte lieu */
-  .spec-lieu { background: #fff; border-radius: 5.5mm; overflow: hidden; box-shadow: 0 2.5mm 8mm rgba(67, 50, 75, 0.08); }
-  .spec-lieu__tint { height: 4mm; background: linear-gradient(135deg, #F3B1CE, #FFC9A8); }
-  .spec-lieu__body { padding: 4.5mm 5mm; }
-  .spec-lieu__ville { font-family: var(--display); font-weight: 600; font-size: 13pt; }
-  .spec-lieu__nom { font-size: 8.6pt; font-weight: 650; margin-top: 0.8mm; }
-  .spec-lieu__adr { font-size: 8.2pt; color: var(--muted); margin-top: 0.5mm; }
-  .spec-lieu__hor { font-size: 8.2pt; margin-top: 2.4mm; }
-  .spec-lieu__hor span { color: var(--framboise); font-weight: 700; margin-right: 1.6mm; }
-  .spec-lieu__btn {
-    display: inline-block; margin-top: 3.2mm; padding: 2mm 4.2mm; border-radius: 99mm;
-    background: var(--framboise); color: #fff; font-size: 7.8pt; font-weight: 600;
-  }
-  /* halo respirant, en coupe */
-  .spec-halo { display: flex; align-items: center; gap: 5mm; background: #fff; border-radius: 5.5mm; padding: 5mm; box-shadow: 0 2.5mm 8mm rgba(67, 50, 75, 0.08); }
-  .spec-halo__vis { position: relative; width: 26mm; height: 26mm; flex: none; display: grid; place-items: center; }
-  .spec-halo__vis i { position: absolute; border-radius: 50%; display: block; }
-  .spec-halo__vis i:nth-child(1) { width: 26mm; height: 26mm; background: radial-gradient(circle, rgba(243,177,206,0.35), transparent 70%); }
-  .spec-halo__vis i:nth-child(2) { width: 19mm; height: 19mm; background: radial-gradient(circle, rgba(243,177,206,0.55), transparent 72%); }
-  .spec-halo__vis i:nth-child(3) { width: 12mm; height: 12mm; background: radial-gradient(circle, rgba(243,177,206,0.95), rgba(203,181,238,0.6)); }
-  .spec-halo p { font-size: 8.6pt; color: var(--muted); line-height: 1.5; }
-  .spec-halo strong { color: var(--ink); }
-  .principles { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 7mm; }
-  .principle { display: flex; gap: 3mm; align-items: flex-start; }
-  .principle i {
-    width: 3.4mm; height: 3.4mm; border-radius: 50%; flex: none; margin-top: 1mm;
-    background: linear-gradient(135deg, var(--rose), var(--lilac));
-  }
-  .principle h4 { font-family: var(--display); font-size: 10pt; font-weight: 620; }
-  .principle p { font-size: 8.4pt; color: var(--muted); line-height: 1.45; margin-top: 0.8mm; }
+  /* Captures */
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 4.5mm; }
+  .shot { background: #fff; border: 0.3mm solid var(--sep); border-radius: 4.5mm; overflow: hidden; display: flex; flex-direction: column; }
+  .shot img { display: block; width: 100%; object-fit: cover; object-position: top; }
+  .shot figcaption { padding: 2.8mm 3.6mm 3.2mm; font-size: 8.4pt; color: var(--muted); line-height: 1.45; }
+  .shot figcaption b { color: var(--ink); display: block; font-family: var(--display); font-weight: 600; font-size: 10pt; margin-bottom: 0.8mm; }
+  .shots--mobile { grid-template-columns: 1fr 1fr 2.2fr; }
+  .shot--tall img { height: 60mm; object-fit: cover; object-position: top; }
 
-  /* ============ STACK ============ */
-  table.stack { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 7mm; }
-  table.stack th {
-    text-align: left; font-size: 7.6pt; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--framboise); padding: 2mm; border-bottom: 0.4mm solid var(--sep);
-  }
-  table.stack td { padding: 2.2mm 2mm; border-bottom: 0.3mm solid var(--sep); vertical-align: top; }
-  .badge {
-    display: inline-grid; place-items: center;
-    width: 6mm; height: 6mm; border-radius: 50%;
-    background: linear-gradient(135deg, rgba(246,200,219,0.7), rgba(223,210,244,0.7));
-    font-family: var(--display); font-style: italic; font-size: 8.5pt; color: var(--framboise-deep);
-  }
-  .arch { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
-  .arch__card { background: #fff; border: 0.3mm solid var(--sep); border-radius: 5mm; padding: 4.5mm 5mm; }
-  .arch__card h4 { font-family: var(--display); font-size: 10.5pt; font-weight: 620; margin-bottom: 1.6mm; }
-  .arch__card h4 em { color: var(--framboise); font-style: italic; }
-  .arch__card p { font-size: 8.5pt; color: var(--muted); line-height: 1.5; }
-  .arch__card code { font-size: 7.8pt; background: var(--ivory-soft); border-radius: 1mm; padding: 0.2mm 1.2mm; color: var(--ink); }
-
-  /* ============ SCORES ============ */
-  .gauges { display: flex; justify-content: center; gap: 18mm; margin: 4mm 0 8mm; }
-  .gauge { text-align: center; }
-  .gauge__ring {
-    position: relative; width: 42mm; height: 42mm; border-radius: 50%;
-    display: grid; place-items: center; margin-inline: auto;
-  }
-  .gauge__ring::before {
-    content: ''; position: absolute; inset: -2.6mm; border-radius: 50%;
-    border: 0.3mm solid var(--sep);
-  }
-  .gauge__hole {
-    width: 30mm; height: 30mm; border-radius: 50%; background: var(--ivory);
-    display: grid; place-items: center; align-content: center;
-  }
-  .gauge__val { font-family: var(--display); font-weight: 620; font-size: 21pt; line-height: 1; }
-  .gauge__lbl { font-size: 7.6pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-top: 1.4mm; }
-  .subs { display: grid; grid-template-columns: 1fr 1fr; gap: 3.2mm 8mm; margin-bottom: 7mm; }
-  .sub { font-size: 8.4pt; }
-  .sub__head { display: flex; justify-content: space-between; margin-bottom: 1.1mm; }
-  .sub__head b { font-weight: 650; }
-  .sub__head span { color: var(--muted); }
-  .sub__bar { height: 2.2mm; border-radius: 99mm; background: rgba(67, 50, 75, 0.08); overflow: hidden; }
-  .sub__fill { height: 100%; border-radius: 99mm; background: linear-gradient(90deg, var(--rose), var(--framboise)); }
-  .sub__fill--sage { background: linear-gradient(90deg, var(--aqua), var(--sage-deep)); }
-  .gains {
-    border-radius: 5mm; border: 0.4mm solid rgba(193, 61, 99, 0.35);
-    background: linear-gradient(135deg, rgba(246,200,219,0.28), rgba(223,210,244,0.22));
-    padding: 5mm 6mm;
-  }
-  .gains h3 { font-family: var(--display); font-size: 11.5pt; font-weight: 620; margin-bottom: 2.4mm; }
-  .gains h3 em { color: var(--framboise); font-style: italic; }
-  .gains ul { padding-left: 4.5mm; font-size: 8.6pt; line-height: 1.55; color: var(--ink); }
-  .gains li + li { margin-top: 1.2mm; }
-  .gains .done { color: var(--sage-deep); font-weight: 700; }
-  .gains .todo { color: var(--framboise-deep); font-weight: 700; }
+  /* Scores */
+  .gauges { display: flex; gap: 10mm; align-items: center; margin: 2mm 0 5mm; }
+  .gauge { display: flex; flex-direction: column; align-items: center; gap: 2.5mm; }
+  .gauge__ring { width: 36mm; height: 36mm; border-radius: 50%; display: grid; place-items: center; }
+  .gauge__hole { width: 27mm; height: 27mm; border-radius: 50%; background: var(--ivory); display: grid; place-items: center; }
+  .gauge__val { font-family: var(--display); font-weight: 560; font-size: 22pt; letter-spacing: -0.02em; }
+  .gauge__lbl { font-size: 8.2pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-align: center; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3.5mm; margin: 2mm 0 5mm; }
+  .stat { background: #fff; border: 0.3mm solid var(--sep); border-radius: 4mm; padding: 3.5mm 4mm; }
+  .stat b { display: block; font-family: var(--display); font-weight: 560; font-size: 20pt; line-height: 1; }
+  .stat span { display: block; font-size: 7.6pt; color: var(--muted); margin-top: 1.2mm; }
+  table.todo { width: 100%; border-collapse: collapse; font-size: 8.8pt; }
+  table.todo th { text-align: left; font-size: 7.2pt; letter-spacing: 0.12em; text-transform: uppercase; color: var(--framboise); padding: 1.6mm 2mm; border-bottom: 0.4mm solid var(--sep); }
+  table.todo td { padding: 2mm 2mm; border-bottom: 0.3mm solid var(--sep); vertical-align: top; line-height: 1.45; }
+  .big { background: #FBEFEE; border: 0.3mm solid var(--sep); border-radius: 6mm; padding: 5mm 6mm; }
+  .big h3 { margin-top: 0; }
 </style>
 </head>
 <body>
@@ -242,208 +125,265 @@
 <!-- ================ 1 · COUVERTURE ================ -->
 <section class="page cover">
   <div class="cover__mark">
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g>
-      <g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g>
-    </svg>
-    <span class="cover__brand">Dossier de site · L'éclaircie</span>
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g><g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g></svg>
+    <span class="cover__brand">Xénia Van Outryve · psychologue clinicienne</span>
   </div>
-  <h1>Xénia Van Outryve,<br>psychologue — <em>un site qui respire</em></h1>
-  <p class="cover__sub">
-    Charte graphique, composants signature, choix techniques et scores SEO / GEO
-    du nouveau site — épuré, peps, lumineux, fidèle au moodboard du 27/07/2026.
-  </p>
+  <h1>Votre site,<br><em>expliqué simplement</em></h1>
+  <p class="cover__sub">Ce que vous nous aviez demandé, ce que nous en avons fait, et pourquoi : l'ambiance, les couleurs, les écritures, le logo, la façon dont le site se lit, la vérification complète que nous avons faite, et sa visibilité sur Google et les assistants IA.</p>
   <nav class="toc">
-    <div class="toc__item">
-      <span class="toc__halo" style="--h1c:#FFD9C4;--h2c:#F6C8DB"></span>
-      <span class="toc__num">02</span><span class="toc__label">La charte — couleurs &amp; typographies</span>
-      <span class="toc__dots"></span><span class="toc__pg">p. 2</span>
-    </div>
-    <div class="toc__item">
-      <span class="toc__halo" style="--h1c:#F6C8DB;--h2c:#DFD2F4"></span>
-      <span class="toc__num">03</span><span class="toc__label">Les composants signature</span>
-      <span class="toc__dots"></span><span class="toc__pg">p. 3</span>
-    </div>
-    <div class="toc__item">
-      <span class="toc__halo" style="--h1c:#DFD2F4;--h2c:#C9E9DE"></span>
-      <span class="toc__num">04</span><span class="toc__label">La stack technique</span>
-      <span class="toc__dots"></span><span class="toc__pg">p. 4</span>
-    </div>
-    <div class="toc__item">
-      <span class="toc__halo" style="--h1c:#C9E9DE;--h2c:#FFD9C4"></span>
-      <span class="toc__num">05</span><span class="toc__label">Scores SEO &amp; GEO</span>
-      <span class="toc__dots"></span><span class="toc__pg">p. 5</span>
-    </div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#FFD9C4;--c2:#F6C8DB"></span><span class="toc__num">02</span><span class="toc__label">Votre demande, notre réponse</span><span class="toc__dots"></span><span class="toc__pg">p. 2</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#F6C8DB;--c2:#DFD2F4"></span><span class="toc__num">03</span><span class="toc__label">Les couleurs</span><span class="toc__dots"></span><span class="toc__pg">p. 3</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#DFD2F4;--c2:#C9E9DE"></span><span class="toc__num">04</span><span class="toc__label">Les écritures et le logo</span><span class="toc__dots"></span><span class="toc__pg">p. 4</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#C9E9DE;--c2:#FFD9C4"></span><span class="toc__num">05</span><span class="toc__label">L'accueil raconte une histoire</span><span class="toc__dots"></span><span class="toc__pg">p. 5</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#FFD9C4;--c2:#DFD2F4"></span><span class="toc__num">06</span><span class="toc__label">Les pages, sur ordinateur et sur téléphone</span><span class="toc__dots"></span><span class="toc__pg">p. 6</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#F6C8DB;--c2:#C9E9DE"></span><span class="toc__num">07</span><span class="toc__label">Le contrôle qualité</span><span class="toc__dots"></span><span class="toc__pg">p. 7</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#DFD2F4;--c2:#FFD9C4"></span><span class="toc__num">08</span><span class="toc__label">Être trouvée sur Google et par les IA</span><span class="toc__dots"></span><span class="toc__pg">p. 8</span></div>
   </nav>
-  <div class="foot">
-    <span>Noveo Digital — maquette du 11/08/2026</span>
-    <span>xenia-website · Astro 5 · 8 pages</span>
-    <span>01 / 05</span>
-  </div>
+  <div class="foot"><span>Noveo Digital · noveodigital.be</span><span>Dossier de présentation du site</span><span>01 / 08</span></div>
 </section>
 
-<!-- ================ 2 · CHARTE ================ -->
+<!-- ================ 2 · DEMANDE → RÉPONSE ================ -->
 <section class="page">
-  <span class="kicker">La charte · L'éclaircie</span>
-  <h2 class="ptitle">Une aurore pastel, <em>un accent framboise</em></h2>
-  <p class="plede">
-    La cliente a demandé « épuré, peps, pas trop chargé, lumineux » et aime « ce style
-    de dégradé et l'effet de transparence ». La palette répond point par point :
-    ivoire lumineux, aurore en dégradés, accents francs.
-  </p>
-  <div class="swatches">
-    <div class="swatch"><div class="swatch__chip" style="background:#FDFBF8;border-bottom:0.3mm solid var(--sep)"></div><div class="swatch__body"><div class="swatch__hex">#FDFBF8 · Ivoire</div><p class="swatch__role">Le fond — lumineux et chaud, jamais de blanc pur.</p></div></div>
-    <div class="swatch"><div class="swatch__chip" style="background:#43324B"></div><div class="swatch__body"><div class="swatch__hex">#43324B · Aubergine</div><p class="swatch__role">Le texte — profond et humain, jamais de noir pur.</p></div></div>
-    <div class="swatch"><div class="swatch__chip" style="background:#C13D63"></div><div class="swatch__body"><div class="swatch__hex">#C13D63 · Framboise</div><p class="swatch__role">L'accent « peps » : CTA, italiques, repères. Contraste 5,2:1 sur ivoire.</p></div></div>
-    <div class="swatch"><div class="swatch__chip" style="background:#5E8E75"></div><div class="swatch__body"><div class="swatch__hex">#5E8E75 · Sauge</div><p class="swatch__role">Accent secondaire — le volet Nutrition &amp; Santé.</p></div></div>
-    <div class="swatch"><div class="swatch__chip" style="background:linear-gradient(115deg,#FFD9C4,#F6C8DB 34%,#DFD2F4 68%,#C9E9DE)"></div><div class="swatch__body"><div class="swatch__hex">Aurore</div><p class="swatch__role">#FFD9C4 → #F6C8DB → #DFD2F4 → #C9E9DE : la nappe des heros et des clôtures.</p></div></div>
-    <div class="swatch"><div class="swatch__chip" style="background:rgba(253,251,248,0.6);backdrop-filter:blur(2px);border-bottom:0.3mm solid var(--sep)"></div><div class="swatch__body"><div class="swatch__hex">Verre dépoli</div><p class="swatch__role">rgba(253,251,248,0.6) + blur 18 px — « l'effet de transparence » demandé.</p></div></div>
+  <span class="kicker">Votre demande, notre réponse</span>
+  <h2 class="ptitle">Nous sommes partis <em>de vos mots</em></h2>
+  <p class="plede">Dans votre moodboard, vous nous aviez donné quelques mots, trois sites que vous aimiez, carte blanche sur les couleurs et la mission de proposer un logo. Voici, point par point, ce que nous en avons fait.</p>
+  <table class="req">
+    <thead><tr><th>Ce que vous avez écrit</th><th>Ce que ça donne sur le site</th></tr></thead>
+    <tbody>
+      <tr><td>« Épuré, pas trop chargé »</td><td>Une seule action par écran, prendre rendez-vous. Beaucoup d'air entre les blocs. Pas de bannière, pas de pop-up, aucune publicité, aucun cookie.</td></tr>
+      <tr><td>« Lumineux »</td><td>Un fond ivoire chaud plutôt que blanc froid, et de grandes formes pastel qui glissent derrière les textes comme une lumière du matin. Jamais de noir, jamais de gris.</td></tr>
+      <tr><td>« Peps »</td><td>Une seule couleur vive, la framboise, réservée à ce qui compte : les boutons, les mots importants, le lien de rendez-vous. Elle ressort d'autant plus que tout le reste est doux.</td></tr>
+      <tr><td>« Qui donne envie »</td><td>La page s'ouvre sur une phrase que le visiteur reconnaît (« Parfois, tout pèse un peu trop ») et se dénoue en lumière quand il fait défiler. Les situations sont dites avec ses mots, pas ceux du métier.</td></tr>
+      <tr><td>« Pas trop carré, de l'espace pour respirer »</td><td>Rien n'a d'angle : cartes arrondies, boutons en capsule, médaillons en forme de galet, formes organiques. Une lueur « respire » lentement dans l'accueil, au rythme d'une respiration calme.</td></tr>
+      <tr><td>« Du dégradé et de la transparence »</td><td>Les pastels se fondent l'un dans l'autre (pêche, rose, lilas, eau) ; certains blocs sont en verre dépoli, posés sur ces couleurs pour qu'on voie la transparence.</td></tr>
+      <tr><td>Couleur : carte blanche · Logo : une proposition</td><td>Une palette créée pour vous (page 3) et un logo, « la rencontre » (page 4).</td></tr>
+    </tbody>
+  </table>
+  <h3>Vos trois références, et ce que nous en avons gardé</h3>
+  <div class="refs">
+    <figure class="ref"><img src="dossier-img/ref-1.jpg" alt="Référence 1 : site de thérapie en lavande et bleu pâle"><figcaption><b>La lumière et les pastels.</b> Le fond qui semble éclairé de l'intérieur, les tons lavande et bleu très pâles : c'est notre point de départ pour l'ambiance.</figcaption></figure>
+    <figure class="ref"><img src="dossier-img/ref-2.jpg" alt="Référence 2 : studio de yoga aux grandes formes pastel"><figcaption><b>Les grandes formes et les capsules.</b> Les formes douces qui débordent de la page, la photo posée dans une forme, les boutons arrondis, la carte à onglets : repris tels quels.</figcaption></figure>
+    <figure class="ref"><img src="dossier-img/ref-3.jpg" alt="Référence 3 : cabinet en crème et terracotta"><figcaption><b>La chaleur, mais pas ces couleurs.</b> Le crème et le terracotta sont la palette de presque tous les sites de psychologues. Nous avons gardé la chaleur et l'aspect organique, en changeant les couleurs pour que votre site ne ressemble pas aux autres.</figcaption></figure>
   </div>
-  <div class="typocards">
+  <div class="foot"><span>Votre site, expliqué simplement — Xénia Van Outryve</span><span>02 / 08</span></div>
+</section>
+
+<!-- ================ 3 · COULEURS ================ -->
+<section class="page">
+  <span class="kicker">Les couleurs</span>
+  <h2 class="ptitle">Une aurore pastel, <em>un accent framboise</em></h2>
+  <p class="plede">Dix couleurs, pas une de plus. Quatre pastels pour la lumière, deux teintes d'encre pour lire, une couleur vive pour agir, un vert profond pour le volet nutrition, et deux fonds. Chacune a un rôle, et ne sort pas de ce rôle.</p>
+  <div class="aurore"></div>
+  <p class="muted" style="font-size:8.4pt;margin-bottom:5mm">L'aurore : pêche → rose → lilas → eau. Ces quatre couleurs ne portent jamais de texte. Elles sont la lumière derrière tout le reste.</p>
+  <div class="swatches">
+    <div class="swatch"><div class="swatch__chip" style="background:#FDFBF8;border-bottom:0.3mm solid var(--sep)"></div><div class="swatch__body"><div class="swatch__name">Ivoire</div><div class="swatch__role">Le fond de toutes les pages. Chaud, jamais blanc froid.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#FFFFFF;border-bottom:0.3mm solid var(--sep)"></div><div class="swatch__body"><div class="swatch__name">Blanc</div><div class="swatch__role">Les cartes, légèrement teintées selon leur thème.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#43324B"></div><div class="swatch__body"><div class="swatch__name">Aubergine</div><div class="swatch__role">Le texte. Une encre profonde, plus douce que le noir.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#7A6B82"></div><div class="swatch__body"><div class="swatch__name">Gris-mauve</div><div class="swatch__role">Les textes secondaires et les légendes.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#C13D63"></div><div class="swatch__body"><div class="swatch__name">Framboise</div><div class="swatch__role">Le peps : boutons, mots importants, liens.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#47705C"></div><div class="swatch__body"><div class="swatch__name">Sauge</div><div class="swatch__role">Le volet Nutrition &amp; Santé, pour le distinguer.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#FFD9C4"></div><div class="swatch__body"><div class="swatch__name">Pêche</div><div class="swatch__role">Aurore. Fonds, formes, cartes nutrition.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#F6C8DB"></div><div class="swatch__body"><div class="swatch__name">Rose</div><div class="swatch__role">Aurore. Fonds, formes, cartes adolescents &amp; adultes.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#DFD2F4"></div><div class="swatch__body"><div class="swatch__name">Lilas</div><div class="swatch__role">Aurore. Fonds, formes, cartes périnatalité.</div></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#C9E9DE"></div><div class="swatch__body"><div class="swatch__name">Eau</div><div class="swatch__role">Aurore. Fonds, formes, cartes enfants.</div></div></div>
+  </div>
+  <div class="two">
+    <div class="card card--rose">
+      <h4>Pourquoi la framboise, et pas le terracotta ?</h4>
+      <p>Le terracotta est la couleur par défaut du secteur : tous les cabinets l'utilisent. La framboise donne le <b>peps</b> que vous demandiez, évoque la vitalité et la santé, et reste chaleureuse. Utilisée avec parcimonie, elle guide l'œil vers ce qui compte : prendre rendez-vous.</p>
+    </div>
+    <div class="card card--lilac">
+      <h4>Pourquoi l'ivoire, et pas le blanc ?</h4>
+      <p>Un blanc pur sur écran éblouit et fait « page vide ». L'ivoire est <b>lumineux mais chaud</b> : le site paraît accueillant dès la première seconde. L'encre aubergine, plus douce que le noir, va dans le même sens.</p>
+    </div>
+    <div class="card card--aqua">
+      <h4>Une couleur par thème</h4>
+      <p>Rose pour les adolescents et adultes, lilas pour la périnatalité, eau pour les enfants, pêche pour la nutrition : le visiteur s'y retrouve <b>sans lire</b>, de l'accueil jusqu'aux pages.</p>
+    </div>
+    <div class="card card--peach">
+      <h4>Lisible pour tout le monde</h4>
+      <p>Chaque couleur de texte a été mesurée sur son fond : les contrastes respectent la norme d'accessibilité (AA), y compris pour les personnes qui voient moins bien les nuances.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Votre site, expliqué simplement — Xénia Van Outryve</span><span>03 / 08</span></div>
+</section>
+
+<!-- ================ 4 · ÉCRITURES & LOGO ================ -->
+<section class="page">
+  <span class="kicker">Les écritures et le logo</span>
+  <h2 class="ptitle">Deux écritures, <em>une rencontre</em></h2>
+  <p class="plede">Une écriture à empattements, chaleureuse, pour les titres, avec le mot important qui passe en italique framboise ; une écriture simple et très lisible pour tout le reste. Et un logo qui raconte votre métier sans le dire.</p>
+  <div class="two">
     <div class="typocard typocard--display">
-      <div class="typocard__specimen">Aa Gg <em>Qq &amp;</em></div>
-      <h3>Fraunces — display</h3>
-      <p>Serif variable à personnalité (axes SOFT / WONK / optical). Titres en 560,
-      mots pivots en <em>italique 480</em> framboise. L'esperluette signe les titres composés.</p>
+      <div class="typocard__specimen">Vers un <em>mieux-être durable</em></div>
+      <h4>Fraunces — les titres</h4>
+      <p>Une écriture « à pattes », douce et un peu vivante, qui donne le ton de la maison : sérieuse sans être froide. Dans chaque titre, un mot bascule en italique framboise : c'est lui qui porte le sens, et il reçoit un petit trait de pinceau qui se dessine quand la section apparaît.</p>
     </div>
     <div class="typocard typocard--sans">
-      <div class="typocard__specimen">Aa Gg Qq 123</div>
-      <h3>Hanken Grotesk — body</h3>
-      <p>Humaniste, très lisible. Corps en 400–550, boutons en 600, sur-titres
-      en 700 espacé (0,14 em). Jamais en dessous de 0,82 rem.</p>
+      <div class="typocard__specimen">Un espace d'écoute sécurisant et sans jugement.</div>
+      <h4>Hanken Grotesk — les textes</h4>
+      <p>Une écriture simple, ronde, très lisible sur téléphone comme sur ordinateur. Elle sert aux paragraphes, aux boutons, à la navigation. Les deux écritures sont hébergées avec le site : aucun appel à un service extérieur, et donc aucune donnée qui part chez Google au chargement.</p>
     </div>
   </div>
-  <table class="scale">
-    <tr><th>Rôle</th><th>Échelle</th><th>Spécimen</th></tr>
-    <tr><td>Headline hero</td><td>clamp(2,4 rem · 5,4 vw · 4,15 rem) — 560, -0,015 em</td><td class="ex" style="font-size:14pt">Psychologue en Brabant wallon</td></tr>
-    <tr><td>Headline section</td><td>clamp(1,9 rem · 4 vw · 3 rem)</td><td class="ex" style="font-size:12pt">Trois espaces, <em style="color:var(--framboise)">selon l'âge et la vie</em></td></tr>
-    <tr><td>Sur-titre</td><td>0,82 rem · 700 · 0,14 em · capitales</td><td style="font-size:8pt;letter-spacing:0.14em;font-weight:700;color:var(--framboise)">CE QUI VOUS AMÈNE</td></tr>
-    <tr><td>Copy</td><td>clamp(1,05 rem · 1,5 vw · 1,22 rem) · gris-mauve</td><td style="color:var(--muted)">Un espace d'écoute sécurisant et sans jugement.</td></tr>
-  </table>
-  <div class="foot"><span>Dossier de site — Xénia Van Outryve</span><span>02 / 05</span></div>
+  <h3>Le logo : <em>la rencontre</em></h3>
+  <p style="max-width:150mm">Deux pétales translucides, un rose et un vert d'eau, qui se croisent. Là où ils se recouvrent naît une amande plus foncée : c'est la rencontre, celle du thérapeute et de la personne, du parent et de l'enfant, du corps et de l'esprit. Vu de loin, le croisement dessine aussi le X de Xénia, sans jamais l'écrire. Il est léger, se reconnaît en tout petit (icône d'onglet, avatar) et vit très bien à côté de votre nom composé en Fraunces.</p>
+  <div class="logos">
+    <figure style="background:#fff">
+      <svg viewBox="0 0 64 64"><g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g><g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g></svg>
+      <figcaption>Le symbole, sur fond clair</figcaption>
+    </figure>
+    <figure style="background:#43324B">
+      <svg viewBox="0 0 64 64"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.85"/><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.85"/><clipPath id="amande"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)"/></clipPath><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#FDFBF8" opacity="0.9" clip-path="url(#amande)"/></svg>
+      <figcaption style="color:#FDFBF8;opacity:.7">Sur fond sombre</figcaption>
+    </figure>
+    <figure style="background:#fff">
+      <svg viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#FDFBF8" stroke="#EAE7E7"/><g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g><g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g></svg>
+      <figcaption>L'icône d'onglet (favicon)</figcaption>
+    </figure>
+  </div>
+  <div class="two" style="margin-top:5mm">
+    <div class="card"><h4>Il se retrouve partout</h4><p>Le pétale sert de puce devant les titres de liste, les deux pétales flottent dans le ciel de l'accueil, la pastille du pied de page « respire » comme la lueur du hero : un seul vocabulaire, décliné.</p></div>
+    <div class="card"><h4>Ce qu'il vous reste à décider</h4><p>Votre nom est écrit à côté du symbole en Fraunces. Si vous souhaitez un jour des cartes de visite ou une plaque, nous figerons l'ensemble « symbole + nom » en fichier imprimable ; ce n'est pas nécessaire pour le site.</p></div>
+  </div>
+  <div class="foot"><span>Votre site, expliqué simplement — Xénia Van Outryve</span><span>04 / 08</span></div>
 </section>
 
-<!-- ================ 3 · SPÉCIMENS ================ -->
+<!-- ================ 5 · L'ACCUEIL ================ -->
 <section class="page">
-  <span class="kicker">Composants signature</span>
-  <h2 class="ptitle">Reconstruits en CSS, <em>preuve de charte</em></h2>
-  <p class="plede">Aucune capture d'écran : chaque spécimen ci-dessous est re-rendu par la charte elle-même.</p>
-  <div class="spec-zone">
-    <div>
-      <div class="spec-label">Capsule de navigation — verre dépoli sur aurore</div>
-      <div class="spec-nav">
-        <span class="spec-nav__brand">
-          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g><g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g></svg>
-          Xénia Van Outryve
-        </span>
-        <span class="spec-nav__links"><span>Mon approche</span><span>Accompagnements ⌄</span><span>Nutrition &amp; Santé</span><span>À propos</span></span>
-        <span class="spec-nav__cta">Prendre rendez-vous</span>
-      </div>
-    </div>
-    <div class="spec-row">
-      <div>
-        <div class="spec-label">Carte « ce qui vous amène »</div>
-        <div class="spec-situation">
-          <p class="spec-situation__txt">« Je suis épuisé·e, je n'y arrive plus. »</p>
-          <p class="spec-situation__tag">Burn-out →</p>
-        </div>
-      </div>
-      <div>
-        <div class="spec-label">Carte lieu — bandeau d'aurore</div>
-        <div class="spec-lieu">
-          <div class="spec-lieu__tint"></div>
-          <div class="spec-lieu__body">
-            <p class="spec-lieu__ville">Court-Saint-Étienne</p>
-            <p class="spec-lieu__nom">Le Village parental</p>
-            <p class="spec-lieu__adr">Avenue des Combattants 70B · 1490</p>
-            <p class="spec-lieu__hor"><span>·</span>Lundi matin · 8h – 13h</p>
-            <span class="spec-lieu__btn">Rendez-vous sur Doctoranytime</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="spec-label">La signature — le halo qui respire</div>
-      <div class="spec-halo">
-        <div class="spec-halo__vis"><i></i><i></i><i></i></div>
-        <p><strong>Un dégradé radial s'étend et se rétracte sur ~7 secondes</strong>
-        (inspiration 3 s, expiration 4 s — le rythme de la cohérence cardiaque),
-        dans le hero et, en écho discret, dans le pied de page. Coupé si
-        <strong>prefers-reduced-motion</strong>.</p>
-      </div>
-    </div>
+  <span class="kicker">L'accueil</span>
+  <h2 class="ptitle">L'accueil raconte <em>une histoire</em></h2>
+  <p class="plede">Sur ordinateur, la page d'accueil ne s'affiche pas d'un bloc : elle se traverse. Le visiteur fait défiler, et l'histoire se déroule sous ses yeux, du poids vers la lumière. Sur téléphone, la même histoire se joue en trois secondes, sans rien à faire.</p>
+  <div class="shots">
+    <figure class="shot"><img src="dossier-img/ecran0.jpg" alt="Premier écran : Parfois, tout pèse un peu trop" style="height:52mm"><figcaption><b>1 · Ce qui pèse</b>Le site s'ouvre sur une phrase, voilée : « Parfois, tout pèse un peu trop. » Une petite souris animée invite à faire défiler.</figcaption></figure>
+    <figure class="shot"><img src="dossier-img/hero.jpg" alt="Le hero final : titre, texte, médaillon aquarelle" style="height:52mm"><figcaption><b>2 · La lumière revient</b>Le voile se lève, les couleurs montent, « La lumière revient, à votre rythme », puis votre présentation se lève mot à mot, avec une aquarelle de votre cabinet. Elle laissera sa place à votre photo quand vous nous l'enverrez.</figcaption></figure>
+    <figure class="shot"><img src="dossier-img/carrousel.jpg" alt="Le carrousel des accompagnements à onglets" style="height:52mm"><figcaption><b>3 · Vos quatre accompagnements</b>Une seule carte, quatre onglets (Adolescents &amp; Adultes, Périnatalité, Enfants, Nutrition). Elle tourne doucement toute seule, s'arrête dès qu'on la survole, et se pilote au clavier.</figcaption></figure>
+    <figure class="shot"><img src="dossier-img/etapes.jpg" alt="La première séance en trois étapes" style="height:52mm"><figcaption><b>4 · La première séance, en trois étapes</b>Pour lever la peur du premier rendez-vous : une ligne se trace au fil du défilement et allume trois repères. Le texte est le vôtre, repris de la page Mon approche.</figcaption></figure>
   </div>
-  <div class="principles">
-    <div class="principle"><i></i><div><h4>Pas trop carré</h4><p>Rayons 24–34 px, vagues SVG entre sections, blob organique pour le portrait.</p></div></div>
-    <div class="principle"><i></i><div><h4>Le lecteur d'abord</h4><p>Les cartes d'entrée citent le visiteur (« Tout me stresse… »), pas le métier.</p></div></div>
-    <div class="principle"><i></i><div><h4>Une action par écran</h4><p>Prendre rendez-vous — tout le reste est secondaire, y compris dans le menu.</p></div></div>
-    <div class="principle"><i></i><div><h4>De l'air</h4><p>Sections en clamp(84–150 px), mesures courtes (36 em), typographie qui respire.</p></div></div>
+  <div class="two" style="margin-top:4.5mm">
+    <div class="card card--rose"><h4>Un bandeau de thèmes</h4><p>Sous l'accueil, dix capsules défilent lentement : stress, burn-out, périnatalité, TDAH, sommeil… Chacune mène à la bonne page. Le visiteur qui cherche « son » mot le trouve en une seconde.</p></div>
+    <div class="card card--aqua"><h4>Rien ne bouge pour rien</h4><p>Chaque mouvement suit le défilement ou la respiration ; aucun clignotement. Et pour les personnes qui préfèrent les écrans immobiles, le site le détecte et affiche tout, calmement, sans animation.</p></div>
   </div>
-  <div class="foot"><span>Dossier de site — Xénia Van Outryve</span><span>03 / 05</span></div>
+  <div class="foot"><span>Votre site, expliqué simplement — Xénia Van Outryve</span><span>05 / 08</span></div>
 </section>
 
-<!-- ================ 4 · STACK ================ -->
+<!-- ================ 6 · LES PAGES ================ -->
 <section class="page">
-  <span class="kicker">Stack technique</span>
-  <h2 class="ptitle">Statique, rapide, <em>sans dépendance au runtime</em></h2>
-  <p class="plede">Le site est compilé en HTML pur : rien à maintenir côté serveur, hébergement minimal, performances par construction.</p>
-  <table class="stack">
-    <tr><th></th><th>Technologie</th><th>Version</th><th>Rôle</th></tr>
-    <tr><td><span class="badge">1</span></td><td>Astro</td><td>5.18</td><td>Générateur statique — 9 pages HTML, zéro JavaScript obligatoire au chargement</td></tr>
-    <tr><td><span class="badge">2</span></td><td>GSAP + ScrollTrigger</td><td>3.13</td><td>Reveals à l'entrée des sections — chargé en différé, jamais dans le chemin critique</td></tr>
-    <tr><td><span class="badge">3</span></td><td>Lenis</td><td>1.3</td><td>Défilement adouci (desktop), même politique de chargement différé</td></tr>
-    <tr><td><span class="badge">4</span></td><td>Fontsource</td><td>5.2</td><td>Fraunces &amp; Hanken Grotesk auto-hébergées — pas de requête vers Google Fonts</td></tr>
-    <tr><td><span class="badge">5</span></td><td>Docker → nginx:alpine</td><td>—</td><td>Build multi-étages, fichiers servis par nginx, cache immuable sur les assets hashés</td></tr>
-    <tr><td><span class="badge">6</span></td><td>Coolify</td><td>—</td><td>Déploiement de la maquette sur *.chris-ia.com, HTTPS automatique</td></tr>
-  </table>
-  <div class="arch">
-    <div class="arch__card"><h4>Animations <em>différées</em></h4><p>GSAP et Lenis s'importent à l'idle ou au premier scroll (<code>src/lib/motion.ts</code>). Sans JavaScript, le site est complet : les reveals sont un plus, pas une condition.</p></div>
-    <div class="arch__card"><h4>Données <em>centralisées</em></h4><p>Lieux, horaires, liens de rendez-vous et coordonnées vivent dans <code>src/data/site.ts</code> — une seule source pour les pages, le pied de page et le JSON-LD.</p></div>
-    <div class="arch__card"><h4>SEO <em>sans danger</em></h4><p>Les <code>canonical</code> pointent vers le domaine final : la maquette ne peut pas se faire indexer à la place du site définitif.</p></div>
-    <div class="arch__card"><h4>Accessibilité <em>de base</em></h4><p>Focus visibles, <code>prefers-reduced-motion</code> respecté partout (halo compris), contrastes AA sur les textes, un seul h1 par page.</p></div>
+  <span class="kicker">Les pages</span>
+  <h2 class="ptitle">Les pages, sur ordinateur <em>et sur téléphone</em></h2>
+  <p class="plede">Neuf pages, la même respiration, une teinte par thème.</p>
+  <div class="shots">
+    <figure class="shot"><img src="dossier-img/qui.jpg" alt="Section Qui je suis avec le cadre du portrait" style="height:38mm"><figcaption><b>Qui je suis</b>Votre citation, trois repères (intégrative, corps et esprit, à votre rythme), votre diplôme et votre agrément. Le cadre en galet attend votre photo.</figcaption></figure>
+    <figure class="shot"><img src="dossier-img/nutri.jpg" alt="La rencontre nutrition : trois pétales en verre" style="height:38mm"><figcaption><b>Nutrition &amp; Santé</b>Trois pétales en verre, Sommeil, Alimentation, Mouvement, se recouvrent au centre sur « Équilibre psychologique » : votre approche, dessinée.</figcaption></figure>
+    <figure class="shot"><img src="dossier-img/carte.jpg" alt="Carte dessinée du Brabant wallon avec les trois cabinets" style="height:38mm"><figcaption><b>Vos trois cabinets, sur une carte dessinée</b>Le contour du Brabant wallon se trace, les trois cabinets s'allument. À côté, chaque cabinet a sa carte avec ses horaires, un itinéraire et le bouton de rendez-vous. Aucune carte Google intégrée : aucun cookie.</figcaption></figure>
+    <figure class="shot"><img src="dossier-img/approche.jpg" alt="Page Mon approche" style="height:38mm"><figcaption><b>Mon approche, et les pages d'accompagnement</b>Un médaillon aquarelle, des cartes teintées par thème, un bloc en verre posé sur la couleur. Les textes sont ceux de votre mail, inchangés.</figcaption></figure>
   </div>
-  <div class="foot"><span>Dossier de site — Xénia Van Outryve</span><span>04 / 05</span></div>
+  <div class="shots shots--mobile" style="margin-top:4.5mm">
+    <figure class="shot shot--tall"><img src="dossier-img/mobile-hero.jpg" alt="L'accueil sur téléphone"><figcaption><b>Sur téléphone</b>Le texte sur un fond clair, le médaillon en dessous.</figcaption></figure>
+    <figure class="shot shot--tall"><img src="dossier-img/mobile-carrousel.jpg" alt="Le carrousel sur téléphone"><figcaption><b>Le carrousel</b>Onglets sur deux lignes, flèches sous la carte.</figcaption></figure>
+    <div class="card card--lilac" style="align-self:start">
+      <h4>Pensé pour le téléphone d'abord</h4>
+      <p>La plupart des visiteurs d'un cabinet arrivent depuis leur téléphone. Tout a été vérifié sur un petit écran : rien ne déborde, le menu s'ouvre d'un geste, le rendez-vous et le téléphone sont à portée de pouce. Le film de l'accueil y est remplacé par une version légère, pour ne pas consommer le forfait.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Votre site, expliqué simplement — Xénia Van Outryve</span><span>06 / 08</span></div>
 </section>
 
-<!-- ================ 5 · SCORES ================ -->
+<!-- ================ 7 · CONTRÔLE QUALITÉ ================ -->
 <section class="page">
-  <span class="kicker">Audit statique — build du 11/08/2026</span>
-  <h2 class="ptitle">Scores SEO &amp; GEO, <em>mesurés sur le build</em></h2>
+  <span class="kicker">Le contrôle qualité</span>
+  <h2 class="ptitle">Un site vérifié, <em>page par page</em></h2>
+  <p class="plede">Chaque page a été passée au peigne fin, par la machine puis à l'œil, sur ordinateur comme sur téléphone. Voici l'état du site.</p>
   <div class="gauges">
     <div class="gauge">
-      <div class="gauge__ring" style="background: conic-gradient(#C13D63 0turn 0.91turn, rgba(67,50,75,0.08) 0.91turn 1turn);">
-        <div class="gauge__hole"><span class="gauge__val">91</span></div>
-      </div>
-      <p class="gauge__lbl">SEO / 100</p>
+      <div class="gauge__ring" style="background: conic-gradient(#C13D63 0turn 0.96turn, rgba(67,50,75,0.08) 0.96turn 1turn);"><div class="gauge__hole"><span class="gauge__val">96</span></div></div>
+      <p class="gauge__lbl">Score santé / 100</p>
+    </div>
+    <div class="stats" style="flex:1;margin:0">
+      <div class="stat"><b>9</b><span>pages vérifiées, sur ordinateur et téléphone</span></div>
+      <div class="stat"><b>0</b><span>lien cassé, sur les 21 liens et boutons testés</span></div>
+      <div class="stat"><b>0</b><span>erreur technique dans le navigateur</span></div>
+      <div class="stat"><b>0</b><span>cookie, traceur ou service publicitaire</span></div>
+    </div>
+  </div>
+  <div class="two">
+    <div class="card card--aqua">
+      <h4>Ce que nous avons contrôlé <span class="chip chip--ok">conforme</span></h4>
+      <ul class="list">
+        <li>Tous les liens et boutons mènent quelque part (rendez-vous, itinéraires, e-mail, téléphone).</li>
+        <li>Chaque page a son titre et son résumé pour Google ; chaque image a sa description pour les malvoyants ; le site se lit au clavier et sans animation.</li>
+        <li>Rien ne déborde sur téléphone, le menu s'ouvre et se referme.</li>
+        <li>Aucun cookie, aucun script tiers : votre page « vie privée » dit vrai.</li>
+        <li>Coordonnées identiques sur les neuf pages ; vraie page « introuvable ».</li>
+      </ul>
+    </div>
+    <div class="card card--peach">
+      <h4>Léger, et fait pour durer <span class="chip chip--ok">conforme</span></h4>
+      <ul class="list">
+        <li>Le site s'affiche en moins d'une seconde ; sur téléphone, les images et le film sont servis en version légère.</li>
+        <li>L'aperçu qui s'affiche quand on partage le lien (WhatsApp, Messenger, réseaux) est propre et léger.</li>
+        <li>Chaque page d'accompagnement se présente à Google comme un « service », avec son public et vos trois villes.</li>
+        <li>Mentions légales complètes, hébergement en Europe, réglages de sécurité du serveur en place.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Ce que nous attendons de vous</h3>
+  <table class="todo">
+    <thead><tr><th>Quoi</th><th>Pourquoi</th></tr></thead>
+    <tbody>
+      <tr><td><b>Votre photo</b></td><td>Le cadre en galet de l'accueil et de la page À propos l'attend. Une photo sur fond clair, cadrée buste, suffit.</td></tr>
+      <tr><td><b>Le nom de domaine</b></td><td>C'est l'adresse que taperont vos patients, et le point de départ du référencement. Nous le déposons et le branchons dès que vous l'avez choisi.</td></tr>
+      <tr><td><b>Votre adresse</b></td><td>Les mentions légales doivent indiquer l'adresse de l'éditrice du site, distincte des cabinets où vous consultez.</td></tr>
+      <tr><td><b>Vos tarifs</b></td><td>La page Lieux &amp; Contact annonce le paiement mobile et parle des mutualités avec prudence ; les montants exacts sont à vous.</td></tr>
+    </tbody>
+  </table>
+  <div class="foot"><span>Votre site, expliqué simplement — Xénia Van Outryve</span><span>07 / 08</span></div>
+</section>
+
+<!-- ================ 8 · VISIBILITÉ ================ -->
+<section class="page">
+  <span class="kicker">Être trouvée</span>
+  <h2 class="ptitle">Sur Google <em>et par les assistants IA</em></h2>
+  <p class="plede">Deux notes sur 100, mesurées sur le site tel qu'il sera mis en ligne. La première dit si Google comprend bien vos pages (le référencement, ou SEO). La seconde dit si un assistant comme ChatGPT peut lire, comprendre et citer votre site quand on lui demande un psychologue en Brabant wallon (ce qu'on appelle GEO).</p>
+  <div class="gauges">
+    <div class="gauge">
+      <div class="gauge__ring" style="background: conic-gradient(#C13D63 0turn 0.93turn, rgba(67,50,75,0.08) 0.93turn 1turn);"><div class="gauge__hole"><span class="gauge__val">93</span></div></div>
+      <p class="gauge__lbl">Google · SEO</p>
     </div>
     <div class="gauge">
-      <div class="gauge__ring" style="background: conic-gradient(#47705C 0turn 0.86turn, rgba(67,50,75,0.08) 0.86turn 1turn);">
-        <div class="gauge__hole"><span class="gauge__val">86</span></div>
-      </div>
-      <p class="gauge__lbl">GEO / 100</p>
+      <div class="gauge__ring" style="background: conic-gradient(#47705C 0turn 0.91turn, rgba(67,50,75,0.08) 0.91turn 1turn);"><div class="gauge__hole"><span class="gauge__val">91</span></div></div>
+      <p class="gauge__lbl">Assistants IA · GEO</p>
+    </div>
+    <div style="flex:1">
+      <p style="font-size:9pt"><b>Pour situer :</b> un site vitrine construit sans attention particulière tourne souvent autour de 50 à 60. Au-dessus de 90, tout ce qui dépend de la construction du site est en place ; ce qui reste dépend du temps, du nom de domaine et de ce que vous nous donnerez.</p>
     </div>
   </div>
-  <div class="subs">
-    <div class="sub"><div class="sub__head"><b>Balises &amp; canoniques</b><span>95</span></div><div class="sub__bar"><div class="sub__fill" style="width:95%"></div></div></div>
-    <div class="sub"><div class="sub__head"><b>Contenu lisible sans JS</b><span>95</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:95%"></div></div></div>
-    <div class="sub"><div class="sub__head"><b>Données structurées</b><span>92</span></div><div class="sub__bar"><div class="sub__fill" style="width:92%"></div></div></div>
-    <div class="sub"><div class="sub__head"><b>llms.txt &amp; factuel en clair</b><span>90</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:90%"></div></div></div>
-    <div class="sub"><div class="sub__head"><b>Sitemap &amp; robots</b><span>92</span></div><div class="sub__bar"><div class="sub__fill" style="width:92%"></div></div></div>
-    <div class="sub"><div class="sub__head"><b>FAQ balisée (FAQPage)</b><span>88</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:88%"></div></div></div>
-    <div class="sub"><div class="sub__head"><b>Performance par construction</b><span>93</span></div><div class="sub__bar"><div class="sub__fill" style="width:93%"></div></div></div>
-    <div class="sub"><div class="sub__head"><b>Intentions locales couvertes</b><span>78</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:78%"></div></div></div>
+  <div class="two">
+    <div class="card card--rose">
+      <h4>Ce qui est en place <span class="chip chip--ok">fait</span></h4>
+      <ul class="list">
+        <li>Chaque page a un titre et un résumé distincts, écrits pour les recherches réelles (« psychologue Brabant wallon », « burn-out parental », « TDAH »).</li>
+        <li>Vos trois cabinets, vos horaires, votre agrément et vos liens de rendez-vous sont déclarés à Google dans son langage, sur chaque page.</li>
+        <li>Les six questions fréquentes (paiement, remboursement, visio…) sont balisées : elles peuvent apparaître directement dans les résultats.</li>
+        <li>Un fichier dédié aux assistants IA résume qui vous êtes, ce que vous faites, où et quand.</li>
+        <li>Tout le contenu est lisible sans aucun script : les robots voient exactement ce que voit le visiteur.</li>
+        <li>Le site se charge en moins d'une seconde ; Google le note 100 sur 100 en performance.</li>
+      </ul>
+    </div>
+    <div class="card card--lilac">
+      <h4>Ce qui fera monter encore <span class="chip chip--warn">ensuite</span></h4>
+      <ul class="list">
+        <li><b>Le nom de domaine</b> : dès qu'il est choisi, nous le branchons et déclarons le site à Google. C'est le vrai point de départ du référencement.</li>
+        <li><b>Un paragraphe par ville</b> (« Psychologue à Nivelles… ») et une question-réponse par thème : à écrire avec vous, pour répondre aux recherches locales précises.</li>
+        <li><b>Votre fiche Google</b> (Google Business Profile) reliée au site : les avis et l'itinéraire y gagnent.</li>
+        <li><b>Du temps</b> : Google met quelques semaines à prendre la mesure d'un nouveau site ; les positions se lisent à trois mois.</li>
+      </ul>
+    </div>
   </div>
-  <div class="gains">
-    <h3>Gains rapides — <em>appliqués le 11/08/2026</em> / la suite</h3>
-    <ul>
-      <li><span class="done">Fait</span> — JSON-LD <b>MedicalBusiness</b> global (3 adresses, 2 actions de réservation, agrément).</li>
-      <li><span class="done">Fait</span> — <b>FAQPage</b> sur Lieux &amp; Contact (paiement, remboursement, prescription, plateformes).</li>
-      <li><span class="done">Fait</span> — <b>llms.txt</b>, sitemap, robots, image OG rendue depuis la charte.</li>
-      <li><span class="todo">La suite</span> — trancher le <b>nom de domaine</b> (les canonical utilisent un domaine provisoire), puis Search Console à la bascule.</li>
-      <li><span class="todo">La suite</span> — un JSON-LD <b>Service</b> par page d'accompagnement + contenus question-réponse par intention locale (« psychologue Nivelles », « burn-out parental »…).</li>
-    </ul>
+  <div class="big" style="margin-top:5mm">
+    <h3>Ce dont nous avons besoin de vous, en résumé</h3>
+    <p>1. Votre <b>photo</b> (fond clair, cadrage buste). &nbsp;2. Le <b>nom de domaine</b> que vous préférez. &nbsp;3. Votre <b>adresse</b> pour les mentions légales. &nbsp;4. Vos <b>tarifs</b> et moyens de paiement. &nbsp;5. Votre accord sur l'<b>aquarelle du cabinet</b> de l'accueil, qui restera à côté de votre photo. Dès réception, nous mettons le site en ligne sur votre domaine et le déclarons à Google.</p>
   </div>
-  <div class="foot"><span>Dossier de site — Xénia Van Outryve</span><span>05 / 05</span></div>
+  <div class="foot"><span>Votre site, expliqué simplement — Xénia Van Outryve · Noveo Digital</span><span>08 / 08</span></div>
 </section>
 
 </body>

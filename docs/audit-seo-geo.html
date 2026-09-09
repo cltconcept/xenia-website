@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Audit SEO & GEO — Xénia Van Outryve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #FDFBF8; --ivory-soft: #F7F2EC; --ink: #43324B; --muted: #7A6B82;
+    --framboise: #C13D63; --framboise-deep: #A83355; --sage: #5E8E75; --sage-deep: #47705C;
+    --peach: #FFD9C4; --rose: #F6C8DB; --lilac: #DFD2F4; --aqua: #C9E9DE;
+    --sep: rgba(67, 50, 75, 0.1);
+    --display: 'Fraunces', Georgia, serif; --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  @page { size: A4; margin: 0; }
+  body { font-family: var(--sans); color: var(--ink); background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { position: relative; width: 210mm; height: 297mm; page-break-after: always; overflow: hidden; padding: 16mm 17mm 13mm; display: flex; flex-direction: column; background: var(--ivory); }
+  /* grain retiré : rastérisé en pleine page à l'impression */
+  .foot { margin-top: auto; padding-top: 6mm; display: flex; justify-content: space-between; align-items: baseline; font-size: 8.2pt; color: var(--muted); letter-spacing: 0.04em; }
+  .kicker { font-size: 8.6pt; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--framboise); margin-bottom: 5mm; }
+  h2.ptitle { font-family: var(--display); font-weight: 560; font-size: 25pt; letter-spacing: -0.015em; line-height: 1.06; margin-bottom: 2.5mm; }
+  h2.ptitle em, h1 em { font-style: italic; color: var(--framboise); font-weight: 480; }
+  .plede { color: var(--muted); font-size: 10pt; line-height: 1.5; max-width: 140mm; margin-bottom: 6mm; }
+  h3 { font-family: var(--display); font-weight: 600; font-size: 12.5pt; letter-spacing: -0.01em; margin: 5mm 0 2.5mm; }
+  p, li { font-size: 9.4pt; line-height: 1.5; }
+  .muted { color: var(--muted); }
+  .chip { display: inline-block; padding: 0.6mm 2.4mm; border-radius: 99px; font-size: 7.4pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .chip--ok { background: var(--aqua); color: var(--sage-deep); }
+  .chip--warn { background: var(--peach); color: #8C5A2B; }
+  .chip--todo { background: var(--rose); color: var(--framboise-deep); }
+
+  /* Couverture */
+  .cover { background: linear-gradient(150deg, #FFE3D2 0%, #FBE2EA 30%, #EBE3F7 62%, #DFF1EA 100%); }
+  .cover__mark { display: flex; align-items: center; gap: 6mm; margin-top: 6mm; }
+  .cover__mark svg { width: 20mm; height: 20mm; }
+  .cover__brand { font-size: 9pt; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--framboise); }
+  .cover h1 { margin-top: 12mm; font-family: var(--display); font-weight: 560; font-size: 38pt; line-height: 1.04; letter-spacing: -0.018em; }
+  .cover__sub { margin-top: 5mm; font-size: 11pt; color: var(--muted); max-width: 130mm; line-height: 1.55; }
+  .gauges { display: flex; gap: 14mm; margin-top: 12mm; align-items: center; }
+  .gauge { display: flex; flex-direction: column; align-items: center; gap: 3mm; }
+  .gauge__ring { width: 40mm; height: 40mm; border-radius: 50%; display: grid; place-items: center; }
+  .gauge__hole { width: 30mm; height: 30mm; border-radius: 50%; background: var(--ivory); display: grid; place-items: center; }
+  .gauge__val { font-family: var(--display); font-weight: 560; font-size: 24pt; letter-spacing: -0.02em; }
+  .gauge__lbl { font-size: 8.6pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .delta { display: flex; flex-direction: column; gap: 3mm; font-size: 9.4pt; }
+  .delta b { font-family: var(--display); font-weight: 600; font-size: 12pt; }
+  .toc { margin-top: 12mm; display: flex; flex-direction: column; gap: 3.6mm; }
+  .toc__item { display: flex; align-items: center; gap: 4mm; }
+  .toc__dot { width: 7mm; height: 7mm; border-radius: 50%; flex: none; background: radial-gradient(circle, var(--c1), var(--c2)); }
+  .toc__label { font-family: var(--display); font-weight: 560; font-size: 12.5pt; }
+  .toc__dots { flex: 1; border-bottom: 0.4mm dotted rgba(67,50,75,0.28); margin: 0 3mm; }
+  .toc__pg { font-size: 9.5pt; color: var(--muted); }
+
+  /* Sous-scores */
+  .subs { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 8mm; margin: 3mm 0 5mm; }
+  .sub__head { display: flex; justify-content: space-between; font-size: 9pt; margin-bottom: 1.2mm; }
+  .sub__head span { font-family: var(--display); font-weight: 600; }
+  .sub__bar { height: 2.2mm; border-radius: 99px; background: rgba(67,50,75,0.08); overflow: hidden; }
+  .sub__fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--framboise), #E8799F); }
+  .sub__fill--sage { background: linear-gradient(90deg, var(--sage-deep), #84C7AE); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 8.3pt; }
+  th { text-align: left; font-size: 7.2pt; letter-spacing: 0.12em; text-transform: uppercase; color: var(--framboise); padding: 1.6mm 1.6mm; border-bottom: 0.4mm solid var(--sep); }
+  td { padding: 1.5mm 1.6mm; border-bottom: 0.3mm solid var(--sep); vertical-align: top; }
+  td.u { font-weight: 600; white-space: nowrap; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ok { color: var(--sage-deep); font-weight: 700; }
+  .bad { color: var(--framboise); font-weight: 700; }
+
+  /* Constats */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .card { background: #fff; border: 0.3mm solid var(--sep); border-radius: 5mm; padding: 4.5mm 5mm; }
+  .card--tint { background: #FCF0F5; }
+  .card--aqua { background: #EEF8F4; }
+  .card h4 { font-family: var(--display); font-weight: 600; font-size: 11pt; margin-bottom: 1.6mm; display: flex; align-items: center; gap: 2.5mm; flex-wrap: wrap; }
+  .card p { font-size: 8.8pt; color: var(--muted); }
+  .card p b { color: var(--ink); }
+  ul.list { padding-left: 4.5mm; }
+  ul.list li { margin-bottom: 1.6mm; }
+  .gains { margin-top: 5mm; border-radius: 6mm; padding: 5.5mm 6mm; background: #FBEFEE; border: 0.3mm solid var(--sep); }
+  .gains h3 { margin-top: 0; }
+  .gains ol { padding-left: 5mm; }
+  .gains li { margin-bottom: 2mm; font-size: 9.2pt; }
+  .gains li b { color: var(--framboise-deep); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+</style>
+</head>
+<body>
+
+<!-- ================ 1 · COUVERTURE ================ -->
+<section class="page cover">
+  <div class="cover__mark">
+    <svg viewBox="0 0 64 64"><g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g><g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g></svg>
+    <span class="cover__brand">Xénia Van Outryve · psychologue clinicienne</span>
+  </div>
+  <h1>Audit SEO &amp; GEO,<br><em>mesuré sur le build</em></h1>
+  <p class="cover__sub">Site recomposé du 9 septembre 2026 (blocs et animations de l'accueil compris), 9 pages générées par Astro, mesurées en statique sur le dossier <code>dist/</code> et au navigateur. Aucun outil payant, aucun chiffre estimé : tout vient du HTML livré.</p>
+  <div class="gauges">
+    <div class="gauge">
+      <div class="gauge__ring" style="background: conic-gradient(#C13D63 0turn 0.93turn, rgba(67,50,75,0.08) 0.93turn 1turn);"><div class="gauge__hole"><span class="gauge__val">93</span></div></div>
+      <p class="gauge__lbl">SEO / 100</p>
+    </div>
+    <div class="gauge">
+      <div class="gauge__ring" style="background: conic-gradient(#47705C 0turn 0.91turn, rgba(67,50,75,0.08) 0.91turn 1turn);"><div class="gauge__hole"><span class="gauge__val">91</span></div></div>
+      <p class="gauge__lbl">GEO / 100</p>
+    </div>
+    <div class="delta">
+      <div><b>SEO 91 → 93</b><br><span class="muted">mesuré à 89 avant corrections (image OG, film mobile) ; médias allégés et schémas Service ajoutés le jour même</span></div>
+      <div><b>GEO 86 → 91</b><br><span class="muted">plus de matière lisible sans JavaScript (étapes, carrousel, itinéraires, thèmes) et une entité Service par offre</span></div>
+    </div>
+  </div>
+  <div class="toc">
+    <div class="toc__item"><span class="toc__dot" style="--c1:#F3B1CE;--c2:#FFD9C4"></span><span class="toc__label">Ce qui est en place, page par page</span><span class="toc__dots"></span><span class="toc__pg">02</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#CBB5EE;--c2:#F6C8DB"></span><span class="toc__label">Ce qui pèse, ce qui manque</span><span class="toc__dots"></span><span class="toc__pg">03</span></div>
+    <div class="toc__item"><span class="toc__dot" style="--c1:#AEE0CE;--c2:#DFD2F4"></span><span class="toc__label">Gains rapides et méthode</span><span class="toc__dots"></span><span class="toc__pg">04</span></div>
+  </div>
+  <div class="foot"><span>Audit SEO &amp; GEO — Xénia Van Outryve · 9 septembre 2026</span><span>01 / 04</span></div>
+</section>
+
+<!-- ================ 2 · PAGE PAR PAGE ================ -->
+<section class="page">
+  <span class="kicker">SEO — relevé statique des 9 pages du build</span>
+  <h2 class="ptitle">Ce qui est en place, <em>page par page</em></h2>
+  <p class="plede">Chaque page porte un titre unique, une description entre 139 et 157 caractères, une canonique, une image Open Graph, un seul h1, la langue et des textes alternatifs partout. Le JSON-LD du cabinet est présent sur les 9 pages ; les pages d'offre ajoutent un <code>Service</code>, Lieux &amp; Contact une <code>FAQPage</code>.</p>
+  <table>
+    <thead><tr><th>Page</th><th>Titre</th><th>Desc.</th><th>h1</th><th>Images / alt</th><th>Mots</th><th>HTML</th><th>Données structurées</th></tr></thead>
+    <tbody>
+      <tr><td class="u">/</td><td class="n">49</td><td class="n">157</td><td class="n ok">1</td><td class="n ok">5 / 5</td><td class="n">1 037</td><td class="n">58 Ko</td><td>MB</td></tr>
+      <tr><td class="u">/approche/</td><td class="n">45</td><td class="n">141</td><td class="n ok">1</td><td class="n ok">1 / 1</td><td class="n">524</td><td class="n">29 Ko</td><td>MB</td></tr>
+      <tr><td class="u">/accompagnements/adolescents-adultes/</td><td class="n">58</td><td class="n">144</td><td class="n ok">1</td><td class="n ok">1 / 1</td><td class="n">449</td><td class="n">23 Ko</td><td>MB + <b>Service</b> + Breadcrumb</td></tr>
+      <tr><td class="u">/accompagnements/perinatalite-parentalite/</td><td class="n">50</td><td class="n">149</td><td class="n ok">1</td><td class="n ok">1 / 1</td><td class="n">438</td><td class="n">22 Ko</td><td>MB + <b>Service</b> + Breadcrumb</td></tr>
+      <tr><td class="u">/accompagnements/enfants-famille/</td><td class="n">54</td><td class="n">146</td><td class="n ok">1</td><td class="n ok">1 / 1</td><td class="n">420</td><td class="n">22 Ko</td><td>MB + <b>Service</b> + Breadcrumb</td></tr>
+      <tr><td class="u">/nutrition-sante/</td><td class="n">54</td><td class="n">150</td><td class="n ok">1</td><td class="n ok">1 / 1</td><td class="n">434</td><td class="n">23 Ko</td><td>MB + <b>Service</b> + Breadcrumb</td></tr>
+      <tr><td class="u">/a-propos/</td><td class="n">53</td><td class="n">153</td><td class="n ok">1</td><td class="n ok">0 / 0</td><td class="n">424</td><td class="n">24 Ko</td><td>MB</td></tr>
+      <tr><td class="u">/lieux-contact/</td><td class="n">52</td><td class="n">139</td><td class="n ok">1</td><td class="n ok">0 / 0</td><td class="n">497</td><td class="n">30 Ko</td><td>MB + <b>FAQPage</b> (6)</td></tr>
+      <tr><td class="u">/mentions-legales/</td><td class="n">53</td><td class="n">152</td><td class="n ok">1</td><td class="n ok">0 / 0</td><td class="n">392</td><td class="n">20 Ko</td><td>MB</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="font-size:8pt;margin-top:2mm">MB = <code>MedicalBusiness</code>. Titre et description en caractères. Canoniques et sitemap visent le domaine provisoire <code>xeniavanoutryve.be</code> : voulu tant que le domaine n'est pas tranché.</p>
+
+  <h3>Sous-scores SEO</h3>
+  <div class="subs">
+    <div class="sub"><div class="sub__head"><b>Balises &amp; canoniques</b><span>92</span></div><div class="sub__bar"><div class="sub__fill" style="width:92%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Contenu &amp; hiérarchie des titres</b><span>94</span></div><div class="sub__bar"><div class="sub__fill" style="width:94%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Données structurées</b><span>95</span></div><div class="sub__bar"><div class="sub__fill" style="width:95%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Sitemap, robots, llms.txt</b><span>95</span></div><div class="sub__bar"><div class="sub__fill" style="width:95%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Images &amp; médias</b><span>94</span></div><div class="sub__bar"><div class="sub__fill" style="width:94%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Performance par construction</b><span>95</span></div><div class="sub__bar"><div class="sub__fill" style="width:95%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Accessibilité technique</b><span>96</span></div><div class="sub__bar"><div class="sub__fill" style="width:96%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Intentions locales couvertes</b><span>78</span></div><div class="sub__bar"><div class="sub__fill" style="width:78%"></div></div></div>
+  </div>
+  <div class="two">
+    <div>
+      <h3 style="margin-top:2mm">Racine du site</h3>
+      <ul class="list">
+        <li><span class="ok">robots.txt</span> : tout autorisé, sitemap déclaré, le PDF de travail exclu de l'index.</li>
+        <li><span class="ok">Sitemap</span> : index + 9 URL, exactement les 9 pages du build, la 404 exclue.</li>
+        <li><span class="ok">llms.txt</span> : identité, agrément, accompagnements, thèmes, étapes, horaires, FAQ — daté.</li>
+        <li><span class="ok">Favicon SVG</span>, <span class="ok">page 404 réelle</span>, <span class="ok">lang="fr"</span>, <span class="ok">Open Graph + Twitter card</span>.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-top:2mm">Mesuré au navigateur (build servi)</h3>
+      <ul class="list">
+        <li>Lighthouse desktop : <b>performance 100</b>, <b>accessibilité 97</b>, LCP 0,7 s, CLS 0.</li>
+        <li>JavaScript différé (GSAP 69 Ko + ScrollTrigger 43 Ko à l'idle) ; site complet sans script.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Audit SEO &amp; GEO — Xénia Van Outryve</span><span>02 / 04</span></div>
+</section>
+
+<!-- ================ 3 · CE QUI PÈSE, CE QUI MANQUE ================ -->
+<section class="page">
+  <span class="kicker">GEO &amp; médias — ce qui pèse, ce qui manque</span>
+  <h2 class="ptitle">Ce qui pèse, <em>ce qui manque</em></h2>
+  <p class="plede">Le site est lisible par les moteurs de réponse comme par les moteurs de recherche : tout le contenu est dans le HTML, les faits sont en clair, la FAQ est balisée. Les points faibles sont de deux natures : des médias trop lourds, et des données structurées qui pourraient dire davantage.</p>
+
+  <h3>Sous-scores GEO</h3>
+  <div class="subs">
+    <div class="sub"><div class="sub__head"><b>Contenu lisible sans JavaScript</b><span>96</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:96%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Faits en clair (adresses, horaires, agrément)</b><span>94</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:94%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>llms.txt</b><span>90</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:90%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>FAQ balisée</b><span>90</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:90%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Entités (praticienne, diplôme, agrément, services)</b><span>95</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:95%"></div></div></div>
+    <div class="sub"><div class="sub__head"><b>Réponses aux intentions locales</b><span>78</span></div><div class="sub__bar"><div class="sub__fill sub__fill--sage" style="width:78%"></div></div></div>
+  </div>
+
+  <div class="cards">
+    <div class="card card--tint">
+      <h4>Le film du hero en mobile <span class="chip chip--ok">corrigé</span></h4>
+      <p>Le film all-intra de <b>6,9 Mo</b> reste réservé au desktop (chargé à l'idle, hors premier affichage). En <b>mobile</b>, une version 640 × 360 de <b>163 Ko</b> le remplace, et rien n'est chargé si le navigateur demande l'économie de données : le poster de 18 Ko reste en fond.</p>
+    </div>
+    <div class="card card--tint">
+      <h4>L'image Open Graph <span class="chip chip--ok">corrigé</span></h4>
+      <p><code>media/og.png</code> pesait <b>503 Ko</b> pour 1200 × 630 px. Convertie en JPG qualité 82 : <b>42 Ko</b>, référencée par les 9 pages.</p>
+    </div>
+    <div class="card card--aqua">
+      <h4>Données structurées <span class="chip chip--ok">corrigé</span></h4>
+      <p><code>MedicalBusiness</code> et <code>FAQPage</code> étaient en place. Les quatre pages d'offre portent désormais un <b><code>Service</code></b> (nom, description, public, trois villes servies, canaux cabinet et visio, rattaché au cabinet) et un <b><code>BreadcrumbList</code></b>, générés depuis les données du site.</p>
+    </div>
+    <div class="card card--aqua">
+      <h4>Intentions locales <span class="chip chip--warn">à développer</span></h4>
+      <p>Le h1 vise « Brabant wallon » ; les villes n'apparaissent qu'en cartes de cabinets et en pied de page. Les requêtes « psychologue Nivelles », « psychologue La Hulpe », « burn-out parental » n'ont pas de réponse dédiée : un court paragraphe question-réponse par ville sur Lieux &amp; Contact, ou par thème sur chaque accompagnement, comblerait l'écart sans page nouvelle.</p>
+    </div>
+    <div class="card">
+      <h4>Domaine provisoire <span class="chip chip--warn">décision cliente</span></h4>
+      <p>Canoniques, sitemap et JSON-LD pointent vers <code>xeniavanoutryve.be</code>, non déposé. Rien à corriger dans le code : c'est le nom de domaine qu'il faut trancher, puis Search Console à la bascule.</p>
+    </div>
+    <div class="card">
+      <h4>Ce qui est déjà bon <span class="chip chip--ok">conforme</span></h4>
+      <p>Carrousel, étapes et carte dessinée restent lisibles sans JavaScript (les quatre cartes s'empilent, la carte est décorative et les adresses sont en texte). Liens « Itinéraire » vers une URL de recherche Google Maps, sans embed ni cookie. Aucune police externe, aucun traceur.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Audit SEO &amp; GEO — Xénia Van Outryve</span><span>03 / 04</span></div>
+</section>
+
+<!-- ================ 4 · GAINS RAPIDES ================ -->
+<section class="page">
+  <span class="kicker">Ce qu'on fait ensuite</span>
+  <h2 class="ptitle">Gains rapides, <em>par ordre d'effet</em></h2>
+  <p class="plede">Six actions, aucune ne touche aux textes validés. Les trois premières ont été appliquées le jour même côté Noveo ; la quatrième reste à faire ; les deux dernières attendent une décision de la cliente.</p>
+  <div class="gains">
+    <h3>Appliqué le 9 septembre — <em>Noveo</em></h3>
+    <ol>
+      <li><b>Alléger le film en mobile</b> : ne charger que le poster sous 1024 px, ou encoder une version 480p sous 1,5 Mo. Fait : version 640 × 360 de 163 Ko en mobile, rien en mode économie de données.</li>
+      <li><b>Convertir l'image Open Graph</b> en JPG ou WebP 1200 × 630 sous 100 Ko. Fait : og.jpg de 42 Ko.</li>
+      <li><b>Ajouter un JSON-LD <code>Service</code></b> par page d'accompagnement (nom, description, public, <code>areaServed</code> = les trois villes, <code>url</code>, lien de réservation) et un <code>BreadcrumbList</code> sur les pages profondes. Fait : <code>src/lib/schema.ts</code>, alimenté par <code>accompagnements.ts</code>, sur les 4 pages d'offre.</li>
+      <li><b>Compléter llms.txt</b> avec la première séance en trois étapes, les itinéraires et les thèmes du bandeau, et dater le fichier. <em>Reste à faire.</em></li>
+    </ol>
+    <h3>À décider — <em>cliente</em></h3>
+    <ol start="5">
+      <li><b>Trancher le nom de domaine</b>, puis remplacer le domaine provisoire (une seule variable dans <code>astro.config.mjs</code>), déclarer le site dans Search Console et Bing Webmaster.</li>
+      <li><b>Valider un paragraphe par ville</b> (« Psychologue à Nivelles : … ») et une question-réponse par thème d'accompagnement, à balise <code>FAQPage</code>. Textes à écrire avec elle.</li>
+    </ol>
+  </div>
+  <div class="two" style="margin-top:6mm">
+    <div>
+      <h3>Méthode</h3>
+      <ul class="list">
+        <li>Relevé statique des 9 fichiers HTML du build du 9 septembre 2026 : balises, titres, images, JSON-LD, poids ; sitemap, robots, llms.txt, 404.</li>
+        <li>Lighthouse 13.4 en mode desktop sur le build servi en local.</li>
+        <li>Contrôle qualité Noveo Digital (crawl, exposition, navigateur) livré dans un rapport séparé.</li>
+        <li>Non mesuré : positions réelles, trafic, backlinks, Core Web Vitals de terrain — le site n'est pas encore sur son domaine.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Barème</h3>
+      <ul class="list">
+        <li>Chaque sous-score note un volet sur 100 d'après le relevé ; le score du volet est la moyenne de ses sous-scores, arrondie.</li>
+        <li>SEO : 8 sous-scores. GEO : 6 sous-scores. Un même défaut (médias lourds) ne compte qu'une fois par volet.</li>
+        <li>Comparaison avec l'audit du 11 août 2026 (SEO 91, GEO 86), même barème.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Audit SEO &amp; GEO — Xénia Van Outryve · 9 septembre 2026</span><span>04 / 04</span></div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Xénia Van Outryve — Charte de marque</title>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+@page { size: A4; margin: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #43324B; background: #FDFBF8;
+       font-size: 9.5pt; line-height: 1.55; }
+
+.page { position: relative; width: 210mm; height: 296.9mm; padding: 16mm 15mm 13mm;
+        background: #FDFBF8; overflow: hidden; break-after: page; page-break-after: always; }
+.page:last-child { break-after: auto; page-break-after: auto; }
+
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 7pt; letter-spacing: .1em; text-transform: uppercase; }
+.lc { text-transform: none; letter-spacing: .04em; }
+.dim { color: #7A6B82; }
+
+.ph { display: flex; justify-content: space-between; align-items: baseline;
+      padding-bottom: 3mm; border-bottom: .35mm solid #EAE7E7; color: #7A6B82; }
+.h2 { font-family: Fraunces; font-size: 24pt; font-weight: 700; line-height: 1.05;
+      letter-spacing: -.02em; margin: 6mm 0 4.5mm; }
+.h3 { font-family: Fraunces; font-size: 11pt; font-weight: 600; letter-spacing: -.005em; margin-bottom: 2.2mm; }
+.mt { margin-top: 6mm; }
+.lead { font-size: 9.8pt; line-height: 1.62; }
+.lead-w { max-width: 150mm; }
+.small { font-size: 8pt; line-height: 1.55; color: #7A6B82; }
+.col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; }
+
+.src { font-family: 'JetBrains Mono', monospace; font-size: 5.6pt; letter-spacing: .1em; text-transform: uppercase;
+       padding: .7mm 1.6mm; border-radius: 999px; vertical-align: middle; white-space: nowrap; }
+.src-r { background: rgba(193,61,99,0.15); color: #9A314F; }
+.src-p { border: .25mm solid #EAE7E7; color: #7A6B82; }
+
+.ul { list-style: none; font-size: 9pt; }
+.ul li { position: relative; padding-left: 5mm; margin-bottom: 1.3mm; }
+.ul li::before { content: ""; position: absolute; left: 0; top: 1.7mm; width: 2.2mm; height: 2.2mm;
+                 background: #C13D63; border-radius: 50%; }
+.ul.ko li::before { background: none; content: "×"; font-family: 'JetBrains Mono', monospace; top: -.2mm; left: .3mm; color: #7A6B82; }
+.small-ul li { font-size: 8pt; }
+
+.quotes blockquote { font-family: Fraunces; font-size: 11.5pt; line-height: 1.35; padding: 2.5mm 0 2.5mm 5mm;
+                     border-left: .8mm solid #C13D63; margin-bottom: 3mm; }
+.banned { display: flex; flex-wrap: wrap; gap: 2mm; }
+.banned span { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; padding: 1.2mm 2.4mm;
+               border: .3mm solid #EAE7E7; color: #7A6B82; text-decoration: line-through; }
+
+.tbl { width: 100%; border-collapse: collapse; font-size: 8pt; margin-top: 2mm; }
+.tbl th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 6.5pt; letter-spacing: .1em;
+          text-transform: uppercase; color: #7A6B82; padding: 0 2mm 1.5mm 0; border-bottom: .35mm solid #EAE7E7; }
+.tbl td { padding: 1.6mm 2mm 1.6mm 0; border-bottom: .25mm solid #EAE7E7; vertical-align: top; }
+.tbl .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* couverture */
+.cover { display: flex; flex-direction: column; padding: 15mm; }
+.cv-top { display: flex; justify-content: space-between; opacity: .7; }
+.cv-logo-top { margin-top: 18mm; display: flex; align-items: center; min-height: 20mm; }
+.cv-logo-top img { max-width: 90mm; object-fit: contain; }
+.cover .cv-main { margin-top: auto; }
+.wordmark { font-size: 26pt; font-weight: 700; letter-spacing: -.02em; }
+.monogram { display: flex; align-items: center; justify-content: center; width: 20mm; height: 20mm;
+            font-size: 20pt; font-weight: 700; }
+.cv-main { margin-top: 8mm; }
+.cv-title { font-family: Fraunces; font-size: 42pt; font-weight: 700; line-height: 1.02; letter-spacing: -.03em; }
+.cv-tag { font-size: 12pt; line-height: 1.45; margin-top: 4mm; max-width: 135mm; opacity: .88; }
+.cv-abstract { font-size: 9.5pt; line-height: 1.7; margin-top: 6mm; max-width: 125mm; opacity: .72; }
+/* Le filet inséré est indispensable : une couleur de la palette identique au
+   fond de couverture disparaîtrait sans lui. */
+.cv-strip { display: flex; height: 30mm; margin-top: auto; border-radius: 34px; overflow: hidden; }
+.cv-strip span { flex: 1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2mm;
+                 box-shadow: inset 0 0 0 .25mm currentColor; }
+.cv-strip em { font-size: 5.4pt; font-style: normal; letter-spacing: .05em; opacity: .8; }
+.cv-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6mm; margin-top: 7mm;
+            padding-top: 5mm; border-top: .3mm solid currentColor; }
+.cv-fl { opacity: .55; display: block; margin-bottom: 2.5mm; }
+.cv-fv { font-size: 8.5pt; line-height: 1.7; opacity: .9; }
+.cv-keys { display: flex; flex-wrap: wrap; gap: 2mm; margin-top: 7mm; }
+.cv-key { font-family: 'JetBrains Mono', monospace; font-size: 7pt; letter-spacing: .1em; text-transform: uppercase;
+          padding: 1.5mm 3mm; border: .35mm solid; border-radius: 999px; }
+.cv-foot { display: flex; justify-content: space-between; gap: 6mm; margin-top: 7mm; opacity: .5; font-size: 5.6pt; }
+
+/* logo */
+.logo-main { margin-top: 4mm; border: .3mm solid #EAE7E7; border-radius: 34px;
+             height: 45mm; display: flex; align-items: center; justify-content: center; padding: 6mm; }
+.logo-main img { max-width: 120mm; object-fit: contain; }
+.logo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: 5mm; }
+.logo-grid figure { border: .3mm solid #EAE7E7; border-radius: 34px; height: 34mm;
+                    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2mm; padding: 4mm; }
+.logo-grid img { max-width: 60mm; object-fit: contain; }
+.logo-grid figcaption { color: #7A6B82; font-size: 5.8pt; }
+.bgs { display: flex; gap: 2mm; margin-bottom: 3mm; flex-wrap: wrap; }
+.bg-chip { flex: 1 1 18mm; height: 15mm; border-radius: 24px; padding: 2mm;
+           display: flex; flex-direction: column; justify-content: space-between; border: .2mm solid rgba(128,128,128,.22); }
+.bg-hex { font-size: 5.2pt; letter-spacing: .04em; }
+.bg-use { font-size: 5.2pt; opacity: .8; }
+.clearspace { display: flex; align-items: center; gap: 4mm; margin-bottom: 3mm; }
+.cs-box { flex: 0 0 32mm; height: 19mm; border: .3mm dashed #C13D63; display: flex;
+          align-items: center; justify-content: center; color: #7A6B82; }
+.cs-note { font-size: 8pt; color: #7A6B82; line-height: 1.5; }
+
+/* couleurs */
+.sw-grid { display: grid; gap: 3mm; }
+.sw-chip { height: 17mm; border-radius: 34px; display: flex; align-items: flex-end; padding: 2mm;
+           border: .2mm solid rgba(128,128,128,.22); }
+.sw-hex { font-size: 6.2pt; }
+.sw-meta { display: flex; flex-direction: column; margin-top: 1.6mm; font-size: 7pt; line-height: 1.3; }
+.sw-meta strong { font-size: 8pt; }
+.sw-meta span { color: #7A6B82; }
+.sw-ratio { font-size: 5.8pt; margin-top: .6mm; }
+.scale-row { display: flex; align-items: center; gap: 3mm; margin-top: 2mm; }
+.scale-name { flex: 0 0 24mm; color: #7A6B82; }
+.scale-strip { flex: 1; display: flex; height: 7mm; border-radius: 24px; overflow: hidden; }
+.scale-strip span { flex: 1; display: flex; align-items: center; justify-content: center; }
+.scale-strip em { font-size: 5pt; font-style: normal; opacity: .85; }
+.ratio-bar { display: flex; height: 11mm; overflow: hidden; border-radius: 999px;
+             margin-bottom: 3mm; border: .3mm solid #EAE7E7; }
+.ratio-bar span { display: flex; align-items: center; justify-content: center;
+                  font-family: 'JetBrains Mono', monospace; font-size: 6.4pt; letter-spacing: .08em; text-transform: uppercase; }
+.ct-row { display: grid; grid-template-columns: 9mm 1fr 13mm 21mm; align-items: center; gap: 2mm;
+          padding: 1.2mm 0; border-bottom: .25mm solid #EAE7E7; }
+.ct-demo { display: flex; align-items: center; justify-content: center; height: 6.5mm; font-weight: 600; font-size: 8pt; border-radius: 1mm; }
+.ct-label { font-size: 7.8pt; }
+.ct-ratio { font-size: 7pt; text-align: right; }
+.ct-verdict { font-family: 'JetBrains Mono', monospace; font-size: 6.2pt; letter-spacing: .08em; text-transform: uppercase; text-align: right; }
+.ct-verdict.ok { color: #C13D63; }
+.ct-verdict.ko { color: #7A6B82; text-decoration: line-through; }
+
+/* typographie */
+.spec-grid { display: grid; gap: 4mm; }
+.spec { border: .3mm solid #EAE7E7; border-radius: 34px; padding: 3.5mm 4.5mm; }
+.spec-head { display: flex; justify-content: space-between; align-items: baseline; }
+.spec-role { color: #C13D63; }
+.spec-name { font-size: 9pt; }
+.spec-body { line-height: 1.1; margin: 2.2mm 0 1.8mm; }
+.spec-alpha { font-size: 7.6pt; line-height: 1.5; color: #7A6B82; word-spacing: .1em; }
+.spec-note { margin-top: 1.4mm; }
+.scale { width: 100%; border-collapse: collapse; font-size: 8pt; }
+.scale th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 6.4pt; letter-spacing: .1em;
+            text-transform: uppercase; color: #7A6B82; padding-bottom: 1.4mm; border-bottom: .35mm solid #EAE7E7; }
+.scale td { padding: 1.5mm 1mm 1.5mm 0; border-bottom: .25mm solid #EAE7E7; vertical-align: middle; }
+.scale td:last-child { text-align: right; max-width: 52mm; overflow: hidden; white-space: nowrap; }
+
+/* espacement & formes */
+.space-strip { display: flex; align-items: flex-end; gap: 2.5mm; margin: 3mm 0; height: 20mm; overflow: hidden; }
+.sp { display: flex; flex-direction: column; align-items: center; gap: 1.2mm; }
+.sp span { display: block; width: 5mm; border-radius: 1mm; }
+.sp em { font-size: 5.2pt; font-style: normal; color: #7A6B82; font-family: 'JetBrains Mono', monospace; }
+.shapes { display: flex; gap: 3mm; }
+.shape { flex: 1; height: 15mm; border: .35mm solid #EAE7E7; background: #FFFFFF;
+         display: flex; align-items: center; justify-content: center; color: #7A6B82; }
+.shape.btn { border: none; }
+.shape.btn .mono { color: inherit; }
+.elev { display: flex; gap: 4mm; }
+.el { flex: 1; height: 15mm; background: #FFFFFF; border: .25mm solid #EAE7E7;
+      display: flex; align-items: center; justify-content: center; color: #7A6B82; }
+.grid-demo { display: grid; gap: 2mm; height: 14mm; margin-top: 2mm; }
+.grid-demo span { display: block; border-radius: 24px; }
+
+/* composants */
+.cmp { border: .3mm solid #EAE7E7; border-radius: 34px; padding: 4mm; background: #FFFFFF; }
+.btn-row { display: flex; align-items: center; gap: 4mm; margin-bottom: 3mm; }
+.btn-row:last-child { margin-bottom: 0; }
+.btn-kind { flex: 0 0 22mm; color: #7A6B82; }
+.btn-cell { display: flex; flex-direction: column; align-items: center; gap: 1.4mm; }
+.btn-cell em { font-size: 5.4pt; font-style: normal; color: #7A6B82; font-family: 'JetBrains Mono', monospace;
+               letter-spacing: .08em; text-transform: uppercase; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-width: 24mm; height: 8mm;
+       padding: 0 4mm; font-size: 8pt; font-weight: 600; border: .35mm solid; }
+.btn-sm { min-width: 0; height: 6.5mm; font-size: 7.2pt; padding: 0 3mm; border-color: transparent; margin-top: 1.5mm; align-self: flex-start; }
+.fld { display: flex; flex-direction: column; gap: 1.2mm; margin-bottom: 3.5mm; }
+.fld:last-child { margin-bottom: 0; }
+.fld-lab { font-size: 7.6pt; font-weight: 600; }
+.input { display: flex; align-items: center; height: 8.5mm; padding: 0 3mm; border: .35mm solid;
+         font-size: 8pt; color: #7A6B82; }
+.fld-help, .fld-err { font-size: 6.8pt; color: #7A6B82; }
+.badges { display: flex; flex-wrap: wrap; gap: 2mm; }
+.badge { font-size: 7pt; font-weight: 600; padding: 1.3mm 3mm; }
+.alert { display: flex; gap: 3mm; align-items: flex-start; border: .3mm solid; padding: 3mm 3.5mm; font-size: 8pt; }
+.alert-bar { width: 1mm; align-self: stretch; border-radius: 1mm; flex: 0 0 auto; }
+.card-demo { border: .3mm solid; padding: 3.5mm 4mm; display: flex; flex-direction: column; gap: 1.4mm; font-size: 8pt; }
+.card-lab { font-size: 6pt; }
+.card-title { font-family: Fraunces; font-size: 10.5pt; }
+.tbl-demo { border: .3mm solid; border-radius: 34px; }
+.tbl-demo th, .tbl-demo td { padding-left: 3mm; }
+.dot { display: inline-block; width: 2.2mm; height: 2.2mm; border-radius: 50%; margin-right: 1.6mm; }
+
+/* écrans */
+.ui { display: grid; grid-template-columns: 40mm 1fr; border: .3mm solid #EAE7E7;
+      border-radius: 34px; overflow: hidden; height: 74mm; }
+.ui-side { padding: 4.5mm 3.5mm; display: flex; flex-direction: column; }
+.ui-brand { display: flex; align-items: center; gap: 2mm; font-family: Fraunces; font-size: 10.5pt; }
+.ui-dot { width: 3.6mm; height: 3.6mm; border-radius: 50%; display: block; flex: 0 0 auto; }
+.ui-side nav { display: flex; flex-direction: column; gap: 1mm; margin-top: 5mm; }
+.ui-nav { font-size: 7.6pt; padding: 1.7mm 2.4mm; border-radius: 999px; opacity: .72; }
+.ui-nav.on { opacity: 1; font-weight: 600; }
+.ui-foot { margin-top: auto; font-size: 5.4pt; opacity: .55; }
+.ui-main { padding: 4.5mm; display: flex; flex-direction: column; }
+.ui-top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 3mm; border-bottom: .3mm solid; }
+.ui-eyebrow { font-size: 5.8pt; }
+.ui-h { font-family: Fraunces; font-size: 12.5pt; font-weight: 600; margin-top: 1.4mm; }
+.ui-badge { font-family: 'JetBrains Mono', monospace; font-size: 5.8pt; letter-spacing: .08em; text-transform: uppercase;
+            padding: 1.3mm 2.5mm; border-radius: 999px; white-space: nowrap; }
+.ui-cards { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 3mm; margin-top: 3.5mm; flex: 1; }
+.ui-card { border: .3mm solid; border-radius: 34px; padding: 3mm; display: flex; flex-direction: column; }
+.ui-lab { font-size: 5.8pt; }
+.ui-card p { font-size: 7.2pt; line-height: 1.5; margin-top: 2mm; }
+.ui-list { list-style: none; margin-top: 2mm; font-size: 7.2pt; }
+.ui-list li { padding: 1.1mm 0; border-bottom: .25mm solid; }
+.ui-list li:last-child { border-bottom: none; }
+
+.states { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 2mm; }
+.state { border: .3mm solid; padding: 3.5mm; display: flex; flex-direction: column; gap: 1.6mm; font-size: 8pt; }
+.st-lab { color: #7A6B82; font-size: 5.8pt; }
+.state strong { font-size: 9pt; }
+.state .dim { font-size: 7.2pt; line-height: 1.5; }
+.skel { display: block; height: 2.6mm; border-radius: 999px; }
+
+/* jetons */
+.tok-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; align-items: start; }
+.tok-grid > .code { margin-top: 4mm; }
+.code { font-family: 'JetBrains Mono', monospace; font-size: 6pt; line-height: 1.55; white-space: pre-wrap;
+        background: #FFFFFF; border: .3mm solid #EAE7E7; border-radius: 34px;
+        padding: 3mm 3.5mm; margin-top: 4mm; color: #43324B; overflow: hidden; }
+.end { position: absolute; left: 15mm; right: 15mm; bottom: 10mm; padding-top: 2.5mm;
+       border-top: .35mm solid #EAE7E7; color: #7A6B82; }
+</style>
+</head>
+<body>
+<section class="page cover" style="background:#43324B;color:#FDFBF8">
+    <div class="cv-top">
+      <span class="mono">Charte de marque — relevé du site « L'éclaircie »</span>
+      <span class="mono">9 septembre 2026</span>
+    </div>
+    <div class="cv-logo-top"><img src="assets/logo/inverse.svg" alt="Xénia Van Outryve — inverse" style="max-height:18mm"></div>
+    <div class="cv-main">
+      <h1 class="cv-title">Xénia Van Outryve</h1>
+      <p class="cv-tag">Psychologue en Brabant wallon, vers un mieux-être durable</p>
+    </div>
+    <p class="cv-abstract">« L'éclaircie » : le moment où la lumière revient. Le fond est un ivoire chaud, jamais blanc pur, sur lequel dérivent de grandes formes organiques aux couleurs d'aurore — pêche, rose, lilas, eau — qui ne portent jamais de texte.</p>
+    <div class="cv-strip">
+      <span style="background:#FDFBF8;color:#43324B"><em class="mono">#FDFBF8</em></span><span style="background:#FFFFFF;color:#43324B"><em class="mono">#FFFFFF</em></span><span style="background:#43324B;color:#FDFBF8"><em class="mono">#43324B</em></span><span style="background:#7A6B82;color:#FDFBF8"><em class="mono">#7A6B82</em></span><span style="background:#C13D63;color:#FDFBF8"><em class="mono">#C13D63</em></span><span style="background:#47705C;color:#FDFBF8"><em class="mono">#47705C</em></span><span style="background:#FFD9C4;color:#43324B"><em class="mono">#FFD9C4</em></span><span style="background:#F6C8DB;color:#43324B"><em class="mono">#F6C8DB</em></span><span style="background:#DFD2F4;color:#43324B"><em class="mono">#DFD2F4</em></span><span style="background:#C9E9DE;color:#43324B"><em class="mono">#C9E9DE</em></span>
+    </div>
+    <div class="cv-facts">
+      <div>
+        <span class="mono cv-fl">Accent</span>
+        <p class="cv-fv">Framboise<br><span class="mono lc">#C13D63</span></p>
+      </div>
+      <div>
+        <span class="mono cv-fl">Typographies</span>
+        <p class="cv-fv">Fraunces<br>Hanken Grotesk<br>JetBrains Mono</p>
+      </div>
+      <div>
+        <span class="mono cv-fl">Rayons</span>
+        <p class="cv-fv">carte 34px<br>bouton 999px<br>champ 24px</p>
+      </div>
+      <div>
+        <span class="mono cv-fl">À l'opposé de</span>
+        <p class="cv-fv">angles droits et filets durs<br>noir et gris neutres<br>crème + terracotta du cabinet générique<br>urgence ou injonction</p>
+      </div>
+    </div>
+    <div class="cv-keys">
+      <span class="cv-key" style="border-color:#C13D63">lumineux</span><span class="cv-key" style="border-color:#C13D63">organique</span><span class="cv-key" style="border-color:#C13D63">respirant</span><span class="cv-key" style="border-color:#C13D63">sécurisant</span><span class="cv-key" style="border-color:#C13D63">peps</span>
+    </div>
+    <div class="cv-foot mono">
+      <span>https://xenia.chris-ia.com</span>
+      <span>Document destiné à la construction de produits numériques — application, SaaS, refonte</span>
+    </div>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">02/09</span>
+  </header>
+  <h2 class="h2">Positionnement &amp; ton de voix</h2>
+    <div class="col2">
+      <div>
+        <h3 class="h3">Le territoire <span class="src src-r">relevé</span></h3>
+        <p class="lead">« L'éclaircie » : le moment où la lumière revient. Le fond est un ivoire chaud, jamais blanc pur, sur lequel dérivent de grandes formes organiques aux couleurs d'aurore — pêche, rose, lilas, eau — qui ne portent jamais de texte. L'encre est une aubergine profonde, jamais du noir, et une seule couleur vive, la framboise, désigne ce qui se clique. Les titres sont composés dans une serif chaleureuse dont le mot pivot passe en italique ; le corps reste une humaniste très lisible. Rien n'est carré : cartes à grands rayons, médaillons en blob, capsules, verre dépoli posé sur de la couleur.</p>
+        <h3 class="h3 mt">Ce que la marque revendique</h3>
+        <ul class="ul"><li>lumineux</li><li>organique</li><li>respirant</li><li>sécurisant</li><li>peps</li></ul>
+        <h3 class="h3 mt">Ce qu'elle refuse</h3>
+        <ul class="ul ko"><li>angles droits et filets durs</li><li>noir et gris neutres</li><li>crème + terracotta du cabinet générique</li><li>urgence ou injonction</li><li>jargon clinique</li></ul>
+      </div>
+      <div>
+        <h3 class="h3">Principe d'écriture</h3>
+        <p class="lead">On parle au visiteur dans ses mots, à la deuxième personne, sans jargon ni promesse. La praticienne dit « je », le visiteur reste une personne, jamais un symptôme.</p>
+        <h3 class="h3 mt">Formulations relevées sur le site <span class="src src-r">relevé</span></h3>
+        <div class="quotes"><blockquote>Parfois, tout pèse un peu trop.</blockquote><blockquote>La lumière revient, à votre rythme.</blockquote><blockquote>Vous vous reconnaissez dans l'une de ces phrases ?</blockquote><blockquote>Le plus difficile, c'est souvent de prendre le premier rendez-vous.</blockquote></div>
+        <h3 class="h3 mt">Mots proscrits</h3>
+        <div class="banned"><span>guérison</span><span>patient</span><span>prise en charge</span><span>symptôme à corriger</span><span>rapidement</span></div>
+      </div>
+    </div>
+    <h3 class="h3 mt">Microcopie d'interface</h3>
+    <table class="tbl">
+      <thead><tr><th>Contexte</th><th>Formulation</th><th>Règle</th></tr></thead>
+      <tbody><tr><td>Bouton principal</td><td><strong>Prendre rendez-vous</strong></td><td class="dim">Verbe à l'infinitif, l'action réelle. Un seul bouton plein par écran.</td></tr><tr><td>Lien secondaire</td><td><strong>Découvrir mon approche</strong></td><td class="dim">Lien-flèche à la première personne de la praticienne, jamais un second bouton plein.</td></tr><tr><td>Bouton de cabinet</td><td><strong>Rendez-vous sur Doctoranytime</strong></td><td class="dim">Nommer la plateforme : le visiteur sait où il va.</td></tr><tr><td>Onglet</td><td><strong>Périnatalité &amp; Parentalité</strong></td><td class="dim">Le nom du volet tel qu'il figure dans la navigation, esperluette comprise.</td></tr></tbody>
+    </table>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">03/09</span>
+  </header>
+  <h2 class="h2">Logotype <span class="src src-r">relevé</span></h2>
+    <p class="lead lead-w">« La rencontre » : deux pétales translucides, rose et sauge, croisés à 38 degrés. Leur recouvrement en multiply dessine une amande — le X de Xénia, sans le dire.</p>
+    <figure class="logo-main" style="background:#FFFFFF"><img src="assets/logo/lockup.svg" alt="Xénia Van Outryve — lockup" style="max-height:30mm"></figure>
+    <div class="logo-grid">
+      <figure style="background:#43324B"><img src="assets/logo/inverse.svg" alt="Xénia Van Outryve — inverse" style="max-height:20mm"><figcaption class="mono" style="color:#FDFBF8;opacity:.6">Version inversée — fonds sombres</figcaption></figure>
+      <figure style="background:#FFFFFF"><img src="assets/logo/picto.svg" alt="Xénia Van Outryve — picto" style="max-height:20mm"><figcaption class="mono">Symbole seul — favicon, avatar, app</figcaption></figure>
+    </div>
+    <h3 class="h3 mt">Fonds autorisés — calculés sur la palette</h3>
+    <div class="bgs">
+      <div class="bg-chip" style="background:#FDFBF8;color:#43324B">
+            <span class="mono bg-hex">#FDFBF8</span>
+            <span class="mono bg-use">couleur</span>
+          </div><div class="bg-chip" style="background:#FFFFFF;color:#43324B">
+            <span class="mono bg-hex">#FFFFFF</span>
+            <span class="mono bg-use">couleur</span>
+          </div><div class="bg-chip" style="background:#43324B;color:#FDFBF8">
+            <span class="mono bg-hex">#43324B</span>
+            <span class="mono bg-use">inversée</span>
+          </div><div class="bg-chip" style="background:#7A6B82;color:#FDFBF8">
+            <span class="mono bg-hex">#7A6B82</span>
+            <span class="mono bg-use">inversée</span>
+          </div><div class="bg-chip" style="background:#C13D63;color:#FDFBF8">
+            <span class="mono bg-hex">#C13D63</span>
+            <span class="mono bg-use">inversée</span>
+          </div><div class="bg-chip" style="background:#47705C;color:#FDFBF8">
+            <span class="mono bg-hex">#47705C</span>
+            <span class="mono bg-use">inversée</span>
+          </div><div class="bg-chip" style="background:#FFD9C4;color:#43324B">
+            <span class="mono bg-hex">#FFD9C4</span>
+            <span class="mono bg-use">couleur</span>
+          </div><div class="bg-chip" style="background:#F6C8DB;color:#43324B">
+            <span class="mono bg-hex">#F6C8DB</span>
+            <span class="mono bg-use">couleur</span>
+          </div><div class="bg-chip" style="background:#DFD2F4;color:#43324B">
+            <span class="mono bg-hex">#DFD2F4</span>
+            <span class="mono bg-use">couleur</span>
+          </div><div class="bg-chip" style="background:#C9E9DE;color:#43324B">
+            <span class="mono bg-hex">#C9E9DE</span>
+            <span class="mono bg-use">couleur</span>
+          </div>
+    </div>
+    <p class="small">Sur les fonds clairs, le logotype s'emploie en version couleur ; sur les fonds sombres, en version inversée. Le choix se lit sur le ratio de contraste, pas à l'œil.</p>
+    <div class="col2 mt">
+      <div>
+        <h3 class="h3">Zone de protection & tailles</h3>
+        <div class="clearspace">
+          <div class="cs-box"><span class="mono">logo</span></div>
+          <span class="cs-note">Un demi-pétale (un quart de la largeur du symbole) sur les quatre côtés.</span>
+        </div>
+        <p class="small">Taille minimale : <strong>120 px</strong> de large à l'écran pour le lockup complet. En dessous, employer le symbole seul (minimum <strong>16 px</strong> — c'est la taille du favicon).</p>
+        <p class="small">Symbole SVG inline aux couleurs des jetons --petale-rose #E8799F et --petale-sage #84C7AE, opacité 0,9, fusion multiply. Sur fond sombre la fusion ne fonctionne pas : la version inversée superpose les pétales, l'amande passe en ivoire. Le nom « Xénia Van Outryve » n'existe qu'en HTML (Fraunces 640) : composer le wordmark avant tout usage hors navigateur.</p>
+      </div>
+      <div>
+        <h3 class="h3">Interdits</h3>
+        <ul class="ul ko">
+          <li>Déformer, incliner ou étirer le logotype</li>
+          <li>Le recolorer hors de la palette</li>
+          <li>Ajouter ombre portée, contour ou effet</li>
+          <li>Le poser sur une image chargée sans aplat</li>
+          <li>Recomposer le nom avec une autre police</li>
+          <li>Descendre sous les tailles minimales</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">04/09</span>
+  </header>
+  <h2 class="h2">Couleurs</h2>
+    <div class="sw-grid" style="grid-template-columns:repeat(4,1fr)"><div class="sw">
+    <div class="sw-chip" style="background:#FDFBF8;color:#43324B">
+      <span class="mono sw-hex">#FDFBF8</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Ivoire <span class="src src-r">relevé</span></strong>
+      <span>Fond de page — lumineux, chaud</span>
+      <span class="mono sw-ratio">texte 11.3:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#FFFFFF;color:#43324B">
+      <span class="mono sw-hex">#FFFFFF</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Blanc <span class="src src-r">relevé</span></strong>
+      <span>Cartes ; les cartes teintées partent d'un pastel à 35 % et se fondent vers ce blanc</span>
+      <span class="mono sw-ratio">texte 11.7:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#43324B;color:#FDFBF8">
+      <span class="mono sw-hex">#43324B</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Aubergine <span class="src src-r">relevé</span></strong>
+      <span>Texte principal, contour de la carte dessinée — jamais de noir</span>
+      <span class="mono sw-ratio">texte 11.3:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#7A6B82;color:#FDFBF8">
+      <span class="mono sw-hex">#7A6B82</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Gris-mauve <span class="src src-r">relevé</span></strong>
+      <span>Texte secondaire, légendes, pied de page</span>
+      <span class="mono sw-ratio">texte 4.8:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#C13D63;color:#FDFBF8">
+      <span class="mono sw-hex">#C13D63</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Framboise <span class="src src-r">relevé</span></strong>
+      <span>Accent unique : boutons pleins, liens, mots pivots, sur-titres, pastilles</span>
+      <span class="mono sw-ratio">texte 4.9:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#47705C;color:#FDFBF8">
+      <span class="mono sw-hex">#47705C</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Sauge profonde <span class="src src-r">relevé</span></strong>
+      <span>Accent du volet Nutrition &amp; Santé (bouton, sur-titre)</span>
+      <span class="mono sw-ratio">texte 5.4:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#FFD9C4;color:#43324B">
+      <span class="mono sw-hex">#FFD9C4</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Pêche <span class="src src-r">relevé</span></strong>
+      <span>Aurore — fonds, blobs, teinte de carte</span>
+      <span class="mono sw-ratio">texte 8.9:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#F6C8DB;color:#43324B">
+      <span class="mono sw-hex">#F6C8DB</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Rose <span class="src src-r">relevé</span></strong>
+      <span>Aurore — fonds, blobs, halo qui respire</span>
+      <span class="mono sw-ratio">texte 7.9:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#DFD2F4;color:#43324B">
+      <span class="mono sw-hex">#DFD2F4</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Lilas <span class="src src-r">relevé</span></strong>
+      <span>Aurore — fonds, blobs, teinte de carte</span>
+      <span class="mono sw-ratio">texte 8.2:1</span>
+    </div>
+  </div><div class="sw">
+    <div class="sw-chip" style="background:#C9E9DE;color:#43324B">
+      <span class="mono sw-hex">#C9E9DE</span>
+    </div>
+    <div class="sw-meta">
+      <strong>Eau <span class="src src-r">relevé</span></strong>
+      <span>Aurore — fonds, blobs, cœur de la rencontre nutrition</span>
+      <span class="mono sw-ratio">texte 9.0:1</span>
+    </div>
+  </div></div>
+    
+    <div class="col2 mt">
+      <div>
+        <h3 class="h3">Répartition</h3>
+        <div class="ratio-bar">
+          <span style="width:60%;background:#FDFBF8;color:#43324B">60 % fond</span>
+          <span style="width:30%;background:#43324B;color:#FDFBF8">30 % encre</span>
+          <span style="width:10%;background:#C13D63;color:#FDFBF8">10 %</span>
+        </div>
+        <p class="small">Le fond domine, l'encre structure, l'accent ne dépasse jamais un dixième de la surface. Un écran ne porte qu'un seul accent à la fois.</p>
+        <h3 class="h3 mt">Règles d'emploi</h3>
+        <ul class="ul small-ul">
+          <li>L'ivoire est le seul fond de page ; le blanc est réservé aux cartes et l'ivoire doux #F7F2EC au pied de page</li><li>Les quatre pastels d'aurore ne portent jamais de texte : ce sont des fonds — blobs, teintes de carte à 35 %, dégradés sous les médaillons</li><li>La framboise est l'accent unique des actions ; la sauge profonde n'apparaît que dans le volet nutrition</li><li>Le verre dépoli se pose toujours sur une forme colorée, jamais sur l'ivoire nu</li><li>Les couleurs d'état ambre et rouge sombre sont proposées : le site n'affiche aucune erreur ni avertissement</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="h3">Accessibilité — WCAG 2.1 <span class="src src-r">relevé</span></h3>
+        <div class="ct"><div class="ct-row">
+    <span class="ct-demo" style="background:#FDFBF8;color:#43324B">Aa</span>
+    <span class="ct-label">Texte principal sur fond de page</span>
+    <span class="mono ct-ratio">11.3:1</span>
+    <span class="ct-verdict ok">AAA</span>
+  </div><div class="ct-row">
+    <span class="ct-demo" style="background:#FFFFFF;color:#43324B">Aa</span>
+    <span class="ct-label">Texte principal sur surface</span>
+    <span class="mono ct-ratio">11.7:1</span>
+    <span class="ct-verdict ok">AAA</span>
+  </div><div class="ct-row">
+    <span class="ct-demo" style="background:#FDFBF8;color:#7A6B82">Aa</span>
+    <span class="ct-label">Texte secondaire sur fond de page</span>
+    <span class="mono ct-ratio">4.8:1</span>
+    <span class="ct-verdict ok">AA</span>
+  </div><div class="ct-row">
+    <span class="ct-demo" style="background:#FDFBF8;color:#C13D63">Aa</span>
+    <span class="ct-label">Accent sur fond de page</span>
+    <span class="mono ct-ratio">4.9:1</span>
+    <span class="ct-verdict ok">AA</span>
+  </div><div class="ct-row">
+    <span class="ct-demo" style="background:#C13D63;color:#FDFBF8">Aa</span>
+    <span class="ct-label">Texte sur aplat d'accent</span>
+    <span class="mono ct-ratio">4.9:1</span>
+    <span class="ct-verdict ok">AA</span>
+  </div><div class="ct-row">
+    <span class="ct-demo" style="background:#43324B;color:#FDFBF8">Aa</span>
+    <span class="ct-label">Texte sur section sombre</span>
+    <span class="mono ct-ratio">11.3:1</span>
+    <span class="ct-verdict ok">AAA</span>
+  </div></div>
+        
+      </div>
+    </div>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">05/09</span>
+  </header>
+  <h2 class="h2">Typographie</h2>
+    <div class="spec-grid">
+      <div class="spec">
+    <div class="spec-head">
+      <span class="mono spec-role">Titrage</span>
+      <strong class="spec-name">Fraunces <span class="src src-r">relevé</span></strong>
+    </div>
+    <div class="spec-body" style="font-family:Fraunces;font-size:24pt">Xénia Van Outryve — l'éclaircie</div>
+    <div class="spec-alpha" style="font-family:Fraunces">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 àâçéèêëîïôûù €%‰</div>
+    <p class="small spec-note">Titres, traversée, citation. SOFT 70 / opsz 90 sur les titres ; le mot pivot en italique SOFT 100 / WONK 1, graisse 480, framboise. · Graisses : 480;560;620 · Repli : Georgia, serif</p>
+  </div>
+      <div class="spec">
+    <div class="spec-head">
+      <span class="mono spec-role">Texte</span>
+      <strong class="spec-name">Hanken Grotesk <span class="src src-r">relevé</span></strong>
+    </div>
+    <div class="spec-body" style="font-family:'Hanken Grotesk';font-size:20pt">Xénia Van Outryve — l'essentiel, lisiblement</div>
+    <div class="spec-alpha" style="font-family:'Hanken Grotesk'">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 àâçéèêëîïôûù €%‰</div>
+    <p class="small spec-note">Corps, navigation, boutons, capsules, étiquettes. Fonte variable (Fontsource). · Graisses : 400;600;700 · Repli : system-ui, sans-serif</p>
+  </div>
+      <div class="spec">
+    <div class="spec-head">
+      <span class="mono spec-role">Monospace</span>
+      <strong class="spec-name">JetBrains Mono <span class="src src-p">proposé</span></strong>
+    </div>
+    <div class="spec-body" style="font-family:'JetBrains Mono';font-size:18pt">Xénia Van Outryve — l'essentiel, lisiblement</div>
+    <div class="spec-alpha" style="font-family:'JetBrains Mono'">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 àâçéèêëîïôûù €%‰</div>
+    <p class="small spec-note">Numéro d'agrément, TVA, horaires en tableau. Le site n'en utilise pas. · Graisses : 400;500 · Repli : ui-monospace, monospace</p>
+  </div>
+    </div>
+    <h3 class="h3 mt">Échelle typographique — valeurs écran <span class="src src-r">relevé</span></h3>
+    <table class="scale">
+      <thead><tr><th>Niveau</th><th>Taille</th><th>Interligne</th><th>Approche</th><th>Graisse</th><th>Rendu</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Display<span class="dim"> · titre du hero, phrases de la traversée</span></td>
+          <td class="mono">58 px</td>
+          <td class="mono">1.08</td>
+          <td class="mono">-0.015em</td>
+          <td class="mono">560</td>
+          <td style="font-family:Fraunces;font-weight:560;font-size:20pt;letter-spacing:-0.015em;line-height:1.1">Xénia Van Outryve</td>
+        </tr><tr>
+          <td>Titre 1<span class="dim"> · titres de section, mot pivot en italique</span></td>
+          <td class="mono">48 px</td>
+          <td class="mono">1.08</td>
+          <td class="mono">-0.015em</td>
+          <td class="mono">560</td>
+          <td style="font-family:Fraunces;font-weight:560;font-size:20pt;letter-spacing:-0.015em;line-height:1.1">Xénia Van Outryve</td>
+        </tr><tr>
+          <td>Titre 2<span class="dim"> · cartes (32 px), motifs, repères, cabinets ; citation 22 px italique 480</span></td>
+          <td class="mono">20 px</td>
+          <td class="mono">1.3</td>
+          <td class="mono">-0.01em</td>
+          <td class="mono">620</td>
+          <td style="font-family:Fraunces;font-weight:620;font-size:8.4pt;letter-spacing:-0.01em;line-height:1.1">Xénia Van Outryve</td>
+        </tr><tr>
+          <td>Corps<span class="dim"> · paragraphes d'introduction (copy), gris-mauve</span></td>
+          <td class="mono">19.5 px</td>
+          <td class="mono">1.55</td>
+          <td class="mono">0</td>
+          <td class="mono">400</td>
+          <td style="font-family:'Hanken Grotesk';font-weight:400;font-size:8.19pt;letter-spacing:0;line-height:1.1">Xénia Van Outryve</td>
+        </tr><tr>
+          <td>Corps dense<span class="dim"> · cartes, listes, navigation, boutons (600)</span></td>
+          <td class="mono">16 px</td>
+          <td class="mono">1.55</td>
+          <td class="mono">0</td>
+          <td class="mono">400</td>
+          <td style="font-family:'Hanken Grotesk';font-weight:400;font-size:6.72pt;letter-spacing:0;line-height:1.1">Xénia Van Outryve</td>
+        </tr><tr>
+          <td>Étiquette<span class="dim"> · sur-titres en capitales framboise, repères</span></td>
+          <td class="mono">13 px</td>
+          <td class="mono">1.2</td>
+          <td class="mono">0.14em</td>
+          <td class="mono">700</td>
+          <td style="font-family:'Hanken Grotesk';font-weight:700;font-size:6.5pt;letter-spacing:0.14em;line-height:1.1;text-transform:uppercase">Xénia Van Outryve</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col2 mt">
+      <div>
+        <h3 class="h3">Règles</h3>
+        <ul class="ul small-ul">
+          <li>Le mot pivot d'un titre passe en italique Fraunces framboise et porte le trait de pinceau</li><li>Une seule graisse de titrage (560) : la hiérarchie se lit à la taille ; jamais de noir</li><li>Guillemets français insécables ; titres en balance, paragraphes en pretty</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="h3">Chargement</h3>
+        <p class="small">Fontsource, WOFF2 auto-hébergées et préchargées, font-display: swap. Aucun appel à Google Fonts en production.</p>
+      </div>
+    </div>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">06/09</span>
+  </header>
+  <h2 class="h2">Espacement, grille &amp; formes</h2>
+    <div class="col2">
+      <div>
+        <h3 class="h3">Échelle d'espacement <span class="src src-p">proposé</span></h3>
+        <p class="small">Base 8px — toute valeur d'espacement est un multiple de la base. Rien « à l'œil ».</p>
+        <div class="space-strip">
+          <div class="sp"><span style="height:1.55mm;background:#C13D63"></span><em class="mono">8px</em></div><div class="sp"><span style="height:3.09mm;background:#C13D63"></span><em class="mono">16px</em></div><div class="sp"><span style="height:4.64mm;background:#C13D63"></span><em class="mono">24px</em></div><div class="sp"><span style="height:6.18mm;background:#C13D63"></span><em class="mono">32px</em></div><div class="sp"><span style="height:9.27mm;background:#C13D63"></span><em class="mono">48px</em></div><div class="sp"><span style="height:12.36mm;background:#C13D63"></span><em class="mono">64px</em></div><div class="sp"><span style="height:17.00mm;background:#C13D63"></span><em class="mono">88px</em></div>
+        </div>
+        <h3 class="h3 mt">Grille & largeurs</h3>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Largeur de contenu</td><td class="mono">1080px</td></tr>
+            <tr><td>Gouttière</td><td class="mono">32px</td></tr>
+            <tr><td>Colonnes</td><td class="mono">12</td></tr>
+            <tr><td>Point de rupture sm</td><td class="mono">480px</td></tr><tr><td>Point de rupture md</td><td class="mono">600px</td></tr><tr><td>Point de rupture lg</td><td class="mono">960px</td></tr><tr><td>Point de rupture xl</td><td class="mono">1024px</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3 class="h3">Rayons</h3>
+        <div class="shapes">
+          <div class="shape" style="border-radius:34px"><span class="mono">carte 34px</span></div>
+          <div class="shape btn" style="border-radius:999px;background:#C13D63;color:#FDFBF8"><span class="mono">bouton 999px</span></div>
+          <div class="shape" style="border-radius:24px"><span class="mono">champ 24px</span></div>
+        </div>
+        <h3 class="h3 mt">Élévations</h3>
+        <div class="elev">
+          <div class="el" style="box-shadow:none;border-radius:34px"><span class="mono">plat</span></div><div class="el" style="box-shadow:0 10px 34px rgba(67,50,75,.08);border-radius:34px"><span class="mono">carte</span></div><div class="el" style="box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 18px 48px rgba(67,50,75,.10);border-radius:34px"><span class="mono">verre</span></div><div class="el" style="box-shadow:0 24px 64px rgba(67,50,75,.16);border-radius:34px"><span class="mono">médaillon</span></div><div class="el" style="box-shadow:0 8px 24px rgba(193,61,99,.28);border-radius:34px"><span class="mono">bouton</span></div>
+        </div>
+        <h3 class="h3 mt">Mouvement <span class="src src-r">relevé</span></h3>
+        <p class="small">Le mouvement suit le défilement et la respiration : le hero se traverse au scroll (scène épinglée), les lignes et les traits se tracent à l'entrée, les blobs dérivent et glissent en parallaxe, le halo respire sur 7 secondes. Rien ne clignote, rien ne rebondit ; tout se coupe en prefers-reduced-motion et le site est complet sans JavaScript.</p>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Durées</td><td class="mono">200ms · 250ms · 350ms · 900ms</td></tr>
+            <tr><td>Courbes</td><td class="mono">cubic-bezier(0.16, 1, 0.3, 1) · ease · power3.out (GSAP)</td></tr>
+            <tr><td>prefers-reduced-motion</td><td class="mono">respecté</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <h3 class="h3 mt">Grille — 12 colonnes, gouttière 32px, contenu 1080px</h3>
+    <div class="grid-demo" style="grid-template-columns:repeat(12,1fr)">
+      <span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span><span style="background:rgba(193,61,99,0.14)"></span>
+    </div>
+    <div class="col2 mt">
+      <div>
+        <h3 class="h3">Hauteurs de contrôle <span class="src src-r">relevé</span></h3>
+        <table class="tbl">
+          <tbody>
+            <tr><td>Bouton</td><td class="mono">50px</td></tr><tr><td>Bouton compact</td><td class="mono">45px</td></tr><tr><td>Onglet du carrousel</td><td class="mono">44px</td></tr><tr><td>Capsule de navigation</td><td class="mono">60px</td></tr>
+          </tbody>
+        </table>
+        <p class="small">Une cible tactile ne descend jamais sous 44 × 44 px, quelle que soit la hauteur visuelle du contrôle.</p>
+      </div>
+      <div>
+        <h3 class="h3">Iconographie</h3>
+        <p class="small">Aucune bibliothèque d'icônes. Une puce-pétale (l'ellipse du logo, 16 × 9 px, rose → lilas) devant les titres de liste ; flèches typographiques → ‹ › pour les liens et le carrousel ; cercles numérotés en Fraunces pour les étapes.</p>
+        <h3 class="h3 mt">Imagerie</h3>
+        <p class="small">Aquarelles pastel générées dans un style unique — papier blanc visible, lavis pêche, rose, lilas et menthe — fondues en multiply dans des médaillons organiques ; un film d'aquarelle scrubé dans le hero. Aucune photographie tant que la cliente n'en fournit pas ; le portrait a sa place réservée.</p>
+        <h3 class="h3 mt">Motif de marque</h3><p class="small">Grain fixe à 4 % sur toute la page ; halo radial qui respire (cycle de 7 s) dans le hero et en pastille au pied de page.</p>
+      </div>
+    </div>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">07/09</span>
+  </header>
+  <h2 class="h2">Composants</h2>
+    <p class="lead lead-w">Reconstruits à partir des jetons, pas capturés : ce que vous voyez ici est ce que produira le code de la page 9.</p>
+
+    <h3 class="h3 mt">Boutons</h3>
+    <div class="cmp"><div class="btn-row">
+    <span class="mono btn-kind">principal</span>
+    <span class="btn-cell">
+          <span class="btn" style="background:#C13D63;color:#FDFBF8;border-color:#C13D63;border-radius:999px;">Action</span>
+          <em class="mono">défaut</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:#C13D63;color:#FDFBF8;border-color:#C13D63;border-radius:999px;background:#AA3657;border-color:#AA3657">Action</span>
+          <em class="mono">survol</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:#C13D63;color:#FDFBF8;border-color:#C13D63;border-radius:999px;box-shadow:0 0 0 1mm rgba(193,61,99,0.35)">Action</span>
+          <em class="mono">focus</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:#C13D63;color:#FDFBF8;border-color:#C13D63;border-radius:999px;opacity:.42">Action</span>
+          <em class="mono">désactivé</em>
+        </span>
+  </div><div class="btn-row">
+    <span class="mono btn-kind">secondaire</span>
+    <span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#43324B;border-color:#EAE7E7;border-radius:999px;">Action</span>
+          <em class="mono">défaut</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#43324B;border-color:#EAE7E7;border-radius:999px;background:rgba(193,61,99,0.08);border-color:#C13D63;color:#C13D63">Action</span>
+          <em class="mono">survol</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#43324B;border-color:#EAE7E7;border-radius:999px;box-shadow:0 0 0 1mm rgba(193,61,99,0.35)">Action</span>
+          <em class="mono">focus</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#43324B;border-color:#EAE7E7;border-radius:999px;opacity:.42">Action</span>
+          <em class="mono">désactivé</em>
+        </span>
+  </div><div class="btn-row">
+    <span class="mono btn-kind">fantôme</span>
+    <span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#C13D63;border-color:transparent;border-radius:999px;">Action</span>
+          <em class="mono">défaut</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#C13D63;border-color:transparent;border-radius:999px;background:rgba(193,61,99,0.08);border-color:#C13D63;color:#C13D63">Action</span>
+          <em class="mono">survol</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#C13D63;border-color:transparent;border-radius:999px;box-shadow:0 0 0 1mm rgba(193,61,99,0.35)">Action</span>
+          <em class="mono">focus</em>
+        </span><span class="btn-cell">
+          <span class="btn" style="background:transparent;color:#C13D63;border-color:transparent;border-radius:999px;opacity:.42">Action</span>
+          <em class="mono">désactivé</em>
+        </span>
+  </div></div>
+
+    <div class="col2 mt">
+      <div>
+        <h3 class="h3">Champs</h3>
+        <div class="cmp">
+          <label class="fld"><span class="fld-lab">Libellé</span>
+            <span class="input" style="border-radius:24px;border-color:#EAE7E7;background:#FFFFFF">Valeur saisie</span>
+            <span class="fld-help">Texte d'aide, une ligne.</span>
+          </label>
+          <label class="fld"><span class="fld-lab">Champ actif</span>
+            <span class="input" style="border-radius:24px;border-color:#C13D63;background:#FFFFFF;box-shadow:0 0 0 .8mm rgba(193,61,99,0.28)">Saisie en cours</span>
+          </label>
+          <label class="fld"><span class="fld-lab">Champ en erreur</span>
+            <span class="input" style="border-radius:24px;border-color:#A83355;background:#FFFFFF">valeur@invalide</span>
+            <span class="fld-err" style="color:#A83355">Cette page a pris une grande respiration… et a disparu.</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <h3 class="h3">Badges & états</h3>
+        <div class="badges">
+          <span class="badge" style="background:rgba(193,61,99,0.14);color:#A43454;border-radius:999px">Par défaut</span>
+          <span class="badge" style="background:rgba(71,112,92,0.16);color:#406553;border-radius:999px">Validé</span>
+          <span class="badge" style="background:rgba(183,121,31,0.18);color:#926119;border-radius:999px">En attente</span>
+          <span class="badge" style="background:rgba(168,51,85,0.14);color:#972E4D;border-radius:999px">Échec</span>
+        </div>
+        <h3 class="h3 mt">Alerte</h3>
+        <div class="alert" style="border-radius:34px;background:rgba(193,61,99,0.08);border-color:rgba(193,61,99,0.35)">
+          <span class="alert-bar" style="background:#C13D63"></span>
+          <div><strong>Information</strong><br><span class="dim">Une phrase, une action possible. Jamais deux messages dans le même bandeau.</span></div>
+        </div>
+        <h3 class="h3 mt">Carte</h3>
+        <div class="card-demo" style="border-radius:34px;background:#FFFFFF;border-color:#EAE7E7">
+          <span class="mono card-lab" style="color:#C13D63">Étiquette</span>
+          <strong class="card-title">Titre de la carte</strong>
+          <p class="dim">Une carte porte un objet et une action. Si elle en porte deux, ce sont deux cartes.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="h3 mt">Tableau</h3>
+    <table class="tbl tbl-demo" style="border-color:#EAE7E7">
+      <thead><tr><th>Élément</th><th>État</th><th class="num">Valeur</th></tr></thead>
+      <tbody>
+        <tr><td>Première ligne</td><td><span class="dot" style="background:#47705C"></span>Actif</td><td class="num mono">1 240</td></tr>
+        <tr><td>Deuxième ligne</td><td><span class="dot" style="background:#B7791F"></span>En attente</td><td class="num mono">318</td></tr>
+        <tr><td>Troisième ligne</td><td><span class="dot" style="background:#A83355"></span>Bloqué</td><td class="num mono">12</td></tr>
+      </tbody>
+    </table>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">08/09</span>
+  </header>
+  <h2 class="h2">Écrans types</h2>
+    <h3 class="h3">Application — thème clair</h3>
+    <div class="ui" style="border-color:#EAE7E7">
+    <aside class="ui-side" style="background:#43324B;color:#FDFBF8">
+      <div class="ui-brand"><span class="ui-dot" style="background:#C13D63"></span><strong>Xénia Van Outryve</strong></div>
+      <nav>
+        <span class="ui-nav on" style="background:#C13D63;color:#FDFBF8">Mon approche</span><span class="ui-nav">Accompagnements</span><span class="ui-nav">Nutrition &amp; Santé</span><span class="ui-nav">À propos</span><span class="ui-nav">Lieux &amp; Contact</span>
+      </nav>
+      <span class="mono ui-foot">xenia.chris-ia.com</span>
+    </aside>
+    <main class="ui-main" style="background:#FDFBF8;color:#43324B">
+      <div class="ui-top" style="border-color:#EAE7E7">
+        <div>
+          <span class="mono ui-eyebrow" style="color:#7A6B82">Psychologue clinicienne · Santé · Périnatalité · Nutrition</span>
+          <h4 class="ui-h">Psychologue en Brabant wallon, vers un mieux-être durable</h4>
+        </div>
+        <span class="ui-badge" style="background:#C13D63;color:#FDFBF8">RDV en ligne</span>
+      </div>
+      <div class="ui-cards">
+        <div class="ui-card" style="background:#FFFFFF;border-color:#EAE7E7">
+          <span class="mono ui-lab" style="color:#C13D63">Ce qui vous amène</span>
+          <p style="color:#7A6B82">« Je suis épuisé·e, je n'y arrive plus. » « Tout me stresse, même les petites choses. » Il n'y a pas de « bonne raison » de consulter : il y a ce que vous vivez, maintenant — et c'est suffisant.</p>
+          
+        </div><div class="ui-card" style="background:#FFFFFF;border-color:#EAE7E7">
+          <span class="mono ui-lab" style="color:#C13D63">Accompagnements</span>
+          
+          <ul class="ui-list"><li style="border-color:#EAE7E7">Adolescents &amp; Adultes</li><li style="border-color:#EAE7E7">Périnatalité &amp; Parentalité</li><li style="border-color:#EAE7E7">Enfants &amp; Famille</li><li style="border-color:#EAE7E7">Nutrition &amp; Santé</li><li style="border-color:#EAE7E7">Première séance en 3 étapes</li></ul>
+        </div><div class="ui-card" style="background:#FFFFFF;border-color:#EAE7E7">
+          <span class="mono ui-lab" style="color:#C13D63">Trois cabinets</span>
+          
+          <ul class="ui-list"><li style="border-color:#EAE7E7">Court-Saint-Étienne · lundi matin, vendredi après-midi</li><li style="border-color:#EAE7E7">Nivelles · mardi et jeudi</li><li style="border-color:#EAE7E7">La Hulpe · vendredi matin</li><li style="border-color:#EAE7E7">Visio sur demande</li></ul>
+        </div>
+      </div>
+    </main>
+  </div>
+    
+    <h3 class="h3 mt">États du système</h3>
+    <div class="states">
+      <div class="state" style="border-radius:34px;border-color:#EAE7E7;background:#FFFFFF">
+        <span class="mono st-lab">Vide</span>
+        <strong>Rien à afficher pour l'instant.</strong>
+        <span class="dim">Une phrase qui explique quoi faire, et un seul bouton.</span>
+        <span class="btn btn-sm" style="background:#C13D63;color:#FDFBF8;border-radius:999px">Commencer</span>
+      </div>
+      <div class="state" style="border-radius:34px;border-color:#EAE7E7;background:#FFFFFF">
+        <span class="mono st-lab">Chargement</span>
+        <span class="skel" style="background:#EAE7E7;width:70%"></span>
+        <span class="skel" style="background:#EAE7E7;width:92%"></span>
+        <span class="skel" style="background:#EAE7E7;width:54%"></span>
+        <span class="dim">Squelette, jamais de sablier : la mise en page ne bouge pas quand la donnée arrive.</span>
+      </div>
+      <div class="state" style="border-radius:34px;border-color:#EAE7E7;background:#FFFFFF">
+        <span class="mono st-lab">Erreur</span>
+        <strong style="color:#A83355">La demande n'a pas abouti. Réessayez, ou écrivez-moi directement.</strong>
+        <span class="dim">Ce qui s'est passé, puis ce que la personne peut faire. Jamais de code d'erreur seul.</span>
+        <span class="btn btn-sm" style="border-color:#EAE7E7;color:#43324B;border-radius:999px">Réessayer</span>
+      </div>
+    </div>
+  </section>
+<section class="page">
+    <header class="ph">
+    <span class="mono ph-l">Xénia Van Outryve · Charte de marque · xenia.chris-ia.com</span>
+    <span class="mono ph-r">09/09</span>
+  </header>
+  <h2 class="h2">Jetons de design</h2>
+    <p class="lead lead-w">Prêt à coller. <span class="mono lc">tokens.css</span> et <span class="mono lc">CHARTE.md</span> sont livrés à côté de ce PDF : le premier se colle dans le projet, le second se donne à lire à l'agent qui code.</p>
+    <div class="tok-grid">
+      <pre class="code" style="font-size:5.3pt">/* Xénia Van Outryve — jetons de design
+   Source : https://xenia.chris-ia.com · relevé du 9 septembre 2026
+   Généré par /charte-url — ne pas éditer à la main, éditer charte.json. */
+
+:root {
+  /* Palette */
+  --color-ivoire: #FDFBF8; /* Fond de page — lumineux, chaud */
+  --color-blanc: #FFFFFF; /* Cartes ; les cartes teintées partent d'un pastel à 35 % et se fondent vers ce blanc */
+  --color-aubergine: #43324B; /* Texte principal, contour de la carte dessinée — jamais de noir */
+  --color-gris-mauve: #7A6B82; /* Texte secondaire, légendes, pied de page */
+  --color-framboise: #C13D63; /* Accent unique : boutons pleins, liens, mots pivots, sur-titres, pastilles */
+  --color-sauge-profonde: #47705C; /* Accent du volet Nutrition &amp; Santé (bouton, sur-titre) */
+  --color-peche: #FFD9C4; /* Aurore — fonds, blobs, teinte de carte */
+  --color-rose: #F6C8DB; /* Aurore — fonds, blobs, halo qui respire */
+  --color-lilas: #DFD2F4; /* Aurore — fonds, blobs, teinte de carte */
+  --color-eau: #C9E9DE; /* Aurore — fonds, blobs, cœur de la rencontre nutrition */
+
+
+  /* Rôles */
+  --bg: #FDFBF8;
+  --surface: #FFFFFF;
+  --ink: #43324B;
+  --muted: #7A6B82;
+  --accent: #C13D63;
+  --dark: #43324B;
+  --hairline: #EAE7E7;
+  --success: #47705C;
+  --warning: #B7791F;
+  --danger: #A83355;
+
+  /* Rayons */
+  --radius-card: 34px;
+  --radius-button: 999px;
+  --radius-input: 24px;
+  --radius-pill: 999px;
+
+  /* Espacement */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 88px;
+
+  /* Élévations */
+  --shadow-plat: none;
+  --shadow-carte: 0 10px 34px rgba(67,50,75,.08);
+  --shadow-verre: 0 1px 0 rgba(255,255,255,.9) inset, 0 18px 48px rgba(67,50,75,.10);
+  --shadow-medaillon: 0 24px 64px rgba(67,50,75,.16);
+  --shadow-bouton: 0 8px 24px rgba(193,61,99,.28);
+
+  /* Typographie */
+  --font-display: Fraunces, Georgia, serif;
+  --font-text: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Mouvement */
+  --duration: 200ms;
+  --easing: cubic-bezier(0.16, 1, 0.3, 1);
+}</pre>
+      <div>
+        <pre class="code">/* Tailwind v4 — app/globals.css */
+@theme {
+  --color-bg: #FDFBF8;
+  --color-surface: #FFFFFF;
+  --color-ink: #43324B;
+  --color-muted: #7A6B82;
+  --color-accent: #C13D63;
+  --color-hairline: #EAE7E7;
+  --font-display: Fraunces, Georgia, serif;
+  --font-sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius-card: 34px;
+  --radius-button: 999px;
+}</pre>
+        <pre class="code">// app/fonts.ts
+import { Fraunces as Display,
+         Hanken_Grotesk as Text,
+         JetBrains_Mono as Mono } from &quot;next/font/google&quot;;
+
+export const display = Display({ subsets: [&quot;latin&quot;], variable: &quot;--font-display&quot;, display: &quot;swap&quot; });
+export const text    = Text({ subsets: [&quot;latin&quot;], variable: &quot;--font-text&quot;, display: &quot;swap&quot; });
+export const mono    = Mono({ subsets: [&quot;latin&quot;], variable: &quot;--font-mono&quot;, display: &quot;swap&quot; });</pre>
+        <h3 class="h3 mt">Avant de livrer un écran</h3>
+        <ul class="ul small-ul">
+          <li>Aucune couleur codée en dur : tout passe par une variable</li>
+          <li>Contraste vérifié sur les paires réellement employées</li>
+          <li>Focus visible au clavier sur chaque élément interactif</li>
+          <li>Cibles tactiles d'au moins 44 × 44 px</li>
+          <li>États vide, chargement et erreur traités</li>
+          <li>prefers-reduced-motion respecté</li>
+          <li>Polices auto-hébergées, aucun CDN tiers</li>
+          <li>Le logotype est importé, jamais recomposé</li>
+        </ul>
+      </div>
+    </div>
+    <footer class="end">
+      <span class="mono">Xénia Van Outryve · Charte de marque · relevé sur https://xenia.chris-ia.com · 9 septembre 2026 · généré par /charte-url</span>
+    </footer>
+  </section>
+</body>
+</html>

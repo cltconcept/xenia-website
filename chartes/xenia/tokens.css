@@ -1,0 +1,61 @@
+/* Xénia Van Outryve — jetons de design
+   Source : https://xenia.chris-ia.com · relevé du 9 septembre 2026
+   Généré par /charte-url — ne pas éditer à la main, éditer charte.json. */
+
+:root {
+  /* Palette */
+  --color-ivoire: #FDFBF8; /* Fond de page — lumineux, chaud */
+  --color-blanc: #FFFFFF; /* Cartes ; les cartes teintées partent d'un pastel à 35 % et se fondent vers ce blanc */
+  --color-aubergine: #43324B; /* Texte principal, contour de la carte dessinée — jamais de noir */
+  --color-gris-mauve: #7A6B82; /* Texte secondaire, légendes, pied de page */
+  --color-framboise: #C13D63; /* Accent unique : boutons pleins, liens, mots pivots, sur-titres, pastilles */
+  --color-sauge-profonde: #47705C; /* Accent du volet Nutrition & Santé (bouton, sur-titre) */
+  --color-peche: #FFD9C4; /* Aurore — fonds, blobs, teinte de carte */
+  --color-rose: #F6C8DB; /* Aurore — fonds, blobs, halo qui respire */
+  --color-lilas: #DFD2F4; /* Aurore — fonds, blobs, teinte de carte */
+  --color-eau: #C9E9DE; /* Aurore — fonds, blobs, cœur de la rencontre nutrition */
+
+
+  /* Rôles */
+  --bg: #FDFBF8;
+  --surface: #FFFFFF;
+  --ink: #43324B;
+  --muted: #7A6B82;
+  --accent: #C13D63;
+  --dark: #43324B;
+  --hairline: #EAE7E7;
+  --success: #47705C;
+  --warning: #B7791F;
+  --danger: #A83355;
+
+  /* Rayons */
+  --radius-card: 34px;
+  --radius-button: 999px;
+  --radius-input: 24px;
+  --radius-pill: 999px;
+
+  /* Espacement */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 88px;
+
+  /* Élévations */
+  --shadow-plat: none;
+  --shadow-carte: 0 10px 34px rgba(67,50,75,.08);
+  --shadow-verre: 0 1px 0 rgba(255,255,255,.9) inset, 0 18px 48px rgba(67,50,75,.10);
+  --shadow-medaillon: 0 24px 64px rgba(67,50,75,.16);
+  --shadow-bouton: 0 8px 24px rgba(193,61,99,.28);
+
+  /* Typographie */
+  --font-display: Fraunces, Georgia, serif;
+  --font-text: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Mouvement */
+  --duration: 200ms;
+  --easing: cubic-bezier(0.16, 1, 0.3, 1);
+}
