@@ -29,7 +29,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
         )
       )}
     </nav>
-    <a class="btn-pill btn-pill--sm nav__cta" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+    <a class="btn-pill btn-pill--sm nav__cta" href="/lieux-contact/#rdv"><span class="nav__cta-long">Prendre rendez-vous</span><span class="nav__cta-court" aria-hidden="true">RDV</span></a>
     <button class="nav__burger" id="nav-burger" aria-expanded="false" aria-controls="nav-menu" aria-label="Ouvrir le menu">
       <span></span><span></span>
     </button>
@@ -175,6 +175,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   .nav__drop-menu a.is-active { color: var(--framboise); }
 
   .nav__cta { white-space: nowrap; }
+  .nav__cta-court { display: none; } /* ≥ 961 px : le libellé complet */
 
   /* Burger + menu mobile */
   .nav__burger {
@@ -241,9 +242,28 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   .nav__menu-note { margin: 0; color: var(--muted); font-size: 0.88rem; }
 
   @media (max-width: 960px) {
-    .nav__links, .nav__cta { display: none; }
+    .nav__links { display: none; }
     .nav__burger { display: block; }
-    .nav__pill { padding: 5px 8px 5px 16px; gap: 12px; }
+    .nav__pill { padding: 5px 5px 5px 14px; gap: 12px; }
+    /* Le CTA reste dans la capsule, en pilule compacte « RDV » (≥ 44 px de haut).
+       Le libellé complet est masqué au clip, pas en display:none : le nom
+       accessible reste « Prendre rendez-vous ». */
+    .nav__cta { min-height: 44px; padding: 0 16px; font-size: 0.86rem; }
+    .nav__cta-long {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    .nav__cta-court { display: inline; }
+    /* Burger à 44 × 44 : cible tactile ; les traits restent à 18 px, centrés */
+    .nav__burger { width: 44px; height: 44px; }
+    .nav__burger span { left: 13px; right: 13px; }
+    .nav__burger span:nth-child(1) { top: 18px; }
+    .nav__burger span:nth-child(2) { bottom: 18px; }
+  }
+  /* Micro-écrans : marque + RDV + burger tiennent dans 100vw − 24 px
+     (≈ 322 px pour 336 px disponibles à 360 px : on garde une marge) */
+  @media (max-width: 480px) {
+    .nav__name { font-size: 0.92rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     .nav__pill, .nav__burger span, .nav__menu, .nav__menu nav > a,

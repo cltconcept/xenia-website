@@ -10,8 +10,10 @@
   --ivory: #FDFBF8;
   --ivory-soft: #F7F2EC;
   --ink: #43324B;
-  --muted: #7A6B82;
-  --muted-hero: #6E5F76; /* copy du hero sur scrim : ≥ 4,5:1 sur ivoire */
+  /* Texte secondaire : ≥ 4,5:1 sur ivoire ET sur le footer, les cartes teintées,
+     le verre et les lavis (#7A6B82 y tombait à 4,0-4,4) */
+  --muted: #6E5F76;
+  --muted-hero: #6E5F76; /* même valeur, conservé pour les usages existants */
   /* Accents */
   --framboise: #C13D63;
   --framboise-deep: #A83355;
@@ -44,7 +46,8 @@
   --tint-lilac-soft: rgba(223, 210, 244, 0.2);
   /* Scrim du hero : garantit la lisibilité du texte quoi que montre le film */
   --scrim-hero: linear-gradient(90deg, rgba(253, 251, 248, 0.92) 0 55%, rgba(253, 251, 248, 0.55) 78%, transparent);
-  --scrim-hero-mobile: linear-gradient(180deg, transparent 0 28%, rgba(253, 251, 248, 0.9) 52%);
+  /* 0,62 en haut : eyebrow et copy du hero mobile passaient à 3,1-3,8:1 sur le film */
+  --scrim-hero-mobile: linear-gradient(180deg, rgba(253, 251, 248, 0.62) 0, rgba(253, 251, 248, 0.9) 46%);
   /* Structure — « pas trop carré » : rayons généreux partout */
   --font-display: 'Fraunces Variable', Georgia, serif;
   --font-sans: 'Hanken Grotesk Variable', system-ui, sans-serif;
@@ -118,11 +121,12 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 }
 .copy--center { margin-inline: auto; text-align: center; }
 .copy strong { color: var(--ink); font-weight: 650; }
-/* Sur-titre */
+/* Sur-titre — framboise profonde : en petit texte sur une teinte, --framboise
+   tombait sous 4,5:1 */
 .overline {
   display: block;
   font-size: 0.82rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--framboise); margin-bottom: 16px;
+  color: var(--framboise-deep); margin-bottom: 16px;
 }
 .overline--center { text-align: center; }
 .overline--sage { color: var(--sage-deep); }
@@ -289,6 +293,12 @@ main { overflow-x: clip; }
 /* ===== Craft ===== */
 ::selection { background: rgba(246, 200, 219, 0.6); }
 :focus-visible { outline: 2.5px solid var(--framboise); outline-offset: 3px; border-radius: 6px; }
+
+/* Texte réservé aux lecteurs d'écran (clip pattern : hors flux, jamais display:none) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
 
 /* Grain fixe — brise la platitude numérique (upgrade technique, cf. dossier).
    Compositor-only : div fixe, aucune interaction, ~4 % d'opacité. */

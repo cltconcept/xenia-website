@@ -215,6 +215,26 @@ pnpm preview</pre>
       <h2><span class="ico">📆</span>Journal des changements</h2>
       <div class="timeline">
         <div class="tl-item">
+          <p class="tl-date">2026-09-12 — après-midi · les 8 P1 impeccable corrigés (LOCAL, non committé)</p>
+          <ul>
+            <li>✅ <b>Décisions utilisateur</b> : 8 P1 seulement, trois listes conservées, pilule « RDV » dans l'en-tête mobile, <code>--muted</code> aligné sur <code>--muted-hero</code>, film différé sans réencodage.</li>
+            <li>🐛 <b>Bandeau</b> : repli clavier en <code>:has(.chip:focus-visible)</code> au lieu de <code>:focus-within</code> → le premier tap/clic navigue (vérifié tactile et souris).</li>
+            <li>♿ <b>CTA</b> : pilule « RDV » 44 px + burger 44×44 sur mobile ; CTA du hero en <code>autoAlpha</code>, hors tabulation tant qu'invisibles ; un focus dans le hero termine la scène.</li>
+            <li>🎨 <b>Contrastes</b> : <code>--muted #6E5F76</code>, petit texte framboise en <code>--framboise-deep</code>, scrim mobile du hero couvrant le haut — <b>mesuré au pixel : tout ≥ 4,53:1</b> (eyebrow mobile 5,52, footer 4,92–5,25, lavis 4,88–5,41).</li>
+            <li>🔎 Identité « Psychologue clinicienne · Brabant wallon » dès l'écran 0 de la traversée ; 🔗 liens annuaire/itinéraire avec « nouvel onglet » en <code>.sr-only</code>, glyphe externe et note de réassurance sur Lieux.</li>
+            <li>⚡ Film desktop chargé au premier geste de défilement avec test réseau (vérifié : aucune requête avant le scroll) ; <code>will-change</code> des lavis mobiles retiré. Détecteur : <code>dist</code> 191 → 67 constats, accueil desktop enfin scannable. <b>À valider à l'écran, puis commit + redéploiement.</b></li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <p class="tl-date">2026-09-12 — vérification impeccable (critique + audit), rien corrigé</p>
+          <ul>
+            <li>🔍 <b>Plugin <code>impeccable</code> 4.3.1 passé sur le site</b> (critique + audit, trois agents isolés) : <b>critique 29/40</b> (Bon), <b>audit 13/20</b> (Acceptable), 0 P0 · 8 P1 · 8 P2 · 6 P3. Synthèse et rapports dans <code>docs/impeccable/2026-09-12/</code>, instantané dans <code>.impeccable/critique/</code> — non committés, aucune ligne de code touchée.</li>
+            <li>🐛 <b>Bug P1 confirmé par reproduction (4/4)</b> : le premier tap ou clic sur une capsule du bandeau ne navigue pas (<code>Bandeau.astro:38-41</code>, <code>:focus-within</code> replie la piste au focus, le <code>click</code> tombe sur le <code>ul</code>). Fix : <code>:has(.chip:focus-visible)</code> ou pause sans reflow.</li>
+            <li>⚠️ Autres P1 : <code>--muted</code> sous 4,5:1 (footer, lavis mobiles, verre), eyebrow du hero mobile 3,1–3,8:1, CTA absent de l'en-tête mobile + CTA du hero à opacité 0 dans l'ordre de tabulation, film de 7 Mo chargé d'office sur desktop, 22 <code>will-change</code> au repos, écran 0 sans identité, sortie annuaire non annoncée.</li>
+            <li>🧰 Outillage : gstack <code>browse</code> absent de la machine → Playwright Python (<code>pw.py</code>) ; le détecteur impeccable ne lit pas les <code>.astro</code> et expire sur l'accueil desktop.</li>
+          </ul>
+        </div>
+        <div class="tl-item">
           <p class="tl-date">2026-09-09 — mise en ligne de la maquette recomposée</p>
           <ul>
             <li>🚀 <b>Poussé sur GitHub et redéployé</b> : trois commits sur <code>main</code> de <code>cltconcept/xenia-website</code>, déploiement Coolify <code>seetu6uqg4tnkjg8do4f1f8n</code> en 25 s sur le sous-domaine existant <b>xenia.chris-ia.com</b>.</li>
@@ -324,6 +344,7 @@ pnpm preview</pre>
 
     <section id="problemes">
       <h2><span class="ico">⚠️</span>Problèmes connus / à confirmer cliente</h2>
+      <div class="card warn"><b>Corrections impeccable du 12/09 (8 P1) faites en local, non committées ni redéployées</b> : à valider à l'écran (<code>pnpm dev</code>, port 4331) puis commit + redéploiement. <b>Reste (P2/P3)</b> (<code>docs/impeccable/2026-09-12/synthese.md</code>) : <code>mailto:</code> visio sans adresse visible, pétales en reduced-motion, déroulant non refermable par Échap, verre dans l'élément qui respire, animations infinies sans pause hors viewport, cibles tactiles &lt; 44 px, nav à 1024 px + zoom 200 %, couleurs hors jetons, <code>lenis</code>/<code>Manuscrit.astro</code> morts, breakpoint 700 px. Commandes : quieter/distill → adapt → polish.</div>
       <div class="card warn"><b>Nom de domaine non tranché</b> (Mindfoodyou.be abandonné) — placeholder <code>xeniavanoutryve.be</code> dans les canonical/sitemap/JSON-LD.</div>
       <div class="card warn"><b>Tarifs et paiement</b> : seule certitude vérifiée : « paiement mobile accepté » (Doctoranytime). Remboursement mutualité formulé prudemment.</div>
       <div class="card warn"><b>Aquarelle du hero à valider par la cliente</b> (elle reste même après les photos ; le portrait vit dans « Qui je suis » et À propos). <b>Hauteurs</b> : accueil 7 197 px, intérieures −9/−17 % — sous les cibles de la spec, à trancher à l'écran.</div>

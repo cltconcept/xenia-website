@@ -26,8 +26,9 @@ santé/vitalité, inédit dans le secteur.
 |---|---|---|
 | `--ivory` | `#FDFBF8` | Fond, lumineux chaud |
 | `--ink` | `#43324B` | Texte — aubergine profonde, jamais noir |
-| `--muted` | `#7A6B82` | Texte secondaire gris-mauve |
+| `--muted` | `#6E5F76` | Texte secondaire gris-mauve — ≥ 4,5:1 aussi sur le footer, les cartes teintées et les lavis |
 | `--framboise` | `#C13D63` | Accent CTA (texte blanc : contraste ≈ 5,2:1) |
+| `--framboise-deep` | `#A83355` | Framboise en petit texte (< 24 px) sur une teinte : sur-titres, têtes de colonnes, numéros, tags ; les boutons et les mots-pivots des titres gardent `--framboise` |
 | `--sage` | `#5E8E75` | Accent secondaire (nutrition & santé) |
 | Aurore | `#FFD9C4` `#F6C8DB` `#DFD2F4` `#C9E9DE` | Dégradés pêche → rose → lilas → eau |
 
@@ -70,5 +71,7 @@ corps-esprit). Le X de Xénia, sans le dire. Wordmark Fraunces.
 
 - Pas de noir pur, pas de blanc pur, pas d'angles vifs (radius ≥ 24 px).
 - Une seule action principale par écran : prendre rendez-vous.
+- Pas de `--framboise` ni de `--muted` en dessous de 4,5:1 : sur une teinte, un
+  verre ou le footer, le petit texte framboise passe en `--framboise-deep`.
 - GSAP/Lenis en import différé uniquement (jamais statique — cf. dentalexpert).
 - Breakpoints canoniques : 480 · 600 · 960 · 1024 (JS).

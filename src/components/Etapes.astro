@@ -71,7 +71,7 @@ const { vertical = false } = Astro.props;
     width: 46px; height: 46px; border-radius: 50%; flex: none;
     display: grid; place-items: center;
     background: linear-gradient(135deg, var(--tint-rose), var(--tint-lilac)), var(--ivory);
-    font-family: var(--font-display); font-weight: 640; color: var(--framboise);
+    font-family: var(--font-display); font-weight: 640; color: var(--framboise-deep); /* sur la teinte, --framboise tombait à 4,37:1 */
     box-shadow: var(--shadow-card);
   }
   .etapes__txt h3 { font-size: 1.05rem; font-weight: 700; }

@@ -75,7 +75,11 @@ const situations = [
     <div class="hero__scrim" aria-hidden="true"></div>
     <!-- La traversée — 2 phrases pilotées par le scroll (desktop, scène épinglée) -->
     <div class="hero__phases" aria-hidden="true">
-      <p class="hero__phase" data-phase="1">Parfois, tout pèse<br /><em>un peu trop</em>.</p>
+      <p class="hero__phase" data-phase="1">
+        Parfois, tout pèse<br /><em>un peu trop</em>.
+        <!-- L'identité dès l'écran 0 : dans la phrase, donc portée par sa timeline -->
+        <span class="hero__phase-id">Psychologue clinicienne · Brabant wallon</span>
+      </p>
       <p class="hero__phase" data-phase="2">La lumière revient,<br /><em>à votre rythme</em>.</p>
     </div>
     <!-- L'indice de défilement : la scène est épinglée, il faut le dire (desktop, en scène) -->
@@ -325,15 +329,21 @@ const situations = [
       }
       title.append(wrap);
 
-      /* Le film d'aquarelle — préchargé en Blob à l'accalmie (seek instantané,
-         patron Capitale Cars) ; en desktop il est SCRUBÉ par la scène, en
-         mobile il joue en boucle. */
+      /* Le film d'aquarelle — chargé en Blob (seek instantané, patron Capitale
+         Cars) ; en desktop il est SCRUBÉ par la scène, en mobile il joue en
+         boucle. Idempotent : plusieurs événements peuvent le demander. */
       const film = document.querySelector<HTMLVideoElement>('.hero__film');
       let filmPret = false;
+      let filmDemande = false;
       const chargerFilm = () => {
-        if (!film) return;
+        if (!film || filmDemande) return;
+        filmDemande = true;
         const src = film.dataset.film!;
         if (isDesktop()) {
+          /* Connexion lente ou économie de données : le poster reste seul en
+             fond, la scène joue avec lui (peindreFilm n'écrit rien sans filmPret) */
+          const c = (navigator as any).connection;
+          if (c?.saveData || ['slow-2g', '2g', '3g'].includes(c?.effectiveType)) return;
           fetch(src)
             .then((r) => (r.ok ? r.blob() : Promise.reject(new Error(String(r.status)))))
             .then((b) => {
@@ -365,8 +375,18 @@ const situations = [
           film.play().catch(() => {});
         }
       };
-      if ('requestIdleCallback' in window) requestIdleCallback(chargerFilm, { timeout: 2500 });
-      else setTimeout(chargerFilm, 800);
+      if (isDesktop()) {
+        /* Desktop : 7 Mo ne partent qu'au premier signe de défilement (molette,
+           tactile, touche, scroll) — jamais à l'idle, avant que le visiteur ait
+           décidé de traverser. Chaque écouteur joue une fois, la garde fait le reste. */
+        for (const type of ['wheel', 'touchstart', 'keydown', 'scroll']) {
+          window.addEventListener(type, chargerFilm, { once: true, passive: true });
+        }
+      } else if ('requestIdleCallback' in window) {
+        requestIdleCallback(chargerFilm, { timeout: 2500 });
+      } else {
+        setTimeout(chargerFilm, 800);
+      }
 
       if (isDesktop()) {
         /* ===== Desktop : la traversée épinglée, scrubée par le scroll ===== */
@@ -420,15 +440,27 @@ const situations = [
           .fromTo('.hero__title .swi', { yPercent: 115 }, { yPercent: 0, duration: 0.12, stagger: 0.01 }, 0.62)
           .fromTo('.hero__visuel', { y: 24, opacity: 0, rotation: -3 }, { y: 0, opacity: 1, rotation: 0, duration: 0.16 }, 0.64)
           .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.68)
-          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.07 }, 0.73)
+          /* autoAlpha : invisibles = visibility hidden = hors de l'ordre de tabulation */
+          .fromTo('.hero .actions', { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.07 }, 0.73)
           .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.09, ease: 'power2.inOut' }, 0.74)
           .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.05, stagger: 0.012 }, 0.78);
         /* Duo obligatoire après chaque création de pin (cf. motion.ts) */
         ScrollTrigger.sort();
         ScrollTrigger.refresh();
+        /* Clavier : un focus dans le hero pendant la scène l'amène à sa fin —
+           le visiteur au Tab voit le hero complet, jamais un lien à demi-levé */
+        hero.querySelector('.hero__inner')?.addEventListener('focusin', () => {
+          const st = tl.scrollTrigger;
+          if (st && st.progress < 1) st.scroll(st.end);
+        });
       } else {
         /* ===== Mobile : intro courte au chargement ===== */
-        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        const tl = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          /* Intro jouée une fois : le will-change des mots (global.css) est
+             relâché après coup — l'inline « auto » l'emporte sur la classe */
+          onComplete: () => gsap.set('.hero__title .swi', { willChange: 'auto' }),
+        });
         tl.fromTo('.hero__voile', { opacity: 1 }, { autoAlpha: 0, duration: 1.7, ease: 'power2.inOut' }, 0)
           .fromTo('.hero__halo-wrap', { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }, 0.1)
           .fromTo('.hero__scrim', { opacity: 0 }, { opacity: 1, duration: 1.2, ease: 'none' }, 0.3)
@@ -438,7 +470,7 @@ const situations = [
           .fromTo('.hero__copy', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.25)
           .fromTo('.hero__visuel', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, 1.3)
           .fromTo('.hero__trait path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.inOut' }, 1.35)
-          .fromTo('.hero .actions', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 1.45)
+          .fromTo('.hero .actions', { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.7 }, 1.45)
           .fromTo('.hero__trust li', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.08 }, 1.6);
       }
 
@@ -609,6 +641,16 @@ const situations = [
     color: var(--framboise);
   }
   .hero__phase[data-phase="1"] { opacity: 1; }
+  /* L'identité dès l'écran 0 : petites capitales en Hanken sous la phrase 1 —
+     DANS la phrase, donc apparaît et s'efface avec elle sans une ligne de
+     timeline en plus (la phrase est en Fraunces : on revient en sans) */
+  .hero__phase-id {
+    display: block; margin-top: clamp(18px, 2vw, 26px);
+    font-family: var(--font-sans);
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    font-style: normal; font-variation-settings: normal;
+    color: var(--framboise-deep);
+  }
 
   /* L'indice de défilement — visible seulement en scène, s'efface au premier scroll */
   .hero__indice {
@@ -651,10 +693,13 @@ const situations = [
   :global(html.js-intro) .hero__visuel { opacity: 0; }
   :global(html.js-intro) .hero__title,
   :global(html.js-intro) .hero [data-h] { opacity: 0; }
+  /* Les CTA sortent aussi de l'ordre de tabulation tant qu'ils sont invisibles
+     (GSAP reprend en autoAlpha ; le garde-fou 3 s lève tout d'un coup) */
+  :global(html.js-intro) .hero .actions { visibility: hidden; }
   :global(html.js-intro) .hero__trait path { stroke-dashoffset: 1; }
   .hero__eyebrow {
     font-size: 0.88rem; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--framboise);
+    color: var(--framboise-deep); /* petit texte sur fond teinté : AA */
   }
   .hero__title { margin-top: 18px; font-size: clamp(2.3rem, 4.6vw, 3.6rem); }
   .hero__copy { font-size: clamp(1.05rem, 1.4vw, 1.15rem); color: var(--muted-hero); }
@@ -702,7 +747,7 @@ const situations = [
   .amene__tag {
     margin-top: auto;
     font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--framboise);
+    color: var(--framboise-deep); /* petit texte sur carte teintée : AA */
     display: flex; align-items: center; gap: 6px;
   }
   .amene__tag span { transition: transform 0.2s var(--ease); }
@@ -720,7 +765,7 @@ const situations = [
     font-family: var(--font-display); font-style: italic; font-weight: 480;
     font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 40;
     font-size: clamp(1.15rem, 1.8vw, 1.4rem); line-height: 1.4;
-    color: var(--framboise);
+    color: var(--framboise-deep); /* citation sur fond teinté : AA */
     text-wrap: pretty;
   }
   .qui__reperes {

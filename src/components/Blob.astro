@@ -58,11 +58,13 @@ const forme = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
     -webkit-mask: var(--blob-forme) center / 100% 100% no-repeat;
     mask: var(--blob-forme) center / 100% 100% no-repeat;
     opacity: var(--blob-opacite);
-    will-change: transform;
   }
-  /* Dérive lente sur `translate` (desktop) : GSAP garde `transform` pour la parallaxe */
+  /* Dérive lente sur `translate` (desktop) : GSAP garde `transform` pour la
+     parallaxe. will-change ici seulement : sous 961 px le blob est inerte (ni
+     CSS ni GSAP), promouvoir six lavis de 130vw coûtait ≈ 57 Mo de textures à
+     DPR 2 pour rien. */
   @media (min-width: 961px) {
-    .blob { animation: blob-derive 30s ease-in-out infinite alternate; }
+    .blob { animation: blob-derive 30s ease-in-out infinite alternate; will-change: transform; }
     .blob--inverse { animation-direction: alternate-reverse; animation-duration: 26s; }
   }
   @keyframes blob-derive {

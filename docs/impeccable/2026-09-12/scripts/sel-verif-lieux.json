@@ -1,0 +1,8 @@
+[
+  {"sel": ".rdv__note", "label": "Note de réassurance RDV"},
+  {"sel": ".lieux__adresse", "label": "Adresse cabinet muted sur carte teintée"},
+  {"sel": ".lieux__btn", "label": "Bouton RDV blanc sur framboise"},
+  {"sel": ".pratique__qa dd", "label": "FAQ réponse muted sur verre"},
+  {"sel": ".coords__label", "label": "Coord label framboise"},
+  {"sel": ".footer__bottom p", "label": "Footer bas de page"}
+]

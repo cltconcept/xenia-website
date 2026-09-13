@@ -15,3 +15,6 @@ __MACOSX/
 # Polices rapatriées pour le rendu de la charte (Google Fonts, re-téléchargeables
 # par scripts/… : `node ~/.claude/skills/charte-url/scripts/fetch-assets.cjs chartes/xenia/assets.json`)
 chartes/*/assets/fonts/
+
+# Compagnon visuel du brainstorming (maquettes de session)
+.superpowers/

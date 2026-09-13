@@ -1,0 +1,18 @@
+[
+  {"sel": ".hero__eyebrow", "label": "Hero eyebrow (framboise-deep) sur scrim"},
+  {"sel": ".hero__copy", "label": "Hero copy muted-hero sur scrim"},
+  {"sel": ".hero__trust li", "label": "Hero repères"},
+  {"sel": ".amene .overline", "label": "Overline « Ce qui vous amène »"},
+  {"sel": ".amene .copy", "label": "Copy muted sur blob"},
+  {"sel": ".amene__tag", "label": "Tag de carte (framboise-deep)"},
+  {"sel": ".qui__citation", "label": "Citation (framboise-deep)"},
+  {"sel": ".portrait__ph p", "label": "Légende du portrait placeholder"},
+  {"sel": ".etapes__num", "label": "Numéro d'étape"},
+  {"sel": ".etapes__txt p", "label": "Description d'étape muted"},
+  {"sel": ".lieux__adresse", "label": "Adresse cabinet muted"},
+  {"sel": ".footer__tagline", "label": "Footer tagline muted"},
+  {"sel": ".footer__breathe", "label": "Footer respirer muted"},
+  {"sel": ".footer__head", "label": "Footer tête (framboise-deep)"},
+  {"sel": ".footer__legal-link", "label": "Footer lien mentions"},
+  {"sel": ".footer__bottom p", "label": "Footer bas de page"}
+]

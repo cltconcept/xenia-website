@@ -105,6 +105,71 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-09-12 (après-midi — les 8 P1 impeccable corrigés, EN LOCAL, non committés)
+- ✅ **Décisions utilisateur** : corriger les 8 P1 seulement, garder les trois
+  listes de motifs, pilule « RDV » dans l'en-tête mobile (pas de barre basse),
+  `--muted` aligné sur `--muted-hero`, film différé sans réencodage.
+- 🐛 **Bandeau** (`Bandeau.astro`) : le repli en liste statique passe de
+  `:focus-within` à `:has(.chip:focus-visible)` (clavier seulement) + pause sans
+  reflow à tout focus → **le premier tap/clic navigue (vérifié 2/2, tactile et
+  souris)**.
+- ♿ **CTA** : pilule compacte « RDV » (44 px, nom accessible « Prendre
+  rendez-vous ») et burger 44×44 dans l'en-tête mobile (`Header.astro`) ; CTA
+  du hero en `autoAlpha` (+ `visibility: hidden` pré-paint) → hors de l'ordre
+  de tabulation tant qu'ils sont invisibles ; un focus dans le hero termine la
+  scène (`index.astro`).
+- 🎨 **Contrastes** : `--muted` → `#6E5F76`, `.overline` / têtes du footer /
+  numéros d'étapes / tags / citation / eyebrow → `--framboise-deep`, scrim
+  mobile du hero couvrant aussi le haut (0,62 → 0,9). **Mesuré au pixel après
+  correction : tout ≥ 4,53:1** (eyebrow mobile 5,52 contre 3,1–3,8 ; footer
+  4,92–5,25 contre 4,03–4,33 ; lavis mobiles 4,88–5,41 contre 4,04–4,28).
+- 🔎 **Identité dès l'écran 0** : « Psychologue clinicienne · Brabant wallon »
+  dans la phrase 1 de la traversée, s'efface avec elle.
+- 🔗 **Liens annuaire / itinéraire** (`LieuxCards.astro`) : texte visible en
+  tête du nom accessible + « nouvel onglet » en `.sr-only`, glyphe de lien
+  externe, note de réassurance au-dessus des cartes sur Lieux (reprend la FAQ
+  mot pour mot).
+- ⚡ **Perf** : film desktop chargé au premier geste de défilement seulement
+  (wheel/touch/touche/scroll) avec test `saveData`/`effectiveType` — **vérifié :
+  aucune requête `hero-film.mp4` avant le scroll, une après** ; `will-change`
+  des lavis sous 961 px retiré (`Blob.astro`), celui des mots du H1 relâché
+  après l'intro mobile.
+- 📚 `docs/DESIGN.md` : palette (`--muted`, `--framboise-deep`) et interdit
+  « pas de framboise ni de muted sous 4,5:1 ».
+- ✅ Vérifié sur le build (`pnpm build` OK, `pnpm preview`) : console vide,
+  aucun débordement à 360/390, tabulation desktop = nav → capsules (les CTA
+  invisibles ne prennent plus le focus), `:has()` conservé par le compilateur
+  Astro. Détecteur impeccable : `dist` **191 → 67 constats** ; l'accueil
+  desktop se scanne enfin (le film ne bloque plus le réseau au repos).
+  ⏳ **À valider à l'écran par l'utilisateur, puis commit + redéploiement.**
+
+### 2026-09-12 (vérification impeccable — critique + audit, rien corrigé)
+- 🔍 **Plugin `impeccable` 4.3.1 (pbakaus) installé et passé sur le site**
+  (commandes `critique` + `audit`, trois agents isolés : revue design,
+  détecteur + mesures au pixel, audit technique) : **critique 29/40 (Bon)**,
+  **audit 13/20 (Acceptable)**, 0 P0 · 8 P1 · 8 P2 · 6 P3. Synthèse et
+  rapports détaillés dans `docs/impeccable/2026-09-12/` (`synthese.md`,
+  rapports A/B/C, `preuves/`, `pw.py`), instantané impeccable dans
+  `.impeccable/critique/` — dossiers **non committés**, aucune ligne de code
+  touchée : l'ordre des corrections est à décider.
+- 🐛 **Bug fonctionnel P1 confirmé par reproduction (4/4, tactile et souris)** :
+  le premier tap ou clic sur une capsule du bandeau ne navigue pas —
+  `Bandeau.astro:38-41`, la règle `:focus-within` replie la piste au focus du
+  lien, l'élément sous le doigt change et le `click` tombe sur le `ul`. Navigue
+  dès que la règle est neutralisée (fix : `.bandeau:has(.chip:focus-visible)`
+  ou pause de l'animation sans reflow).
+- ⚠️ Autres P1 : `--muted #7A6B82` sous 4,5:1 sur le footer, les lavis mobiles
+  et le verre (aligner sur `--muted-hero`), eyebrow du hero mobile à 3,1–3,8:1
+  (scrim transparent sur 28 %), CTA absent de l'en-tête mobile + CTA du hero à
+  opacité 0 dans l'ordre de tabulation desktop, film de 7 Mo récupéré en Blob
+  d'office sur tout écran ≥ 1024 px sans test réseau, 22 `will-change` au repos,
+  écran 0 desktop sans le mot « psychologue » avant 60 % de la scène, sortie
+  vers l'annuaire non annoncée.
+- 🧰 Outillage : le `browse` de gstack n'est pas installé sur la machine →
+  captures et mesures par Playwright Python (`pw.py`). Le détecteur impeccable
+  ne lit pas les `.astro` (scanner `dist/` et les URL) et expire sur l'accueil
+  desktop (film en Blob).
+
 ### 2026-09-09 (mise en ligne de la maquette recomposée)
 - 🚀 **Poussé sur GitHub et redéployé** (demande utilisateur) : trois commits
   sur `main` de `cltconcept/xenia-website` (`62c0199` le site, `a4bebd8` la
@@ -440,6 +505,16 @@ Aucune. Site 100 % statique, aucun secret.
   cibles de la spec du 08/09 (≤ 6 800). À trancher à l'écran.
 - **Reste du contrôle qualité du 09/09** : redéployer pour activer les en-têtes
   nginx (et valider la syntaxe), adresse de siège de l'éditrice à demander.
+- **Corrections impeccable du 12/09 (8 P1) faites en local, NON committées ni
+  redéployées** : à valider à l'écran (`pnpm dev`, port 4331) puis commit +
+  `GET /deploy?uuid=seetu6uqg4tnkjg8do4f1f8n`.
+- **Reste impeccable (P2/P3, non corrigés)** (`docs/impeccable/2026-09-12/synthese.md`) :
+  `mailto:` visio sans adresse visible, pétales animés en reduced-motion,
+  déroulant non refermable par Échap, verre dans l'élément qui respire, 20
+  animations infinies sans pause hors viewport, cibles tactiles < 44 px
+  (capsules, Pause, liens du footer), nav coupée à 1024 px avec zoom texte
+  200 %, couleurs hors jetons, `lenis` et `Manuscrit.astro` morts, breakpoint
+  700 px, `sizes` du médaillon. Commandes : quieter/distill → adapt → polish.
 
 ## Déploiement (maquette) — en ligne depuis le 2026-08-11
 **https://xenia.chris-ia.com** — HTTPS automatique (wildcard `*.chris-ia.com`),

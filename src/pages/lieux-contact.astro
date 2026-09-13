@@ -73,7 +73,13 @@ const faqLd = {
   <section class="section section--blob rdv" id="rdv">
     <Blob variante={5} teinte="peach-lilac" largeur="44vw" position="bottom: -16%; right: -12vw;" opacite={0.6} />
     <div class="container">
-      <LieuxCards />
+      {/* Réassurance avant les liens externes : même formulation que la FAQ ci-dessous */}
+      <p class="rdv__note">
+        La prise de rendez-vous se fait en ligne, dans un nouvel onglet :
+        Doctoranytime pour Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe.
+        Les deux montrent mes disponibilités en direct.
+      </p>
+      <LieuxCards sansMarge />
       <div class="card card--glass rdv__visio" data-reveal>
         <div>
           <h2 class="headline--sm rdv__visio-titre">Et si la route est un frein : la visio</h2>
@@ -172,6 +178,13 @@ const faqLd = {
 </Base>
 
 <style>
+  /* La note prend l'espace de tête que portaient les cartes (--headline-gap) */
+  .rdv__note {
+    margin: var(--headline-gap) 0 clamp(18px, 2.4vw, 28px);
+    max-width: 36em;
+    font-size: 1rem; line-height: 1.55; color: var(--muted);
+    text-wrap: pretty;
+  }
   .rdv__visio {
     margin-top: var(--gap-grid);
     padding: var(--pad-card);
