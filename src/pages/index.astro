@@ -9,20 +9,14 @@ import CarteCabinets from '../components/CarteCabinets.astro';
 import LieuxCards from '../components/LieuxCards.astro';
 import Closing from '../components/Closing.astro';
 import Tagline from '../components/Tagline.astro';
+import Icon from '../components/Icon.astro';
+import Vignette from '../components/Vignette.astro';
 import { IDENTITE } from '../data/site';
-
-/* « Ce qui vous amène » — le visiteur doit pouvoir se reconnaître (brief).
-   Chaque situation est formulée dans SES mots, pas ceux du métier. */
-const situations = [
-  { txt: '«\u00A0Je suis épuisé·e, je n’y arrive plus.\u00A0»', href: '/accompagnements/adolescents-adultes/', tag: 'Burn-out', teinte: 'rose' },
-  { txt: '«\u00A0Tout me stresse, même les petites choses.\u00A0»', href: '/accompagnements/adolescents-adultes/', tag: 'Stress & anxiété', teinte: 'rose' },
-  { txt: '«\u00A0On attend un enfant, et tout bouge.\u00A0»', href: '/accompagnements/perinatalite-parentalite/', tag: 'Périnatalité', teinte: 'lilac' },
-  { txt: '«\u00A0Être parent me dépasse en ce moment.\u00A0»', href: '/accompagnements/perinatalite-parentalite/', tag: 'Parentalité', teinte: 'lilac' },
-  { txt: '«\u00A0Mon enfant ne va pas bien, je le sens.\u00A0»', href: '/accompagnements/enfants-famille/', tag: 'Enfants', teinte: 'aqua' },
-  { txt: '«\u00A0Le TDAH complique notre quotidien.\u00A0»', href: '/accompagnements/adolescents-adultes/#tdah', tag: 'TDAH', teinte: 'aqua' },
-  { txt: '«\u00A0Je veux manger et dormir mieux, sans me battre.\u00A0»', href: '/nutrition-sante/', tag: 'Nutrition & sommeil', teinte: 'peach' },
-  { txt: '«\u00A0Je vis avec la douleur ou la maladie.\u00A0»', href: '/accompagnements/adolescents-adultes/', tag: 'Maladie chronique', teinte: 'peach' },
-];
+/* « Ce qui vous amène » (6 situations dans les mots du visiteur) et les 3
+   repères de « Qui je suis » vivent dans src/data/ depuis le 2026-09-13 :
+   chaque entrée porte son picto du set src/icons. */
+import { SITUATIONS } from '../data/situations';
+import { REPERES } from '../data/reperes';
 ---
 <Base
   title="Xénia Van Outryve — Psychologue en Brabant wallon"
@@ -94,19 +88,18 @@ const situations = [
           Psychologue en Brabant wallon,<br />vers un <em class="hero__em">mieux-être durable<svg class="hero__trait" viewBox="0 0 220 12" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="trait-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C13D63" /><stop offset="1" stop-color="#F3B1CE" /></linearGradient></defs><path d="M3 9 C 42 3.5, 92 2.5, 132 5.5 C 166 8, 196 7, 217 4.5" pathLength="1" fill="none" stroke="url(#trait-grad)" stroke-width="4.5" stroke-linecap="round" /></svg></em>
         </h1>
         <p class="copy hero__copy" data-h>
-          Stress, épuisement, parentalité, alimentation… Ce qui vous pèse mérite un
-          espace d'écoute <strong>sécurisant et sans jugement</strong>. Je vous reçois à
-          Nivelles, La Hulpe et Court-Saint-Étienne — ou en visio.
+          Ce qui vous pèse mérite un espace d'écoute <strong>sécurisant et sans jugement</strong>,
+          en cabinet ou en visio.
         </p>
         <div class="actions" data-h>
           <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
           <a class="link-arrow" href="/approche/">Découvrir mon approche</a>
         </div>
         <ul class="hero__trust" aria-label="Repères">
-          <li data-h>Agrément n° {IDENTITE.agrement}</li>
-          <li data-h>Master UCLouvain</li>
-          <li data-h>3 cabinets + visio</li>
-          <li data-h>RDV en ligne</li>
+          <li data-h><Icon name="sceau" size={18} />Agrément n° {IDENTITE.agrement}</li>
+          <li data-h><Icon name="livre" size={18} />Master UCLouvain</li>
+          <li data-h><Icon name="epingle" size={18} />3 cabinets + visio</li>
+          <li data-h><Icon name="calendrier" size={18} />RDV en ligne</li>
         </ul>
       </div>
       <!-- Le médaillon : l'aquarelle permanente du cabinet (le portrait vit dans « Qui je suis ») -->
@@ -135,17 +128,24 @@ const situations = [
   <section class="section section--blob amene">
     <Blob variante={1} teinte="lilac-aqua" largeur="52vw" position="top: -10%; left: -16vw;" opacite={0.55} parallaxe />
     <div class="container">
-      <span class="overline overline--center">Ce qui vous amène</span>
-      <h2 class="headline headline--md headline--center headline--trait">
-        Vous vous reconnaissez<br />dans <em>l'une de ces phrases</em> ?
-      </h2>
-      <p class="copy copy--center">
-        Il n'y a pas de «&nbsp;bonne raison&nbsp;» de consulter. Il y a ce que vous vivez,
-        maintenant — et c'est suffisant.
-      </p>
+      <!-- En-tête : texte à gauche, vignette aquarelle à droite (desktop) ;
+           sous 960 px la vignette passe au-dessus du titre, centrée -->
+      <div class="amene__head">
+        <Vignette name="plaid" alt="Aquarelle : un plaid plié et une tasse fumante sur l'accoudoir d'un fauteuil" size={300} rotate={-2} class="amene__vignette" />
+        <div class="amene__intro">
+          <span class="overline">Ce qui vous amène</span>
+          <h2 class="headline headline--md headline--trait">
+            Vous vous reconnaissez<br />dans <em>l'une de ces phrases</em> ?
+          </h2>
+          <p class="copy">
+            Il n'y a pas de «&nbsp;bonne raison&nbsp;» de consulter.
+          </p>
+        </div>
+      </div>
       <div class="amene__grid" data-reveal data-reveal-stagger>
-        {situations.map((s) => (
+        {SITUATIONS.map((s) => (
           <a class:list={['card', 'card--spot', `card--${s.teinte}`, 'amene__card']} href={s.href}>
+            <span class="icon-badge amene__ico" aria-hidden="true"><Icon name={s.icone} size={26} petale={s.teinte === 'aqua' ? 'sage' : 'rose'} /></span>
             <p class="amene__txt">{s.txt}</p>
             <p class="amene__tag">{s.tag} <span aria-hidden="true">→</span></p>
           </a>
@@ -170,8 +170,12 @@ const situations = [
   <section class="section section--blob qui" id="qui-je-suis">
     <Blob variante={3} teinte="rose-lilac" largeur="42vw" position="top: -8%; left: -10vw;" opacite={0.6} parallaxe />
     <div class="container qui__grid">
-      <div class="qui__portrait" data-reveal>
-        <Portrait legende="Xénia Van Outryve — psychologue clinicienne en santé et périnatalité" />
+      <!-- Colonne gauche : le portrait, puis la vignette « carnet » en flux -->
+      <div class="qui__col">
+        <div class="qui__portrait" data-reveal>
+          <Portrait legende="Xénia Van Outryve" />
+        </div>
+        <Vignette name="carnet" alt="Aquarelle : un carnet ouvert, un stylo et des lunettes posées" size={240} rotate={2} class="qui__vignette" />
       </div>
       <div class="qui__txt">
         <span class="overline">Qui je suis</span>
@@ -180,27 +184,22 @@ const situations = [
         </h2>
         <div data-reveal>
         <blockquote class="qui__citation">
-          «&nbsp;Je suis avant tout passionnée par chaque personne, avec son
-          histoire, ses forces et ses fragilités.&nbsp;»
+          «&nbsp;Je suis avant tout passionnée par chaque personne, son histoire,
+          ses forces et ses fragilités.&nbsp;»
         </blockquote>
         <ul class="qui__reperes">
-          <li>
-            <h3 class="puce-petale">Intégrative</h3>
-            <p>Des outils choisis pour votre situation, votre histoire, vos ressources — pas une méthode unique.</p>
-          </li>
-          <li>
-            <h3 class="puce-petale">Corps et esprit</h3>
-            <p>Sommeil, alimentation, mouvement font partie du travail : ils pèsent sur l'humeur et l'énergie.</p>
-          </li>
-          <li>
-            <h3 class="puce-petale">À votre rythme</h3>
-            <p>Vos besoins et vos valeurs fixent le cap, dans un espace sécurisant et sans jugement.</p>
-          </li>
+          {REPERES.map((r) => (
+            <li>
+              <Icon name={r.icone} size={24} petale={r.petale} />
+              <div>
+                <h3>{r.titre}</h3>
+                <p>{r.desc}</p>
+              </div>
+            </li>
+          ))}
         </ul>
-        <p class="qui__faits">Master UCLouvain · Agrément n°&nbsp;{IDENTITE.agrement}</p>
         <div class="actions">
           <a class="link-arrow" href="/a-propos/">En savoir plus sur moi</a>
-          <a class="link-arrow" href="/approche/">Comprendre ma façon de travailler</a>
         </div>
         </div>
       </div>
@@ -211,20 +210,21 @@ const situations = [
   <section class="section section--blob premiere-home">
     <Blob variante={4} teinte="lilac-aqua" largeur="44vw" position="top: -12%; right: -10vw;" opacite={0.55} inverse parallaxe />
     <div class="container">
-      <span class="overline overline--center">La première séance</span>
-      <h2 class="headline headline--md headline--center headline--trait">
-        Et si je ne sais pas<br /><em>par où commencer</em> ?
-      </h2>
-      <p class="copy copy--center">
-        C'est très fréquent — et ce n'est pas un problème. La première
-        rencontre sert justement à ça : poser ce qui vous amène, avec vos
-        mots, sans ordre imposé. Nous définissons ensemble la suite, à votre
-        rythme.
-      </p>
-      <div class="premiere-home__frise"><Etapes /></div>
-      <div class="actions actions--center">
-        <a class="link-arrow" href="/approche/">Découvrir mon approche</a>
+      <!-- Même en-tête que « Ce qui vous amène » : texte + vignette, la frise dessous -->
+      <div class="premiere-home__head">
+        <Vignette name="fauteuils" alt="Aquarelle : deux fauteuils face à face, une table basse et un coussin framboise" size={300} class="premiere-home__vignette" />
+        <div class="premiere-home__intro">
+          <span class="overline">La première séance</span>
+          <h2 class="headline headline--md headline--trait">
+            Et si je ne sais pas<br /><em>par où commencer</em> ?
+          </h2>
+          <p class="copy">
+            C'est fréquent. La première rencontre sert à poser ce qui vous amène,
+            avec vos mots.
+          </p>
+        </div>
       </div>
+      <div class="premiere-home__frise"><Etapes /></div>
     </div>
   </section>
 
@@ -238,9 +238,8 @@ const situations = [
           Ce que vous mangez parle<br />aussi de <em>comment vous allez</em>
         </h2>
         <p class="copy">
-          La santé mentale est étroitement liée à la santé physique. Sommeil,
-          alimentation, mouvement : j'en fais des <strong>leviers concrets</strong> de
-          votre équilibre — sans régime culpabilisant, sans injonctions.
+          Santé mentale et santé physique vont ensemble : sommeil, alimentation
+          et mouvement sont des <strong>leviers concrets</strong>, sans régime.
         </p>
         <div class="actions">
           <a class="btn-pill btn-pill--sage" href="/nutrition-sante/">Explorer ce volet</a>
@@ -270,11 +269,14 @@ const situations = [
         Trois cabinets <em>près de chez vous</em>
       </h2>
       <p class="copy copy--center">
-        Court-Saint-Étienne, Nivelles, La Hulpe — et la visio quand la route ou
-        l'agenda compliquent les choses.
+        Court-Saint-Étienne, Nivelles, La Hulpe, ou la visio.
       </p>
       <div class="lieux-home__grille">
-        <div class="lieux-home__carte"><CarteCabinets /></div>
+        <!-- Colonne de la carte (sticky) : la vignette « porte » sous la carte dessinée -->
+        <div class="lieux-home__carte">
+          <CarteCabinets />
+          <Vignette name="porte" alt="Aquarelle : une porte entrouverte d'où entre la lumière du matin" size={240} rotate={-2} class="lieux-home__vignette" />
+        </div>
         <LieuxCards compact />
       </div>
     </div>
@@ -708,11 +710,9 @@ const situations = [
     display: grid; grid-template-columns: repeat(2, max-content); gap: 10px 26px;
     font-size: 0.86rem; color: var(--muted-hero);
   }
+  /* Chaque repère commence par son picto (sceau, livre, épingle, calendrier,
+     18 px, sans pétale) : la puce dégradée ::before a disparu le 2026-09-13 */
   .hero__trust li { display: flex; align-items: center; gap: 8px; }
-  .hero__trust li::before {
-    content: ''; width: 7px; height: 7px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--rose), var(--lilac));
-  }
   /* Mobile : médaillon sous le texte, film limité au haut, scrim vertical */
   @media (max-width: 1023px) {
     .hero__inner { grid-template-columns: 1fr; }
@@ -724,10 +724,24 @@ const situations = [
     .hero__scrim { background: var(--scrim-hero-mobile); }
   }
 
+  /* ===== En-têtes à vignette (« Ce qui vous amène », « La première séance ») =====
+     Desktop : le bloc surtitre + titre + copy à gauche, la vignette aquarelle
+     dans la colonne libre à droite (spec 2026-09-13 §4). La vignette est
+     première dans le DOM pour passer au-dessus du titre sous 960 px ; ici la
+     grille la range en colonne 2. Le blob (z-index -1) reste derrière. */
+  .amene__head, .premiere-home__head {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(24px, 4vw, 56px); align-items: center;
+  }
+  .amene__intro, .premiere-home__intro { grid-column: 1; grid-row: 1; max-width: 640px; }
+  .amene__head > :global(.amene__vignette),
+  .premiere-home__head > :global(.premiere-home__vignette) { grid-column: 2; grid-row: 1; justify-self: end; }
+
   /* ===== Ce qui vous amène ===== */
+  /* 6 cartes : deux rangées de trois (8 → 6 le 2026-09-13) */
   .amene__grid {
     margin-top: var(--headline-gap);
-    display: grid; grid-template-columns: repeat(4, 1fr);
+    display: grid; grid-template-columns: repeat(3, 1fr);
     gap: var(--gap-grid);
   }
   .amene__card {
@@ -736,6 +750,8 @@ const situations = [
     display: flex; flex-direction: column; gap: 16px;
     border-radius: var(--radius-media);
   }
+  /* La pastille (46 px) porte le picto de la situation avec le pétale de sa teinte */
+  .amene__ico { margin-bottom: -2px; }
   .amene__txt {
     font-family: var(--font-display);
     font-style: italic; font-weight: 480;
@@ -759,7 +775,13 @@ const situations = [
     gap: clamp(40px, 6vw, 80px);
     align-items: center;
   }
-  .qui__portrait { width: 100%; max-width: 400px; justify-self: center; }
+  /* Colonne gauche : portrait puis vignette « carnet » (en flux, calée à droite
+     pour se rapprocher du texte ; centrée sous 960 px par Vignette.astro) */
+  .qui__col { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .qui__portrait { width: 100%; max-width: 400px; }
+  .qui__col > :global(.qui__vignette) { align-self: flex-end; }
+  /* Mobile : le portrait suffit dans cette colonne, la vignette carnet ne s'affiche qu'en desktop (hauteur) */
+  @media (max-width: 960px) { .qui__col > :global(.qui__vignette) { display: none; } }
   .qui__citation {
     margin: 22px 0 0;
     font-family: var(--font-display); font-style: italic; font-weight: 480;
@@ -772,9 +794,11 @@ const situations = [
     margin: 28px 0 0; padding: 0; list-style: none;
     display: flex; flex-direction: column; gap: 16px;
   }
+  /* Chaque repère : picto 24 px + pétale (remplace la puce-pétale), puis titre et ligne */
+  .qui__reperes li { display: flex; align-items: flex-start; gap: 14px; }
+  .qui__reperes li > :global(.icon) { margin-top: 2px; }
   .qui__reperes h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 620; letter-spacing: -0.01em; }
-  .qui__reperes p { margin-top: 4px; padding-left: 28px; color: var(--muted); font-size: 0.97rem; line-height: 1.55; text-wrap: pretty; }
-  .qui__faits { margin-top: 24px; font-size: 0.88rem; font-weight: 600; letter-spacing: 0.02em; color: var(--muted); }
+  .qui__reperes p { margin-top: 4px; color: var(--muted); font-size: 0.97rem; line-height: 1.55; text-wrap: pretty; }
   .qui .actions { margin-top: 22px; gap: 14px 28px; }
 
   /* ===== La première séance ===== */
@@ -790,6 +814,9 @@ const situations = [
   /* La carte reste en vue pendant qu'on parcourt les trois cabinets (conteneur
      de la page : la racine du composant ne reçoit pas le scope Astro d'ici) */
   .lieux-home__carte { position: sticky; top: 120px; }
+  /* La vignette « porte » sous la carte dessinée, dans le bloc collant (carte
+     5:3 ≈ 275 px + 240 px : tient sous 120 px de marge dès 700 px de hauteur) */
+  .lieux-home__carte > :global(.lieux-home__vignette) { margin: 28px auto 0; }
 
   /* ===== Nutrition — la rencontre ===== */
   .nutri__grid {
@@ -842,12 +869,20 @@ const situations = [
 
   /* ===== Responsive ===== */
   @media (max-width: 960px) {
+    /* En-têtes à vignette : tout en flux, la vignette (200 px, centrée par
+       Vignette.astro) au-dessus du surtitre, le texte recentré */
+    .amene__head, .premiere-home__head { display: block; text-align: center; }
+    .amene__intro, .premiere-home__intro { max-width: none; }
+    .amene__intro .copy, .premiere-home__intro .copy { margin-inline: auto; }
     .amene__grid { grid-template-columns: repeat(2, 1fr); }
     .qui__grid { grid-template-columns: 1fr; }
     .qui__portrait { max-width: 320px; }
+    .qui__col { gap: 8px; }
     .nutri__grid { grid-template-columns: 1fr; }
     .nutri__visual { max-width: 360px; }
     .lieux-home__grille { grid-template-columns: 1fr; }
+    /* Une seule colonne : la carte ne colle plus (elle glissait par-dessus les cartes des cabinets) */
+    .lieux-home__carte { position: static; }
   }
   @media (max-width: 600px) {
     .amene__grid { grid-template-columns: 1fr; }

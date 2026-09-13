@@ -6,11 +6,12 @@ import Closing from '../components/Closing.astro';
 import { ACCOMPAGNEMENTS } from '../data/accompagnements';
 import { serviceLd, breadcrumbLd } from '../lib/schema';
 
+/* Motifs : titre (H2, inchangé) + une ligne (spec 2026-09-13 §5) */
 const motifs = [
-  { titre: 'Retrouver de l’énergie', desc: 'Quand la fatigue s’installe malgré le repos, l’assiette est souvent un levier négligé.' },
-  { titre: 'Soutenir la concentration', desc: 'Mieux nourrir son cerveau pour des journées moins brumeuses — au travail comme à l’école.' },
-  { titre: 'Apaiser la digestion', desc: 'Un confort digestif retrouvé change l’humeur, le sommeil et l’énergie. Tout est lié.' },
-  { titre: 'Un bien-être global', desc: 'Manger mieux sans peser chaque gramme : des habitudes durables, pas un régime de plus.' },
+  { titre: 'Retrouver de l’énergie', desc: 'Quand la fatigue reste malgré le repos, l’assiette est un levier.' },
+  { titre: 'Soutenir la concentration', desc: 'Mieux nourrir son cerveau, au travail comme à l’école.' },
+  { titre: 'Apaiser la digestion', desc: 'Un confort retrouvé change l’humeur, le sommeil et l’énergie.' },
+  { titre: 'Un bien-être global', desc: 'Des habitudes durables, pas un régime de plus.' },
 ];
 const offre = ACCOMPAGNEMENTS.find((a) => a.slug === 'nutrition')!;
 const extraLd = [
@@ -26,6 +27,7 @@ const extraLd = [
   <PageHero
     overline="Nutrition & Santé"
     sage
+    icone="assiette"
     image="/media/illu/nutrition.webp"
     imageAlt="Aquarelle pastel : un bol de fruits et une tasse de thé fumante sur une table au matin"
   >
@@ -33,9 +35,8 @@ const extraLd = [
       Mieux manger, mieux dormir,<br /><em>mieux vivre</em> — sans injonctions
     </Fragment>
     <Fragment slot="copy">
-      L'alimentation est un levier essentiel de la santé physique et mentale, au
-      même titre que le sommeil, l'activité physique et la gestion du stress.
-      C'est par là que nous passons — sans culpabilisation.
+      L'alimentation pèse sur la santé physique et mentale, comme le sommeil et
+      le mouvement. On y va sans culpabilisation.
     </Fragment>
   </PageHero>
 
@@ -51,8 +52,7 @@ const extraLd = [
       </div>
       <p class="copy copy--center nutri-note" data-reveal>
         <strong>Psychologue de la santé</strong>, j'aborde l'alimentation par les
-        comportements : ce qui se joue autour de l'assiette compte autant que ce
-        qu'il y a dedans.
+        comportements : autour de l'assiette autant que dedans.
       </p>
     </div>
   </section>
@@ -63,22 +63,13 @@ const extraLd = [
       <article class="card card--glass focus__card" data-reveal>
         <span class="overline">TDAH</span>
         <h2 class="headline--sm">Des menus qui aident vraiment</h2>
-        <p>
-          Pour les personnes présentant un TDAH : des habitudes de vie adaptées
-          et des menus alimentaires conçus pour favoriser la concentration,
-          l'énergie et le bien-être au quotidien.
-        </p>
+        <p>Des habitudes et des menus pensés pour la concentration et l'énergie.</p>
         <a class="link-arrow" href="/accompagnements/adolescents-adultes/#tdah">L'accompagnement TDAH complet</a>
       </article>
       <article class="card card--glass focus__card" data-reveal>
         <span class="overline overline--sage">Nutrition pédiatrique</span>
         <h2 class="headline--sm">Pour les enfants et leurs familles</h2>
-        <p>
-          Actuellement en formation en nutrition pédiatrique, je développe une
-          expertise spécifique pour accompagner les problématiques et les
-          questionnements des enfants autour de l'alimentation — en complément
-          de ma pratique de psychologue.
-        </p>
+        <p>En formation en nutrition pédiatrique, j'accompagne les questions des enfants autour de l'alimentation.</p>
         <a class="link-arrow" href="/accompagnements/enfants-famille/">L'accompagnement Enfants & Famille</a>
       </article>
     </div>

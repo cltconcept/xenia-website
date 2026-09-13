@@ -7,19 +7,11 @@ import Domaines from '../../components/Domaines.astro';
 import { ACCOMPAGNEMENTS } from '../../data/accompagnements';
 import { serviceLd, breadcrumbLd } from '../../lib/schema';
 
+/* Titres (H2) inchangés, une ligne par motif (spec 2026-09-13 §5). */
 const domaines = [
-  {
-    titre: 'Troubles du comportement',
-    desc: 'Colères, oppositions, agitation : des comportements qui débordent et racontent souvent autre chose. On cherche ce qu’ils disent.',
-  },
-  {
-    titre: 'Difficultés d’intégration',
-    desc: 'À l’école, dans un groupe, au sein de la famille : quand votre enfant ne trouve pas sa place, on l’aide à la construire.',
-  },
-  {
-    titre: 'Exprimer ce qu’il vit',
-    desc: 'Les enfants ne disent pas toujours avec des mots : le dessin, le jeu et les moments créatifs deviennent leur langage en séance.',
-  },
+  { titre: 'Troubles du comportement', desc: 'Colères, oppositions, agitation : on cherche ce qu’ils racontent.' },
+  { titre: 'Difficultés d’intégration', desc: 'À l’école, dans un groupe, en famille : l’aider à trouver sa place.' },
+  { titre: 'Exprimer ce qu’il vit', desc: 'Le dessin et le jeu deviennent son langage en séance.' },
 ];
 const offre = ACCOMPAGNEMENTS.find((a) => a.slug === 'enfants')!;
 const extraLd = [
@@ -34,6 +26,7 @@ const extraLd = [
 >
   <PageHero
     overline="Accompagnements · Enfants & Famille"
+    icone={offre.icone}
     image="/media/illu/enfants.webp"
     imageAlt="Aquarelle pastel : des crayons de cire éparpillés à côté d'un dessin de soleil souriant"
   >
@@ -42,8 +35,7 @@ const extraLd = [
     </Fragment>
     <Fragment slot="copy">
       Vous connaissez votre enfant mieux que personne. Si quelque chose vous
-      inquiète — son comportement, ses émotions, sa place dans le groupe —
-      votre intuition mérite d'être écoutée.
+      inquiète, votre intuition mérite d'être écoutée.
     </Fragment>
   </PageHero>
 
@@ -62,19 +54,15 @@ const extraLd = [
           Vous faites partie<br />de <em>la solution</em>
         </h2>
         <p class="copy">
-          Un enfant ne consulte jamais «&nbsp;tout seul&nbsp;» : votre regard, votre
-          histoire et votre quotidien font partie du travail. La place de
-          chacun se définit ensemble, selon l'âge de votre enfant et la
-          situation.
+          Un enfant ne consulte jamais «&nbsp;tout seul&nbsp;» : votre regard et votre
+          quotidien font partie du travail. La place de chacun se définit ensemble.
         </p>
       </div>
       <div class="card card--glass parents__note" data-reveal>
         <h3>Côté assiette aussi</h3>
         <p>
-          Actuellement en formation en nutrition pédiatrique, je développe une
-          expertise spécifique pour accompagner les enfants et leurs familles
-          dans les questionnements autour de l'alimentation — en complément de
-          ma pratique de psychologue.
+          En formation en nutrition pédiatrique, j'accompagne aussi les questions
+          des enfants autour de l'alimentation.
         </p>
         <a class="link-arrow" href="/nutrition-sante/">Voir le volet Nutrition & Santé</a>
       </div>

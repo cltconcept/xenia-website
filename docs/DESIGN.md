@@ -67,6 +67,33 @@ Deux pétales translucides qui se croisent (rose × eau) : leur recouvrement
 dessine une amande aubergine — **la rencontre** (thérapeutique, parent-enfant,
 corps-esprit). Le X de Xénia, sans le dire. Wordmark Fraunces.
 
+## Iconographie (2026-09-13)
+
+Deux registres, un seul monde — décidés avec l'utilisateur après le retour
+« il manque une iconographie personnalisée » :
+
+- **Pictogrammes, style B** : trait aubergine `--ink` (≈ 1,7 px à 32 px, bouts
+  ronds, un seul chemin `fill="currentColor"`) avec, derrière, **un pétale du
+  logo** translucide (`--petale-rose` ou `--petale-sage`, `mix-blend-mode:
+  multiply`, opacité 0,55) posé par le composant `Icon.astro` — jamais généré.
+  Set de 33 motifs dans `src/icons/` (batterie, spirale, pousse, cerf-volant,
+  boussole, assiette, lune, fauteuil, outils, coeur-feuille, sablier, porte,
+  bulle, carnet, sceau, diplome, epingle, calendrier, itineraire, visio,
+  telephone, enveloppe, horloge, eclaircie + réserve : livre, nuage, feuille,
+  tasse, cle, plante, main, etoile, plaid). Générés en planches Recraft V4.1
+  `vector` via Higgsfield (palette imposée `#43324B` sur blanc), découpés par
+  projection d'encre et vectorisés par potrace (`scripts/icones/`). Décoratifs
+  par défaut (`aria-hidden`) ; `label` quand ils portent le sens (contact).
+  Pas de grille, pas de texte, pas de glyphe Unicode, pas de symbole médical.
+- **Vignettes aquarelle, objets du cabinet** : cinq natures mortes carrées
+  (plaid et tasse, carnet et lunettes, deux fauteuils face à face, porte
+  entrouverte, fenêtre au matin) dans le style exact des sept illustrations
+  d'août — Nano Banana Pro via Higgsfield avec `approche.webp` et
+  `nutrition.webp` en référence de style, sans personnage. Servies par
+  `Vignette.astro` en 320/640/960 px, ≤ 20 Ko en 640, chargées à la demande,
+  posées dans la zone du blob à l'opposé du texte (desktop) ou au-dessus du
+  titre (mobile), jamais sur le verre.
+
 ## Interdits
 
 - Pas de noir pur, pas de blanc pur, pas d'angles vifs (radius ≥ 24 px).

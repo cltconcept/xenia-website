@@ -1,9 +1,12 @@
 ---
 /* La première séance en 3 étapes : frise horizontale (accueil) ou liste
-   verticale (Approche). Une ligne SVG relie les cercles numérotés ; au scroll
+   verticale (Approche). Une ligne SVG relie les cercles ; au scroll
    (desktop), la ligne se trace et chaque cercle s'allume quand elle l'atteint.
-   Reduced-motion et sans JS : tout visible. */
+   Reduced-motion et sans JS : tout visible.
+   Depuis le 2026-09-13 (spec §6) : chaque cercle porte le picto de l'étape
+   (porte, bulle, carnet) ; le numéro reste lisible aux lecteurs d'écran (sr-only). */
 import { ETAPES } from '../data/etapes';
+import Icon from './Icon.astro';
 interface Props { vertical?: boolean }
 const { vertical = false } = Astro.props;
 ---
@@ -13,7 +16,7 @@ const { vertical = false } = Astro.props;
   </svg>
   {ETAPES.map((e, i) => (
     <li class="etapes__etape">
-      <span class="etapes__num" aria-hidden="true">{i + 1}</span>
+      <span class="etapes__num"><Icon name={e.icone} size={22} /><span class="sr-only">Étape {i + 1}</span></span>
       <div class="etapes__txt">
         <h3>{e.titre}</h3>
         <p>{e.desc}</p>
@@ -66,12 +69,12 @@ const { vertical = false } = Astro.props;
     stroke-dasharray: 1 1; stroke-dashoffset: 0;
   }
   .etapes__etape { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+  /* Le cercle : même surface qu'avant, le picto (trait --ink, posé par Icon) remplace le numéro */
   .etapes__num {
     position: relative; z-index: 1;
     width: 46px; height: 46px; border-radius: 50%; flex: none;
     display: grid; place-items: center;
     background: linear-gradient(135deg, var(--tint-rose), var(--tint-lilac)), var(--ivory);
-    font-family: var(--font-display); font-weight: 640; color: var(--framboise-deep); /* sur la teinte, --framboise tombait à 4,37:1 */
     box-shadow: var(--shadow-card);
   }
   .etapes__txt h3 { font-size: 1.05rem; font-weight: 700; }

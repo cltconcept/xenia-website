@@ -7,31 +7,14 @@ import Domaines from '../../components/Domaines.astro';
 import { ACCOMPAGNEMENTS } from '../../data/accompagnements';
 import { serviceLd, breadcrumbLd } from '../../lib/schema';
 
+/* Titres (H2) inchangés, une ligne par motif (spec 2026-09-13 §5). */
 const domaines = [
-  {
-    titre: 'Désir d’enfant et parcours de fertilité',
-    desc: 'Attente, parcours PMA, fausse couche, interruption de grossesse : des étapes souvent traversées en silence, qui méritent un vrai soutien.',
-  },
-  {
-    titre: 'Grossesse et anxiété maternelle',
-    desc: 'Quand l’inquiétude prend toute la place, que les questionnements tournent en boucle — pendant la grossesse ou après.',
-  },
-  {
-    titre: 'Dépression parentale et post-partum',
-    desc: 'Ne pas ressentir ce qu’on «\u00A0devrait\u00A0», s’épuiser, se perdre : ça se soigne, et ce n’est la faute de personne.',
-  },
-  {
-    titre: 'Burn-out parental',
-    desc: 'Aimer ses enfants et ne plus supporter son quotidien de parent : les deux coexistent. On travaille à sortir de l’épuisement.',
-  },
-  {
-    titre: 'Le corps qui change',
-    desc: 'Grossesse, post-partum : accepter un corps transformé prend du temps. Un espace pour en parler sans tabou.',
-  },
-  {
-    titre: 'Le couple à l’arrivée de l’enfant',
-    desc: 'Comprendre l’impact des histoires familiales sur votre parentalité, renforcer la relation et construire une dynamique familiale sereine.',
-  },
+  { titre: 'Désir d’enfant et parcours de fertilité', desc: 'Attente, PMA, fausse couche : sortir du silence.' },
+  { titre: 'Grossesse et anxiété maternelle', desc: 'Quand l’inquiétude prend toute la place, pendant ou après.' },
+  { titre: 'Dépression parentale et post-partum', desc: 'Ne pas ressentir ce qu’on «\u00A0devrait\u00A0» : ça se soigne.' },
+  { titre: 'Burn-out parental', desc: 'Aimer ses enfants et ne plus tenir : les deux coexistent.' },
+  { titre: 'Le corps qui change', desc: 'Accepter un corps transformé prend du temps, sans tabou.' },
+  { titre: 'Le couple à l’arrivée de l’enfant', desc: 'Renforcer la relation et construire une dynamique sereine.' },
 ];
 const offre = ACCOMPAGNEMENTS.find((a) => a.slug === 'perinatalite')!;
 const extraLd = [
@@ -46,6 +29,7 @@ const extraLd = [
 >
   <PageHero
     overline="Accompagnements · Périnatalité & Parentalité"
+    icone={offre.icone}
     image="/media/illu/perinatalite.webp"
     imageAlt="Aquarelle pastel : deux pétales translucides qui se recouvrent, le plus grand abritant le plus petit"
   >
@@ -53,9 +37,8 @@ const extraLd = [
       Devenir parent bouscule tout.<br /><em>Vous n'êtes pas seuls.</em>
     </Fragment>
     <Fragment slot="copy">
-      Conception, grossesse, post-partum, arrivée d'un enfant : ces périodes de
-      transformation s'accompagnent de changements émotionnels, physiques et
-      identitaires. Un soutien psychologique peut y être précieux.
+      Conception, grossesse, post-partum : le corps, les émotions et l'identité
+      se transforment. Un soutien peut y être précieux.
     </Fragment>
   </PageHero>
 
@@ -73,9 +56,8 @@ const extraLd = [
         Il n'y a pas de «&nbsp;bon moment&nbsp;»<br />pour <em>demander de l'aide</em>
       </h2>
       <p class="copy copy--center">
-        Avant la conception, pendant la grossesse, trois mois ou trois ans
-        après la naissance : si quelque chose pèse — sur vous, sur votre couple,
-        sur votre famille — c'est le bon moment.
+        Avant la conception, pendant la grossesse, trois mois ou trois ans après :
+        si quelque chose pèse, c'est le bon moment.
       </p>
     </div>
   </section>

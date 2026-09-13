@@ -1,0 +1,14 @@
+---
+/* Pictogramme du site (set src/icons, style B) : SVG inline mono-chemin en
+   currentColor, avec un pétale du logo derrière (rose ou sauge) en option.
+   Décoratif par défaut (aria-hidden) ; `label` le rend porteur de sens. */
+interface Props { name: string; size?: number; petale?: 'rose' | 'sage' | 'none'; label?: string; class?: string }
+const { name, size = 24, petale = 'none', label, class: cls } = Astro.props;
+const svgs = import.meta.glob('../icons/*.svg', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const brut = svgs[`../icons/${name}.svg`];
+if (!brut) throw new Error(`Icon : « ${name} » absent de src/icons/`);
+const svg = brut
+  .replace('<svg ', `<svg width="${size}" height="${size}" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true" focusable="false"'} `)
+  .trim();
+---
+<span class:list={['icon', { [`icon--petale-${petale}`]: petale !== 'none' }, cls]} style={`--icon-size: ${size}px`} set:html={svg} />

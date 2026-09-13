@@ -80,7 +80,17 @@ xenia/
   sous le mot pivot des titres (`bootTraits`, IntersectionObserver).
 - **Scripts** : `scripts/illustration_hero.sh` (3 candidats Kie → `brief/illu-src/`),
   `scripts/convertir_hero.mjs` (→ `public/media/illu/hero-cabinet-{640,1040,1600}.webp`),
-  `scripts/convertir_illustrations.mjs` (les autres aquarelles).
+  `scripts/convertir_illustrations.mjs` (les autres aquarelles ; mode
+  `--vignette` = 3 tailles), `scripts/icones/decouper.mjs` (planche Recraft →
+  SVG mono-chemin, grille détectée, potrace), `scripts/compter_mots.mjs`
+  (mots visibles par page vs cibles).
+- **Iconographie (2026-09-13)** : `src/icons/*.svg` (33 pictos, style B) rendus
+  par `components/Icon.astro` (`name`, `size`, `petale` rose/sage/none,
+  `label`), vignettes aquarelle `public/media/illu/vignettes/` rendues par
+  `components/Vignette.astro` (`name`, `alt`, `size`, `rotate`, `eager`) ;
+  données `situations.ts` (6), `reperes.ts` (3), champs `icone` dans
+  `themes.ts` (8), `accompagnements.ts`, `etapes.ts`. Masters dans
+  `brief/illu-src/{icones,vignettes}/` (hors dépôt).
 
 ## Variables d'environnement
 Aucune. Site 100 % statique, aucun secret.
@@ -98,12 +108,60 @@ Aucune. Site 100 % statique, aucun secret.
 | Recomposition design (spec 2026-09-08) | ✅ Done | 2026-09-09 |
 | Blocs et animations de l'accueil (spec 2026-09-09) | ✅ Done | 2026-09-09 |
 | Mise en ligne de la maquette recomposée (GitHub + Coolify) | ✅ Done | 2026-09-09 |
+| Vérification impeccable (critique 29/40, audit 13/20) + 8 P1 corrigés | ✅ Done | 2026-09-12 |
+| Allègement du texte (−30/40 %) + iconographie sur mesure (33 pictos, 5 vignettes) | ✅ Done | 2026-09-13 |
+| Reste impeccable P2/P3 (mailto visio, Échap, pétales RM, cibles 44 px…) | 📋 Planned | — |
 | Photo de la cliente dans le hero + bloc tarifs (attendent ses éléments) | 📋 Planned | — |
 | Photos de la cliente (portrait « à venir ») | 📋 Planned | — |
 | Nom de domaine final + bascule DNS + Search Console | 📋 Planned | — |
 | Textes validés par la cliente | 📋 Planned | — |
 
 ## Journal des changements
+
+### 2026-09-13 (allègement du texte −30/40 % + iconographie sur mesure)
+- 🎯 **Déclencheur** : deux retours du responsable de l'utilisateur sur la
+  maquette, « trop de texte » et « pas d'iconographie personnalisée
+  (Higgsfield) ». Brainstorming (4 questions + 2 écrans du compagnon visuel),
+  spec `docs/superpowers/specs/2026-09-13-xenia-allegement-iconographie-design.md`,
+  plan du même nom, exécution par sous-agents (socle, accueil, composants +
+  pages) et par le lead (génération Higgsfield, découpe, vérification).
+- ✨ **Set de 33 pictogrammes propres au site** (`src/icons/`, style B : trait
+  aubergine + pétale du logo posé par `Icon.astro`) : 4 planches Recraft V4.1
+  `vector` via Higgsfield (10 crédits pièce, SVG natif rasterisé), découpées
+  par projection d'encre (grille DÉTECTÉE : Recraft a livré du 3×3 et du 2×4)
+  et vectorisées par potrace (`scripts/icones/decouper.mjs`, 52,6 Ko les 33).
+  `diplome` trop plat → `livre` pour le master.
+- ✨ **5 vignettes aquarelle « objets du cabinet »** (plaid, carnet, fauteuils,
+  porte, fenêtre) : Nano Banana Pro via Higgsfield avec deux illustrations
+  d'août en référence de style, 2 candidats par sujet (choix dans
+  `brief/illu-src/vignettes/CHOIX.md`), WebP 320/640/960 ≤ 20 Ko en 640
+  (`Vignette.astro`, `scripts/convertir_illustrations.mjs --vignette`).
+  60 crédits Higgsfield au total.
+- ✂️ **Textes** : accueil 994 → 651 mots visibles (−35 % ; 739 sur la base de
+  comptage du 12/09, textes cachés compris), Approche 492 → 317, À propos
+  403 → 270, accompagnements ≈ 410 → 259-273, Nutrition 411 → 272, Lieux
+  545 → 360 ; FAQ 6 → 4 questions (JSON-LD resynchronisé), bandeau 10 → 8
+  capsules, situations 8 → 6, ligne « Où » une seule fois sous le carrousel,
+  adresses retirées des cartes compactes et du pied de page. Faits, H1/H2,
+  meta et phrases-patients intacts. ⚠️ **Cibles recalibrées de +65** pendant
+  l'implémentation : le texte fixe (nav rendue deux fois + footer) pèse 163
+  mots, pas 100 ; `scripts/compter_mots.mjs` (texte visible : sr-only, tiroir
+  mobile et copie du bandeau exclus) prouve toutes les cibles.
+- 📐 **Emplacements** : pictos dans les repères du hero, les 6 cartes, les
+  onglets, les repères « Qui je suis », les cercles des étapes (numéro en
+  sr-only), les cartes de lieux, les piliers d'Approche (le logo répété
+  disparaît), les heros de page, le closing, le contact du footer ; vignettes
+  à l'opposé du texte en desktop, 168 px au-dessus du titre en mobile (carnet
+  et fenêtre masquées sur téléphone pour la hauteur).
+- ✅ **Vérifié** : build 10 pages, 0 erreur console, 0 débordement à 390,
+  contrastes des nouveaux libellés ≥ 4,90:1 au pixel, accueil 8 230 → 7 398 px
+  desktop (les vignettes prennent une part de la place libérée ; la cible
+  ≤ 6 000 px de la spec n'est pas atteinte) et 9 722 → 9 808 px mobile, HTML
+  de l'accueil 114 Ko brut / 30 Ko gzip avec 45 SVG inline, détecteur
+  impeccable `dist` 67 → 59 constats (aucune règle nouvelle), FAQ JSON-LD = HTML,
+  H1 inchangés, `llms.txt` à jour.
+- 📚 `docs/DESIGN.md` : section « Iconographie ». Reste : audit SEO/GEO complet
+  (`/noveo-checkquality`) à repasser, dossier client PDF à régénérer (captures).
 
 ### 2026-09-12 (après-midi — les 8 P1 impeccable corrigés, EN LOCAL, non committés)
 - ✅ **Décisions utilisateur** : corriger les 8 P1 seulement, garder les trois
@@ -505,9 +563,12 @@ Aucune. Site 100 % statique, aucun secret.
   cibles de la spec du 08/09 (≤ 6 800). À trancher à l'écran.
 - **Reste du contrôle qualité du 09/09** : redéployer pour activer les en-têtes
   nginx (et valider la syntaxe), adresse de siège de l'éditrice à demander.
-- **Corrections impeccable du 12/09 (8 P1) faites en local, NON committées ni
-  redéployées** : à valider à l'écran (`pnpm dev`, port 4331) puis commit +
-  `GET /deploy?uuid=seetu6uqg4tnkjg8do4f1f8n`.
+- **Corrections impeccable du 12/09 (8 P1) committées le 13/09** (`528fa01`),
+  puis allègement + iconographie (commit du même jour).
+- **Accueil desktop à 7 398 px** : sous les 8 230 px d'avant mais au-dessus de la
+  cible ≤ 6 000 px de la spec du 13/09 (les vignettes occupent une part de la
+  place libérée par le texte). Descendre plus bas = retirer des blocs
+  (approche B, écartée).
 - **Reste impeccable (P2/P3, non corrigés)** (`docs/impeccable/2026-09-12/synthese.md`) :
   `mailto:` visio sans adresse visible, pétales animés en reduced-motion,
   déroulant non refermable par Échap, verre dans l'élément qui respire, 20

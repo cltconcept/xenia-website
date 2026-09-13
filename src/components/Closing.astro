@@ -1,6 +1,10 @@
 ---
 /* Clôture commune : nomme l'objection réelle (oser le premier rendez-vous)
-   et propose l'action unique. */
+   et propose l'action unique. Depuis le 2026-09-13 (spec §6) : picto
+   « éclaircie » au-dessus du titre, vignette « fenêtre » à droite du bloc en
+   desktop, au-dessus en mobile. ≤ 45 mots. */
+import Icon from './Icon.astro';
+import Vignette from './Vignette.astro';
 ---
 <section class="closing">
   <div class="aurora" aria-hidden="true">
@@ -9,17 +13,20 @@
     <div class="halo" style="--halo-c: rgba(223,210,244,0.65); width: 30vw; height: 30vw; bottom: -4vw; right: 18vw;"></div>
   </div>
   <div class="container closing__inner" data-reveal>
-    <h2 class="headline headline--md headline--center">
-      Le plus difficile, c'est souvent<br />de <em>prendre le premier rendez-vous</em>.
-    </h2>
-    <p class="copy copy--center">
-      Pas besoin d'attendre que «&nbsp;ça aille vraiment mal&nbsp;». Si quelque chose vous
-      pèse, c'est déjà une raison suffisante d'en parler.
-    </p>
-    <div class="actions actions--center">
-      <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
-      <a class="link-arrow" href="/lieux-contact/">Voir les trois cabinets</a>
+    <div class="closing__txt">
+      <Icon name="eclaircie" size={28} class="closing__ico" />
+      <h2 class="headline headline--md headline--center">
+        Le plus difficile, c'est souvent<br />de <em>prendre le premier rendez-vous</em>.
+      </h2>
+      <p class="copy copy--center">
+        Si quelque chose vous pèse, c'est déjà une raison suffisante d'en parler.
+      </p>
+      <div class="actions actions--center">
+        <a class="btn-pill" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
+        <a class="link-arrow" href="/lieux-contact/">Voir les trois cabinets</a>
+      </div>
     </div>
+    <Vignette name="fenetre" alt="Aquarelle : une fenêtre au matin, un rideau léger et une plante sur le rebord" size={240} class="closing__vignette" />
   </div>
 </section>
 
@@ -29,5 +36,18 @@
     padding-block: var(--section-pad);
     overflow: clip;
   }
-  .closing__inner { position: relative; }
+  .closing__inner {
+    position: relative;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: center;
+  }
+  /* Picto et vignette sont rendus par des composants enfants (scope propre) :
+     ciblés en :global depuis leur parent. */
+  .closing__txt > :global(.closing__ico) { display: grid; margin: 0 auto 14px; }
+  @media (max-width: 960px) {
+    .closing__inner { grid-template-columns: 1fr; }
+    /* Mobile : la vignette fenêtre ne s'affiche qu'en desktop — le closing reste court sur téléphone (2026-09-13) */
+    .closing__inner > :global(.closing__vignette) { display: none; }
+  }
 </style>

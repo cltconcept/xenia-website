@@ -4,13 +4,20 @@ import PageHero from '../components/PageHero.astro';
 import Blob from '../components/Blob.astro';
 import Closing from '../components/Closing.astro';
 import Portrait from '../components/Portrait.astro';
+import Icon from '../components/Icon.astro';
 import { IDENTITE } from '../data/site';
+/* Textes allégés le 2026-09-13 (spec §5) : présentation en 3 paragraphes de
+   2 phrases ; repères officiels avec un picto du set chacun (§6). */
 ---
 <Base
   title="À propos — Xénia Van Outryve, psychologue clinicienne"
   description="Psychologue clinicienne en santé et périnatalité (Master UCLouvain, agrément 9422118125). Une pratique intégrative entre santé mentale et santé physique."
 >
-  <PageHero overline="À propos">
+  <PageHero
+    overline="À propos"
+    icone="carnet"
+    vignette={{ name: 'carnet', alt: 'Aquarelle : un carnet ouvert, un stylo et des lunettes posées' }}
+  >
     <Fragment slot="title">
       Xénia Van Outryve,<br /><em>psychologue clinicienne</em>
     </Fragment>
@@ -27,28 +34,18 @@ import { IDENTITE } from '../data/site';
       </div>
       <div class="apropos__txt" data-reveal>
         <p>
-          Ce qui m'anime au quotidien : accompagner celles et ceux qui traversent
-          des périodes difficiles vers un <strong>mieux-être durable</strong>. Ma pratique
-          repose sur une approche intégrative et holistique, qui considère la
-          personne dans sa globalité.
+          J'accompagne celles et ceux qui traversent une période difficile vers un
+          <strong>mieux-être durable</strong>. Ma pratique est intégrative : elle
+          considère la personne dans sa globalité.
         </p>
         <p>
-          Convaincue que la santé mentale est étroitement liée à la santé
-          physique, j'accorde une attention particulière aux comportements de
-          santé — sommeil, alimentation, activité physique — qui favorisent
-          l'équilibre psychologique.
+          La santé mentale est liée à la santé physique. J'accorde donc une vraie
+          place au sommeil, à l'alimentation et au mouvement.
         </p>
         <p>
-          J'accompagne les enfants, les adolescents et les adultes confrontés au
-          stress, à l'anxiété, aux difficultés émotionnelles, à la douleur ou aux
-          maladies chroniques, à l'épuisement professionnel, ainsi qu'aux
-          différentes transitions de vie. J'accompagne également les futurs
-          parents et les familles dans les étapes de la parentalité.
-        </p>
-        <p>
-          Parce que chaque personne est unique, je propose un espace d'écoute
-          bienveillant, sécurisant et sans jugement — dans le respect de votre
-          rythme, de vos besoins et de vos valeurs.
+          Je reçois les enfants, les adolescents et les adultes, ainsi que les
+          futurs et jeunes parents. Toujours dans un espace sécurisant, sans
+          jugement, à votre rythme.
         </p>
       </div>
     </div>
@@ -63,14 +60,17 @@ import { IDENTITE } from '../data/site';
       </h2>
       <div class="reperes__grid" data-reveal data-reveal-stagger>
         <div class="card card--spot card--rose reperes__item">
+          <span class="icon-badge" aria-hidden="true"><Icon name="livre" size={26} petale="rose" /></span>
           <p class="reperes__label">Formation</p>
           <p class="reperes__val">{IDENTITE.diplome}</p>
         </div>
         <div class="card card--spot card--lilac reperes__item">
+          <span class="icon-badge" aria-hidden="true"><Icon name="sceau" size={26} petale="sage" /></span>
           <p class="reperes__label">Agrément psychologue</p>
           <p class="reperes__val">N° {IDENTITE.agrement}<br /><span>Commission des psychologues</span></p>
         </div>
         <div class="card card--spot card--aqua reperes__item">
+          <span class="icon-badge icon-badge--sage" aria-hidden="true"><Icon name="pousse" size={26} petale="rose" /></span>
           <p class="reperes__label">En cours</p>
           <p class="reperes__val">Formation en nutrition pédiatrique</p>
         </div>
@@ -101,6 +101,7 @@ import { IDENTITE } from '../data/site';
     gap: var(--gap-grid);
   }
   .reperes__item { padding: clamp(24px, 2.6vw, 34px); }
+  .reperes__item .icon-badge { margin-bottom: 14px; }
   .reperes__label {
     font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--framboise);

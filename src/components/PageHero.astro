@@ -2,10 +2,25 @@
 /* Hero des pages intérieures : aurore douce + halo respirant + un Blob derrière
    le médaillon (ou seul, à droite, pour les pages sans image).
    `image` (optionnelle) : illustration fondue sur un dégradé d'aurore
-   (mix-blend multiply) dans un médaillon organique à anneau de verre. */
+   (mix-blend multiply) dans un médaillon organique à anneau de verre.
+   Depuis le 2026-09-13 (spec §6) : `icone` = picto 28 px entre l'overline et
+   le H1 ; `vignette` = aquarelle 320 px à la place du médaillon pour les pages
+   sans image (au-dessus du titre en mobile). Sans ces props, rien ne change. */
 import Blob from './Blob.astro';
-interface Props { overline: string; sage?: boolean; image?: string; imageAlt?: string }
-const { overline, sage = false, image, imageAlt = '' } = Astro.props;
+import Icon from './Icon.astro';
+import Vignette from './Vignette.astro';
+type NomVignette = 'plaid' | 'carnet' | 'fauteuils' | 'porte' | 'fenetre';
+interface Props {
+  overline: string;
+  sage?: boolean;
+  image?: string;
+  imageAlt?: string;
+  icone?: string;
+  vignette?: { name: NomVignette; alt: string };
+}
+const { overline, sage = false, image, imageAlt = '', icone, vignette } = Astro.props;
+/* Médaillon ou vignette : même colonne de droite, même blob derrière */
+const media = !!image || !!vignette;
 ---
 <section class="phero" data-hero>
   <div class="aurora phero__aurora" aria-hidden="true">
@@ -13,14 +28,15 @@ const { overline, sage = false, image, imageAlt = '' } = Astro.props;
     <div class="aurora__blob aurora__blob--slow" style={`--blob-c: rgba(223,210,244,0.75); width: 40vw; height: 40vw; top: -12vw; right: -8vw;`}></div>
     <div class="halo" style={`--halo-c: ${sage ? 'rgba(201,233,222,0.7)' : 'rgba(246,200,219,0.65)'}; width: 34vw; height: 34vw; top: -6vw; right: 14vw;`}></div>
   </div>
-  {image ? (
+  {media ? (
     <Blob variante={2} teinte={sage ? 'aqua-lilac' : 'peach-rose'} largeur="36vw" position="top: 6%; right: -6vw;" opacite={0.6} />
   ) : (
     <Blob variante={3} teinte={sage ? 'aqua-peach' : 'peach-lilac'} largeur="40vw" position="top: -6%; right: -10vw;" opacite={0.55} />
   )}
-  <div class:list={['container', 'phero__inner', { 'phero__inner--media': !!image }]}>
+  <div class:list={['container', 'phero__inner', { 'phero__inner--media': media }]}>
     <div class="phero__txt">
       <span class:list={['overline', { 'overline--sage': sage }]}>{overline}</span>
+      {icone && <Icon name={icone} size={28} petale={sage ? 'sage' : 'rose'} class="phero__ico" />}
       <h1 class="headline"><slot name="title" /></h1>
       <p class="copy"><slot name="copy" /></p>
       <slot />
@@ -29,6 +45,9 @@ const { overline, sage = false, image, imageAlt = '' } = Astro.props;
       <figure class:list={['phero__media', { 'phero__media--sage': sage }]} data-reveal>
         <img src={image} alt={imageAlt} width="800" height="600" loading="eager" fetchpriority="high" />
       </figure>
+    )}
+    {!image && vignette && (
+      <Vignette name={vignette.name} alt={vignette.alt} size={320} class="phero__vignette" eager />
     )}
   </div>
 </section>
@@ -42,7 +61,7 @@ const { overline, sage = false, image, imageAlt = '' } = Astro.props;
   /* L'aurore passe SOUS le blob (z-index -1), le contenu au-dessus des deux */
   .phero__aurora { z-index: -2; }
   .phero__inner { position: relative; max-width: 880px; }
-  /* Variante avec médaillon : deux colonnes sur desktop */
+  /* Variante avec médaillon ou vignette : deux colonnes sur desktop */
   .phero__inner--media {
     max-width: var(--container);
     display: grid; grid-template-columns: 1.25fr 0.75fr;
@@ -62,8 +81,13 @@ const { overline, sage = false, image, imageAlt = '' } = Astro.props;
     width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover;
     mix-blend-mode: multiply;
   }
+  /* Picto et vignette sont rendus par des composants enfants (scope propre) :
+     ciblés en :global depuis leur parent. */
+  .phero__txt > :global(.phero__ico) { display: grid; margin-bottom: 14px; }
+  .phero__inner > :global(.phero__vignette) { justify-self: center; }
   @media (max-width: 960px) {
     .phero__inner--media { grid-template-columns: 1fr; }
     .phero__media { max-width: 380px; }
+    .phero__inner > :global(.phero__vignette) { order: -1; }
   }
 </style>

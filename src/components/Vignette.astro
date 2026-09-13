@@ -1,0 +1,18 @@
+---
+/* Vignette aquarelle (objets du cabinet) : image informative, 3 tailles,
+   chargée à la demande, dimensions déclarées (pas de CLS), reveal comme les grilles. */
+interface Props { name: 'plaid' | 'carnet' | 'fauteuils' | 'porte' | 'fenetre'; alt: string; size?: number; class?: string; rotate?: number; eager?: boolean }
+/* `eager` : vignette au-dessus de la ligne de flottaison (hero des pages) → pas de lazy, priorité haute (LCP) */
+const { name, alt, size = 320, class: cls, rotate = 0, eager = false } = Astro.props;
+const src = (w: number) => `/media/illu/vignettes/${name}-${w}.webp`;
+---
+<figure class:list={['vignette', cls]} style={`--vignette-size: ${size}px; --vignette-rot: ${rotate}deg`} data-reveal>
+  <img src={src(640)} srcset={`${src(320)} 320w, ${src(640)} 640w, ${src(960)} 960w`} sizes={`(max-width: 960px) 200px, ${size}px`} width="640" height="640" alt={alt} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
+</figure>
+
+<style>
+  .vignette { margin: 0; width: min(var(--vignette-size), 100%); rotate: var(--vignette-rot); }
+  .vignette img { display: block; width: 100%; height: auto; border-radius: var(--radius-organique); }
+  /* Mobile : 168 px centrés au-dessus du titre (200 allongeait l'accueil de 900 px, 2026-09-13) */
+  @media (max-width: 960px) { .vignette { width: 168px; margin-inline: auto; margin-bottom: 18px; rotate: 0deg; } }
+</style>

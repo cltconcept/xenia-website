@@ -204,6 +204,9 @@ pnpm preview</pre>
         <tr><td>Recomposition design (spec 2026-09-08)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-09</td></tr>
         <tr><td>Blocs et animations de l'accueil (spec 2026-09-09)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-09</td></tr>
         <tr><td>Mise en ligne de la maquette recomposée (GitHub + Coolify)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-09</td></tr>
+        <tr><td>Vérification impeccable (critique 29/40, audit 13/20) + 8 P1 corrigés</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-12</td></tr>
+        <tr><td>Allègement du texte (−30/40 %) + iconographie sur mesure (33 pictos, 5 vignettes)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-13</td></tr>
+        <tr><td>Reste impeccable P2/P3 (mailto visio, Échap, pétales RM, cibles 44 px…)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
         <tr><td>Photo de la cliente dans le hero + bloc tarifs (attendent ses éléments)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
         <tr><td>Photos de la cliente (portrait « à venir »)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
         <tr><td>Domaine final + bascule DNS + Search Console</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
@@ -214,6 +217,15 @@ pnpm preview</pre>
     <section id="journal">
       <h2><span class="ico">📆</span>Journal des changements</h2>
       <div class="timeline">
+        <div class="tl-item">
+          <p class="tl-date">2026-09-13 — allègement du texte (−30/40 %) + iconographie sur mesure</p>
+          <ul>
+            <li>🎯 <b>Déclencheur</b> : retours du responsable de l'utilisateur, « trop de texte » et « pas d'iconographie personnalisée (Higgsfield) ». Brainstorming, spec et plan dans <code>docs/superpowers/</code>, exécution par sous-agents + génération par le lead.</li>
+            <li>✨ <b>33 pictogrammes propres au site</b> (<code>src/icons/</code>, trait aubergine + pétale du logo via <code>Icon.astro</code>) : 4 planches Recraft V4.1 vector via Higgsfield, découpe par projection d'encre (grille détectée) et potrace, 52,6 Ko. <b>5 vignettes aquarelle « objets du cabinet »</b> (Nano Banana Pro, 2 candidats par sujet, WebP ≤ 20 Ko) via <code>Vignette.astro</code>. 60 crédits.</li>
+            <li>✂️ <b>Textes</b> : accueil 994 → 651 mots visibles (−35 %), Approche 492 → 317, À propos 403 → 270, accompagnements ≈ 410 → 259-273, Nutrition 411 → 272, Lieux 545 → 360 ; FAQ 6 → 4 (JSON-LD resynchronisé), bandeau 10 → 8, situations 8 → 6, « Où » une seule fois, adresses retirées des cartes compactes et du footer. Cibles recalibrées de +65 (texte fixe = 163 mots), prouvées par <code>scripts/compter_mots.mjs</code>.</li>
+            <li>✅ <b>Vérifié</b> : build 10 pages, 0 erreur console, 0 débordement, contrastes ≥ 4,90:1, accueil 8 230 → 7 398 px desktop / 9 722 → 9 808 px mobile, HTML accueil 114 Ko brut / 30 Ko gzip, détecteur impeccable <code>dist</code> 67 → 59, H1 inchangés, <code>llms.txt</code> à jour. Reste : audit SEO/GEO complet à repasser, dossier client PDF à régénérer.</li>
+          </ul>
+        </div>
         <div class="tl-item">
           <p class="tl-date">2026-09-12 — après-midi · les 8 P1 impeccable corrigés (LOCAL, non committé)</p>
           <ul>
@@ -344,7 +356,7 @@ pnpm preview</pre>
 
     <section id="problemes">
       <h2><span class="ico">⚠️</span>Problèmes connus / à confirmer cliente</h2>
-      <div class="card warn"><b>Corrections impeccable du 12/09 (8 P1) faites en local, non committées ni redéployées</b> : à valider à l'écran (<code>pnpm dev</code>, port 4331) puis commit + redéploiement. <b>Reste (P2/P3)</b> (<code>docs/impeccable/2026-09-12/synthese.md</code>) : <code>mailto:</code> visio sans adresse visible, pétales en reduced-motion, déroulant non refermable par Échap, verre dans l'élément qui respire, animations infinies sans pause hors viewport, cibles tactiles &lt; 44 px, nav à 1024 px + zoom 200 %, couleurs hors jetons, <code>lenis</code>/<code>Manuscrit.astro</code> morts, breakpoint 700 px. Commandes : quieter/distill → adapt → polish.</div>
+      <div class="card warn"><b>Corrections impeccable du 12/09 (8 P1) committées le 13/09</b> (<code>528fa01</code>), puis allègement + iconographie. <b>Reste (P2/P3)</b> (<code>docs/impeccable/2026-09-12/synthese.md</code>) : <code>mailto:</code> visio sans adresse visible, pétales en reduced-motion, déroulant non refermable par Échap, verre dans l'élément qui respire, animations infinies sans pause hors viewport, cibles tactiles &lt; 44 px, nav à 1024 px + zoom 200 %, couleurs hors jetons, <code>lenis</code>/<code>Manuscrit.astro</code> morts, breakpoint 700 px. Commandes : quieter/distill → adapt → polish.</div>
       <div class="card warn"><b>Nom de domaine non tranché</b> (Mindfoodyou.be abandonné) — placeholder <code>xeniavanoutryve.be</code> dans les canonical/sitemap/JSON-LD.</div>
       <div class="card warn"><b>Tarifs et paiement</b> : seule certitude vérifiée : « paiement mobile accepté » (Doctoranytime). Remboursement mutualité formulé prudemment.</div>
       <div class="card warn"><b>Aquarelle du hero à valider par la cliente</b> (elle reste même après les photos ; le portrait vit dans « Qui je suis » et À propos). <b>Hauteurs</b> : accueil 7 197 px, intérieures −9/−17 % — sous les cibles de la spec, à trancher à l'écran.</div>

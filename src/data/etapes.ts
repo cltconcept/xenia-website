@@ -1,8 +1,8 @@
-/* La première séance en 3 étapes — textes de la page Approche, source unique
-   (frise de l'accueil + liste verticale d'Approche). */
-export interface Etape { titre: string; desc: string }
+/* La première séance en 3 étapes — source unique (frise de l'accueil + liste
+   verticale d'Approche). desc ≤ 12 mots, `icone` = picto du cercle (spec 2026-09-13). */
+export interface Etape { titre: string; desc: string; icone: string }
 export const ETAPES: Etape[] = [
-  { titre: 'Vous arrivez comme vous êtes', desc: 'Pas besoin de préparer quoi que ce soit, ni d’avoir «\u00A0les bons mots\u00A0».' },
-  { titre: 'On fait connaissance', desc: 'Ce qui vous amène, votre contexte, ce que vous attendez — et vos questions.' },
-  { titre: 'On décide ensemble', desc: 'La fréquence, les priorités, la manière de travailler : rien n’est figé d’avance.' },
+  { titre: 'Vous arrivez comme vous êtes', desc: 'Rien à préparer, pas de «\u00A0bons mots\u00A0» à trouver.', icone: 'porte' },
+  { titre: 'On fait connaissance', desc: 'Ce qui vous amène, votre contexte, vos questions.', icone: 'bulle' },
+  { titre: 'On décide ensemble', desc: 'Fréquence, priorités, façon de travailler : rien n’est figé.', icone: 'carnet' },
 ];

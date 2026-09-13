@@ -1,8 +1,12 @@
 ---
 /* Carrousel des accompagnements : 4 onglets (patron ARIA tabs), une carte
    par panneau, flèches, défilement auto lent et pausable. Sans JS : les 4
-   panneaux se suivent, onglets/flèches/pause masqués. */
+   panneaux se suivent, onglets/flèches/pause masqués.
+   Depuis le 2026-09-13 (spec §6) : un picto du set devant chaque libellé d'onglet.
+   Même jour : l'overline de chaque panneau (répétait l'onglet) et la ligne « Où »
+   par panneau sont retirées ; « Où » ne s'affiche qu'une fois, sous la scène. */
 import { ACCOMPAGNEMENTS, OU } from '../data/accompagnements';
+import Icon from './Icon.astro';
 ---
 <div class="carrousel" data-carrousel>
   <div class="carrousel__onglets" role="tablist" aria-label="Accompagnements">
@@ -15,7 +19,7 @@ import { ACCOMPAGNEMENTS, OU } from '../data/accompagnements';
         aria-controls={`panneau-${a.slug}`}
         aria-selected={i === 0 ? 'true' : 'false'}
         tabindex={i === 0 ? 0 : -1}
-      >{a.onglet}</button>
+      ><Icon name={a.icone} size={20} />{a.onglet}</button>
     ))}
   </div>
   <div class="carrousel__scene">
@@ -33,10 +37,9 @@ import { ACCOMPAGNEMENTS, OU } from '../data/accompagnements';
               <img src={a.illu} alt={a.illuAlt} width="640" height="480" loading="lazy" />
             </figure>
             <div class="carrousel__txt">
-              <span class:list={['overline', { 'overline--sage': a.teinte === 'sage' }]}>{a.onglet}</span>
+              <!-- L'onglet nomme déjà l'accompagnement : pas d'overline en doublon (2026-09-13) -->
               <h3 class="headline headline--md">{a.titre} <em>{a.accroche}</em></h3>
               <p class="carrousel__desc">{a.desc}</p>
-              <p class="carrousel__ou puce-petale">{OU}</p>
               <a class="link-arrow" href={a.href}>Découvrir</a>
             </div>
           </article>
@@ -45,6 +48,8 @@ import { ACCOMPAGNEMENTS, OU } from '../data/accompagnements';
     </div>
     <button class="carrousel__fleche carrousel__fleche--suiv" type="button" aria-label="Accompagnement suivant">›</button>
   </div>
+  <!-- La ligne « Où » vaut pour les 4 accompagnements : une seule fois, sous la scène (2026-09-13) -->
+  <p class="carrousel__ou puce-petale">{OU}</p>
   <button class="carrousel__pause" type="button" aria-pressed="false">
     <span class="carrousel__pause-ico" aria-hidden="true"></span>
     <span class="carrousel__pause-txt">Pause</span>
@@ -140,6 +145,7 @@ import { ACCOMPAGNEMENTS, OU } from '../data/accompagnements';
   /* Onglets capsule */
   .carrousel__onglets { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 28px; }
   .carrousel__onglet {
+    display: inline-flex; align-items: center; gap: 8px; /* picto 20 px devant le libellé (2026-09-13) */
     padding: 10px 18px; border-radius: var(--radius-pill);
     border: 1.5px solid var(--sep); background: transparent;
     font-size: 0.92rem; font-weight: 600; color: var(--ink); cursor: pointer;
@@ -186,7 +192,8 @@ import { ACCOMPAGNEMENTS, OU } from '../data/accompagnements';
   .carrousel__illu img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; opacity: 0.95; }
   .carrousel__txt .headline { margin-top: 8px; }
   .carrousel__desc { margin-top: 14px; color: var(--muted); font-size: 1.02rem; line-height: 1.6; }
-  .carrousel__ou { margin-top: 16px; font-size: 0.9rem; color: var(--muted); }
+  /* La ligne « Où » : une seule fois, sous la scène (plus dans chaque panneau, 2026-09-13) */
+  .carrousel__ou { margin: 20px auto 0; justify-content: center; font-size: 0.9rem; color: var(--muted); }
   .carrousel__txt .link-arrow { margin-top: 20px; }
   /* Flèches en verre */
   .carrousel__fleche {

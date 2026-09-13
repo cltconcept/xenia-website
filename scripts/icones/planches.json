@@ -1,0 +1,6 @@
+[
+  { "png": "brief/illu-src/icones/planche-1.png", "noms": ["batterie", "spirale", "pousse", "cerf-volant", "boussole", "assiette", "lune", "fauteuil"] },
+  { "png": "brief/illu-src/icones/planche-2.png", "noms": ["outils", "coeur-feuille", "sablier", "bulle", "carnet", "porte", "livre", "sceau", "diplome"] },
+  { "png": "brief/illu-src/icones/planche-3.png", "noms": ["epingle", "calendrier", "itineraire", "visio", "telephone", "enveloppe", "horloge", "eclaircie"] },
+  { "png": "brief/illu-src/icones/planche-4.png", "noms": ["nuage", "feuille", "tasse", "cle", "plante", "main", "etoile", "plaid"] }
+]

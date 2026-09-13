@@ -4,8 +4,13 @@
    vie privée) et rendez-vous sur la plateforme du cabinet. Les deux liens
    ouvrent un nouvel onglet : le texte visible reste le début du nom accessible
    (WCAG 2.5.3), le complément (lieu, « nouvel onglet ») est en .sr-only.
-   `sansMarge` : quand une note précède les cartes, la page espace elle-même. */
+   `sansMarge` : quand une note précède les cartes, la page espace elle-même.
+   Depuis le 2026-09-13 (spec §6) : pictos épingle (ville), horloge (horaires)
+   et itinéraire (lien), tous décoratifs — la liste des horaires est nommée
+   par aria-label, sans mot visible en plus. En mode `compact` (accueil), l'adresse
+   n'est pas rendue : elle reste sur la page Lieux et dans l'itinéraire (2026-09-13). */
 import { LIEUX, type Lieu } from '../data/site';
+import Icon from './Icon.astro';
 interface Props { compact?: boolean; sansMarge?: boolean }
 const { compact = false, sansMarge = false } = Astro.props;
 const itineraire = (l: Lieu) =>
@@ -15,13 +20,17 @@ const itineraire = (l: Lieu) =>
   {LIEUX.map((l) => (
     <article class:list={['card', 'card--spot', `card--${l.couleur}`, 'lieux__card']}>
       <div class="lieux__body">
-        <p class="lieux__ville">{l.ville}</p>
+        <p class="lieux__ville"><Icon name="epingle" size={18} />{l.ville}</p>
         <p class="lieux__nom">{l.nom}</p>
-        <p class="lieux__adresse">{l.adresse} · {l.codePostal} {l.ville}</p>
-        <ul class="lieux__horaires">
-          {l.horaires.map((h) => <li>{h}</li>)}
-        </ul>
-        <a class="link-arrow lieux__itin" href={itineraire(l)} target="_blank" rel="noopener">Itinéraire<span class="sr-only"> vers {l.nom}, {l.ville}, nouvel onglet</span></a>
+        {/* Compact (accueil) : l'adresse vit sur la page Lieux et dans l'itinéraire (2026-09-13) */}
+        {!compact && <p class="lieux__adresse">{l.adresse} · {l.codePostal} {l.ville}</p>}
+        <div class="lieux__horaires">
+          <span class="lieux__horaires-ico"><Icon name="horloge" size={16} /></span>
+          <ul aria-label="Horaires">
+            {l.horaires.map((h) => <li>{h}</li>)}
+          </ul>
+        </div>
+        <a class="link-arrow lieux__itin" href={itineraire(l)} target="_blank" rel="noopener"><Icon name="itineraire" size={16} />Itinéraire<span class="sr-only"> vers {l.nom}, {l.ville}, nouvel onglet</span></a>
         <a class="btn-pill btn-pill--sm lieux__btn" href={l.lienRdv} target="_blank" rel="noopener">
           Rendez-vous sur {l.plateforme}<span class="sr-only">, {l.ville}, nouvel onglet</span>
           <svg class="lieux__ext" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h6v6M10 2 2.5 9.5" /></svg>
@@ -44,18 +53,24 @@ const itineraire = (l: Lieu) =>
     flex: 1;
   }
   .lieux__ville {
+    display: flex; align-items: center; gap: 8px;
     font-family: var(--font-display);
     font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em;
   }
   .lieux__nom { margin-top: 4px; font-weight: 650; font-size: 0.95rem; }
   .lieux__adresse { margin-top: 2px; color: var(--muted); font-size: 0.9rem; }
+  /* Horloge à gauche, les créneaux en colonne (le picto remplace les puces) */
   .lieux__horaires {
-    margin: 16px 0 0; padding: 0; list-style: none;
-    display: flex; flex-direction: column; gap: 5px;
+    margin-top: 16px;
+    display: flex; align-items: flex-start; gap: 8px;
     font-size: 0.92rem; color: var(--ink);
   }
-  .lieux__horaires li::before { content: '·'; color: var(--framboise); font-weight: 700; margin-right: 8px; }
-  .lieux__itin { margin-top: auto; padding-top: 16px; font-size: 0.9rem; }
+  .lieux__horaires-ico { display: grid; margin-top: 0.2em; }
+  .lieux__horaires ul {
+    margin: 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .lieux__itin { margin-top: auto; padding-top: 16px; font-size: 0.9rem; gap: 8px; }
   .lieux__btn { margin-top: 14px; }
   .lieux__ext { flex: none; } /* glyphe « lien externe », après le texte (gap 8 px de .btn-pill) */
   .lieux--sans-marge { margin-top: 0; }

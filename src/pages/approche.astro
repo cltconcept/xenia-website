@@ -3,8 +3,11 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Blob from '../components/Blob.astro';
 import Closing from '../components/Closing.astro';
-import Logo from '../components/Logo.astro';
 import Etapes from '../components/Etapes.astro';
+import Icon from '../components/Icon.astro';
+import Vignette from '../components/Vignette.astro';
+/* Textes allégés et pictos du set le 2026-09-13 (spec §5-6) : piliers ≤ 35 mots,
+   copies ≤ 40, le logo répété en pastille a disparu. */
 ---
 <Base
   title="Mon approche — Xénia Van Outryve, psychologue"
@@ -19,9 +22,8 @@ import Etapes from '../components/Etapes.astro';
       Une approche <em>intégrative</em>,<br />qui vous considère en entier
     </Fragment>
     <Fragment slot="copy">
-      Vous n'êtes pas «&nbsp;un symptôme à corriger&nbsp;». Vous êtes une personne, avec
-      son histoire, ses forces et ses fragilités — et c'est avec tout cela que
-      nous travaillons.
+      Vous n'êtes pas «&nbsp;un symptôme à corriger&nbsp;» : vous êtes une personne,
+      avec son histoire.
     </Fragment>
   </PageHero>
 
@@ -29,33 +31,27 @@ import Etapes from '../components/Etapes.astro';
     <div class="container">
       <div class="piliers__grid" data-reveal data-reveal-stagger>
         <article class="card card--spot card--rose piliers__card">
-          <span class="icon-badge" aria-hidden="true"><Logo size={24} /></span>
+          <span class="icon-badge" aria-hidden="true"><Icon name="outils" size={26} petale="rose" /></span>
           <h2>Holistique, concrètement</h2>
           <p>
-            Une approche <strong>intégrative et holistique</strong>, qui considère la
-            personne dans sa globalité : ce que vous vivez, ce que vous ressentez,
-            votre contexte familial et professionnel. Les outils s'adaptent à votre
-            situation — pas l'inverse.
+            Ce que vous vivez, votre contexte, vos ressources : <strong>tout compte</strong>.
+            Les outils s'adaptent à vous, pas l'inverse.
           </p>
         </article>
         <article class="card card--spot card--lilac piliers__card">
-          <span class="icon-badge" aria-hidden="true"><Logo size={24} /></span>
+          <span class="icon-badge" aria-hidden="true"><Icon name="coeur-feuille" size={26} petale="sage" /></span>
           <h2>Le corps fait partie du travail</h2>
           <p>
-            La santé mentale est <strong>étroitement liée à la santé physique</strong>.
-            Sommeil, alimentation, activité physique : ces habitudes de vie pèsent
-            directement sur l'humeur, l'énergie et l'anxiété. On s'en occupe aussi,
-            à petits pas réalistes.
+            Sommeil, alimentation, mouvement pèsent sur l'humeur. On s'en occupe
+            aussi, <strong>à petits pas</strong>.
           </p>
         </article>
         <article class="card card--spot card--aqua piliers__card">
-          <span class="icon-badge icon-badge--sage" aria-hidden="true"><Logo size={24} /></span>
+          <span class="icon-badge icon-badge--sage" aria-hidden="true"><Icon name="sablier" size={26} petale="rose" /></span>
           <h2>Sans jugement, à votre rythme</h2>
           <p>
-            Un espace d'écoute <strong>bienveillant, sécurisant et sans jugement</strong>,
-            où explorer vos difficultés, mieux comprendre votre fonctionnement et
-            développer vos ressources. Le cap : un mieux-être durable, dans le
-            respect de vos besoins et de vos valeurs.
+            Un espace <strong>sécurisant et sans jugement</strong>, pour comprendre
+            votre fonctionnement et développer vos ressources. Le cap : un mieux-être durable.
           </p>
         </article>
       </div>
@@ -65,17 +61,18 @@ import Etapes from '../components/Etapes.astro';
   <section class="section section--blob premiere">
     <Blob variante={2} teinte="peach-rose" largeur="46vw" position="top: -6%; left: -12vw;" opacite={0.6} />
     <div class="container premiere__grid">
-      <div class="card card--glass premiere__intro" data-reveal>
-        <span class="overline">La première séance</span>
-        <h2 class="headline headline--md">
-          Et si je ne sais pas<br /><em>par où commencer</em> ?
-        </h2>
-        <p class="copy">
-          C'est très fréquent — et ce n'est pas un problème. La première
-          rencontre sert justement à ça : poser ce qui vous amène, avec vos
-          mots, sans ordre imposé. Nous définissons ensemble la suite, à votre
-          rythme.
-        </p>
+      <div class="premiere__gauche">
+        <div class="card card--glass premiere__intro" data-reveal>
+          <span class="overline">La première séance</span>
+          <h2 class="headline headline--md">
+            Et si je ne sais pas<br /><em>par où commencer</em> ?
+          </h2>
+          <p class="copy">
+            C'est fréquent. La première rencontre sert justement à poser ce qui
+            vous amène, avec vos mots.
+          </p>
+        </div>
+        <Vignette name="fauteuils" alt="Aquarelle : deux fauteuils face à face, une table basse et un coussin framboise" size={300} rotate={2} class="premiere__vignette" />
       </div>
       <div data-reveal><Etapes vertical /></div>
     </div>
@@ -88,8 +85,7 @@ import Etapes from '../components/Etapes.astro';
         Enfants, adolescents, adultes,<br /><em>futurs et jeunes parents</em>
       </h2>
       <p class="copy copy--center">
-        Chaque âge a sa porte d'entrée : retrouvez le détail dans les trois
-        accompagnements, ou contactez-moi si vous hésitez sur la formule.
+        Chaque âge a sa porte d'entrée. Si vous hésitez sur la formule, contactez-moi.
       </p>
       <div class="pourqui__grid" data-reveal data-reveal-stagger>
         <a class="card card--spot card--rose pourqui__card" href="/accompagnements/adolescents-adultes/">
@@ -130,7 +126,9 @@ import Etapes from '../components/Etapes.astro';
     gap: clamp(32px, 5vw, 64px);
     align-items: start;
   }
-  .premiere__intro { padding: var(--pad-card); }
+  /* Colonne de gauche : la carte de verre, puis la vignette (hors du verre) */
+  .premiere__gauche { display: flex; flex-direction: column; align-items: center; gap: clamp(24px, 3vw, 40px); }
+  .premiere__intro { padding: var(--pad-card); width: 100%; }
 
   .pourqui__grid {
     margin-top: var(--headline-gap);
@@ -152,6 +150,8 @@ import Etapes from '../components/Etapes.astro';
   @media (max-width: 960px) {
     .piliers__grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
     .premiere__grid { grid-template-columns: 1fr; }
+    /* Vignette au-dessus du titre en mobile (rendue par Vignette : scope enfant) */
+    .premiere__gauche > :global(.premiere__vignette) { order: -1; }
     .pourqui__grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
   }
 </style>

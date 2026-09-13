@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Wave from './Wave.astro';
+import Icon from './Icon.astro';
 import { IDENTITE, LIEUX, NAV } from '../data/site';
 const year = new Date().getFullYear();
 ---
@@ -12,10 +13,7 @@ const year = new Date().getFullYear();
         <Logo size={34} />
         <span>Xénia Van Outryve</span>
       </a>
-      <p class="footer__tagline">
-        Psychologue clinicienne — santé, périnatalité, nutrition.<br />
-        Un espace d'écoute sécurisant et sans jugement.
-      </p>
+      <p class="footer__tagline">Psychologue clinicienne — santé, périnatalité, nutrition.</p>
       <p class="footer__breathe" aria-hidden="true">
         <span class="footer__breathe-dot"></span>
         Prenez le temps de respirer
@@ -38,15 +36,15 @@ const year = new Date().getFullYear();
       {LIEUX.map((l) => (
         <p class="footer__lieu">
           <strong>{l.ville}</strong><br />
-          {l.nom} · {l.adresse}
+          {l.nom}
         </p>
       ))}
     </div>
 
     <div class="footer__col" aria-label="Contact">
       <p class="footer__head">Contact</p>
-      <a href={`tel:${IDENTITE.telephoneIntl}`}>{IDENTITE.telephone}</a>
-      <a href={`mailto:${IDENTITE.email}`}>{IDENTITE.email}</a>
+      <a class="footer__contact" href={`tel:${IDENTITE.telephoneIntl}`}><Icon name="telephone" size={16} label="Téléphone" />{IDENTITE.telephone}</a>
+      <a class="footer__contact" href={`mailto:${IDENTITE.email}`}><Icon name="enveloppe" size={16} label="E-mail" />{IDENTITE.email}</a>
       <p class="footer__legal-line">Agrément psychologue<br />{IDENTITE.agrement}</p>
       <p class="footer__legal-line">TVA {IDENTITE.tva}</p>
     </div>
@@ -56,7 +54,6 @@ const year = new Date().getFullYear();
     <p>© {year} Xénia Van Outryve — Psychologue clinicienne, Brabant wallon.</p>
     <p>
       <a class="footer__legal-link" href="/mentions-legales/">Mentions légales &amp; vie privée</a>
-      · Consultations sur rendez-vous, en cabinet ou en visio.
     </p>
   </div>
 </footer>
@@ -102,6 +99,8 @@ const year = new Date().getFullYear();
     transition: color 0.2s ease;
   }
   .footer__col a:hover { color: var(--framboise); }
+  /* Liens de contact : picto porteur de sens (label) devant le numéro et l'adresse (2026-09-13) */
+  .footer__contact { display: inline-flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
   .footer__lieu { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
   .footer__lieu strong { color: var(--ink); }
   .footer__legal-line { font-size: 0.84rem; color: var(--muted); line-height: 1.5; }

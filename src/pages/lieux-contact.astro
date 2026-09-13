@@ -3,56 +3,40 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Blob from '../components/Blob.astro';
 import LieuxCards from '../components/LieuxCards.astro';
+import Icon from '../components/Icon.astro';
 import { IDENTITE } from '../data/site';
 
-/* FAQ balisée — mêmes réponses que le bloc « Côté pratique » ci-dessous */
+/* FAQ — 4 questions depuis le 2026-09-13 (spec §5), réponses ≤ 30 mots.
+   Source unique : le bloc « Côté pratique » ET le JSON-LD FAQPage se rendent
+   depuis ce même tableau, le texte est donc identique par construction.
+   « Comment payer ? » absorbe l'ancienne question sur le remboursement.
+   À CONFIRMER CLIENTE : tarifs exacts et autres moyens de paiement. */
+const FAQ = [
+  {
+    q: 'Doctoranytime ou Rosa ?',
+    r: 'Selon le cabinet : Doctoranytime pour Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe. Les deux montrent mes disponibilités en direct.',
+  },
+  {
+    q: 'Faut-il une prescription ?',
+    r: 'Non : vous pouvez prendre rendez-vous directement, sans passer par un médecin.',
+  },
+  {
+    q: 'Proposez-vous des consultations en visio ?',
+    r: 'Oui, quand la distance ou l’agenda compliquent le déplacement. Demandez-le par e-mail ou par téléphone.',
+  },
+  {
+    q: 'Comment payer ?',
+    r: `Paiement mobile accepté en cabinet. Psychologue agréée (n° ${IDENTITE.agrement}), la plupart des mutualités interviennent : un justificatif vous est fourni sur demande.`,
+  },
+];
 const faqLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Comment payer ?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Le paiement mobile est accepté en cabinet.' },
-    },
-    {
-      '@type': 'Question',
-      name: 'Les séances sont-elles remboursées ?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: `Psychologue agréée (n° ${IDENTITE.agrement}) : la plupart des mutualités interviennent dans le coût des séances. Le montant varie selon la vôtre — un justificatif vous est fourni sur demande.`,
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Faut-il une prescription ?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Non : vous pouvez prendre rendez-vous directement, sans passer par un médecin.' },
-    },
-    {
-      '@type': 'Question',
-      name: 'Doctoranytime ou Rosa ?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Cela dépend simplement du cabinet : Doctoranytime pour Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe. Les deux montrent les disponibilités en direct.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Proposez-vous des consultations en visio ?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Oui : quand la distance, l’agenda ou la situation compliquent le déplacement, la consultation peut se faire en vidéo. Demandez-le par e-mail ou par téléphone.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Qui consultez-vous ?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Les enfants, les adolescents et les adultes — ainsi que les futurs et jeunes parents (périnatalité, parentalité). Si vous hésitez sur la formule, contactez-moi.',
-      },
-    },
-  ],
+  mainEntity: FAQ.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.r },
+  })),
 };
 ---
 <Base
@@ -60,33 +44,32 @@ const faqLd = {
   description="Trois cabinets : Court-Saint-Étienne, Nivelles, La Hulpe — et la visio. Rendez-vous en ligne via Doctoranytime ou Rosa. Tél. 0475 67 03 50."
 >
   <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
-  <PageHero overline="Lieux & Contact">
+  <PageHero
+    overline="Lieux & Contact"
+    icone="epingle"
+    vignette={{ name: 'porte', alt: "Aquarelle : une porte entrouverte d'où entre la lumière du matin" }}
+  >
     <Fragment slot="title">
       Trois cabinets en Brabant wallon<br />— et <em>la visio</em>
     </Fragment>
     <Fragment slot="copy">
-      Choisissez le lieu et le jour qui vous arrangent : la prise de rendez-vous
-      se fait en ligne, sur la plateforme du cabinet concerné.
+      Choisissez le lieu et le jour : le rendez-vous se prend en ligne.
     </Fragment>
   </PageHero>
 
   <section class="section section--blob rdv" id="rdv">
     <Blob variante={5} teinte="peach-lilac" largeur="44vw" position="bottom: -16%; right: -12vw;" opacite={0.6} />
     <div class="container">
-      {/* Réassurance avant les liens externes : même formulation que la FAQ ci-dessous */}
+      {/* Réassurance avant les liens externes ; le détail par cabinet est dans la FAQ */}
       <p class="rdv__note">
-        La prise de rendez-vous se fait en ligne, dans un nouvel onglet :
-        Doctoranytime pour Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe.
-        Les deux montrent mes disponibilités en direct.
+        Rendez-vous en ligne, dans un nouvel onglet, sur la plateforme du cabinet.
       </p>
       <LieuxCards sansMarge />
       <div class="card card--glass rdv__visio" data-reveal>
-        <div>
+        <span class="icon-badge icon-badge--sage rdv__visio-ico" aria-hidden="true"><Icon name="visio" size={24} petale="sage" /></span>
+        <div class="rdv__visio-txt">
           <h2 class="headline--sm rdv__visio-titre">Et si la route est un frein : la visio</h2>
-          <p>
-            Les consultations peuvent aussi se faire en vidéo, quand la distance,
-            l'agenda ou la situation compliquent le déplacement.
-          </p>
+          <p>En vidéo, quand la distance ou l'agenda compliquent le déplacement.</p>
         </div>
         <a class="btn-pill btn-pill--ghost" href={`mailto:${IDENTITE.email}?subject=Demande%20de%20consultation%20en%20visio`}>Demander une visio</a>
       </div>
@@ -107,51 +90,12 @@ const faqLd = {
         </div>
       </div>
       <dl class="pratique__faq" data-reveal data-reveal-stagger>
-        <div class="card card--glass pratique__qa">
-          <dt>Comment payer ?</dt>
-          <dd>
-            Le paiement mobile est accepté en cabinet.
-            <!-- À CONFIRMER CLIENTE : tarifs exacts + autres moyens de paiement -->
-          </dd>
-        </div>
-        <div class="card card--glass pratique__qa">
-          <dt>Les séances sont-elles remboursées ?</dt>
-          <dd>
-            Psychologue agréée (n° {IDENTITE.agrement}) : la plupart des
-            mutualités interviennent dans le coût des séances. Le montant varie
-            selon la vôtre — un justificatif vous est fourni sur demande.
-          </dd>
-        </div>
-        <div class="card card--glass pratique__qa">
-          <dt>Faut-il une prescription ?</dt>
-          <dd>
-            Non : vous pouvez prendre rendez-vous directement, sans passer par
-            un médecin.
-          </dd>
-        </div>
-        <div class="card card--glass pratique__qa">
-          <dt>Doctoranytime ou Rosa ?</dt>
-          <dd>
-            Cela dépend simplement du cabinet : Doctoranytime pour
-            Court-Saint-Étienne et Nivelles, Rosa pour La Hulpe. Les deux
-            montrent mes disponibilités en direct.
-          </dd>
-        </div>
-        <div class="card card--glass pratique__qa">
-          <dt>Proposez-vous des consultations en visio ?</dt>
-          <dd>
-            Oui : quand la distance, l'agenda ou la situation compliquent le
-            déplacement, la consultation peut se faire en vidéo. Demandez-le
-            par e-mail ou par téléphone.
-          </dd>
-        </div>
-        <div class="card card--glass pratique__qa">
-          <dt>Qui consultez-vous ?</dt>
-          <dd>
-            Les enfants, les adolescents et les adultes — ainsi que les futurs
-            et jeunes parents. Si vous hésitez sur la formule, contactez-moi.
-          </dd>
-        </div>
+        {FAQ.map((f) => (
+          <div class="card card--glass pratique__qa">
+            <dt>{f.q}</dt>
+            <dd>{f.r}</dd>
+          </div>
+        ))}
       </dl>
     </div>
   </section>
@@ -161,14 +105,17 @@ const faqLd = {
       <h2 class="headline headline--md headline--center">Me <em>contacter</em></h2>
       <div class="coords__grid">
         <a class="card card--spot card--rose coords__item" href={`tel:${IDENTITE.telephoneIntl}`}>
+          <span class="icon-badge coords__ico" aria-hidden="true"><Icon name="telephone" size={24} petale="rose" /></span>
           <p class="coords__label">Téléphone</p>
           <p class="coords__val">{IDENTITE.telephone}</p>
         </a>
         <a class="card card--spot card--lilac coords__item" href={`mailto:${IDENTITE.email}`}>
+          <span class="icon-badge coords__ico" aria-hidden="true"><Icon name="enveloppe" size={24} petale="rose" /></span>
           <p class="coords__label">E-mail</p>
           <p class="coords__val coords__val--mail">{IDENTITE.email}</p>
         </a>
         <div class="card card--spot card--aqua coords__item">
+          <span class="icon-badge icon-badge--sage coords__ico" aria-hidden="true"><Icon name="sceau" size={24} petale="sage" /></span>
           <p class="coords__label">Officiel</p>
           <p class="coords__val coords__val--sm">Agrément {IDENTITE.agrement}<br />TVA {IDENTITE.tva}</p>
         </div>
@@ -185,12 +132,14 @@ const faqLd = {
     font-size: 1rem; line-height: 1.55; color: var(--muted);
     text-wrap: pretty;
   }
+  /* Pastille visio | texte (prend la place) | bouton — passe à la ligne en mobile */
   .rdv__visio {
     margin-top: var(--gap-grid);
     padding: var(--pad-card);
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center;
     gap: 24px; flex-wrap: wrap;
   }
+  .rdv__visio-txt { flex: 1 1 320px; }
   .rdv__visio-titre { font-family: var(--font-display); font-weight: 620; }
   .rdv__visio p { margin-top: 8px; color: var(--muted); max-width: 46em; }
 
@@ -216,6 +165,7 @@ const faqLd = {
     padding: clamp(24px, 2.6vw, 34px);
     text-decoration: none; text-align: center;
   }
+  .coords__ico { margin: 0 auto 12px; }
   .coords__label {
     font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--framboise);
