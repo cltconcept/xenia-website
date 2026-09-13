@@ -118,6 +118,19 @@ Aucune. Site 100 % statique, aucun secret.
 
 ## Journal des changements
 
+### 2026-09-13 (soir — plus aucune mention de l'agence sur le site)
+- 🗑️ **« Site conçu et hébergé par Noveo Digital (noveodigital.be) » retiré des
+  mentions légales** (`src/pages/mentions-legales.astro`, carte Hébergement) :
+  règle posée par l'utilisateur le même jour — **aucun site client ne porte de
+  signature d'agence** (ni Noveo, ni noveodigital.be, ni CLT Concept, ni
+  chris-ia). La carte ne nomme plus que l'hébergeur (Hetzner Online GmbH,
+  adresse, données dans l'UE), ce que la loi demande.
+- ✅ Vérifié : build 10 pages, `grep -rniE "noveo" dist/` vide, PDF servi
+  `public/dossier-xenia-van-outryve.pdf` déjà propre (0 occurrence au texte
+  extrait). Règle gravée dans `_autres/website/CLAUDE.md`, le skill
+  `site-vitrine` et le contrôleur de référence (`dailypopsociety/scripts/verifier.mjs`).
+- 🚀 Committé, poussé et redéployé sur la maquette, page vérifiée en ligne.
+
 ### 2026-09-13 (allègement du texte −30/40 % + iconographie sur mesure)
 - 🎯 **Déclencheur** : deux retours du responsable de l'utilisateur sur la
   maquette, « trop de texte » et « pas d'iconographie personnalisée

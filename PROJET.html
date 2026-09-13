@@ -218,6 +218,14 @@ pnpm preview</pre>
       <h2><span class="ico">📆</span>Journal des changements</h2>
       <div class="timeline">
         <div class="tl-item">
+          <p class="tl-date">2026-09-13 — soir · plus aucune mention de l'agence sur le site</p>
+          <ul>
+            <li>🗑️ <b>« Site conçu et hébergé par Noveo Digital (noveodigital.be) » retiré des mentions légales</b> (<code>src/pages/mentions-legales.astro</code>, carte Hébergement) : règle posée par l'utilisateur le même jour — <b>aucun site client ne porte de signature d'agence</b> (ni Noveo, ni noveodigital.be, ni CLT Concept, ni chris-ia). La carte ne nomme plus que l'hébergeur (Hetzner Online GmbH, adresse, données dans l'UE).</li>
+            <li>✅ Vérifié : build 10 pages, <code>grep -rniE "noveo" dist/</code> vide, PDF servi déjà propre. Règle gravée dans <code>_autres/website/CLAUDE.md</code>, le skill <code>site-vitrine</code> et le contrôleur de référence (<code>dailypopsociety/scripts/verifier.mjs</code>).</li>
+            <li>🚀 Committé, poussé et redéployé sur la maquette, page vérifiée en ligne.</li>
+          </ul>
+        </div>
+        <div class="tl-item">
           <p class="tl-date">2026-09-13 — allègement du texte (−30/40 %) + iconographie sur mesure</p>
           <ul>
             <li>🎯 <b>Déclencheur</b> : retours du responsable de l'utilisateur, « trop de texte » et « pas d'iconographie personnalisée (Higgsfield) ». Brainstorming, spec et plan dans <code>docs/superpowers/</code>, exécution par sous-agents + génération par le lead.</li>
