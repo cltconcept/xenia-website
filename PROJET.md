@@ -154,14 +154,22 @@ Aucune. Site 100 % statique, aucun secret.
   à l'opposé du texte en desktop, 168 px au-dessus du titre en mobile (carnet
   et fenêtre masquées sur téléphone pour la hauteur).
 - ✅ **Vérifié** : build 10 pages, 0 erreur console, 0 débordement à 390,
-  contrastes des nouveaux libellés ≥ 4,90:1 au pixel, accueil 8 230 → 7 398 px
-  desktop (les vignettes prennent une part de la place libérée ; la cible
-  ≤ 6 000 px de la spec n'est pas atteinte) et 9 722 → 9 808 px mobile, HTML
+  contrastes des nouveaux libellés ≥ 4,90:1 au pixel, **hauteur de l'accueil
+  stable, pas réduite** : 8 230 → 8 370 px desktop (scène épinglée comprise,
+  mesuré en ligne) et 9 722 → 10 021 px mobile — les cinq vignettes reprennent
+  la place libérée par le texte ; la cible ≤ 6 000 px de la spec n'est pas
+  atteinte (levier : vignettes en position absolue dans la zone du blob plutôt
+  qu'en flux, ≈ −500 px, ou approche B). HTML
   de l'accueil 114 Ko brut / 30 Ko gzip avec 45 SVG inline, détecteur
   impeccable `dist` 67 → 59 constats (aucune règle nouvelle), FAQ JSON-LD = HTML,
   H1 inchangés, `llms.txt` à jour.
 - 📚 `docs/DESIGN.md` : section « Iconographie ». Reste : audit SEO/GEO complet
   (`/noveo-checkquality`) à repasser, dossier client PDF à régénérer (captures).
+- 🚀 **Committé (`99aea48`, après `528fa01` pour les P1 du 12/09), poussé et
+  redéployé** (déploiement Coolify `xkkcjibyhjfherd9mfzfnafm`, ⚠️ l'API veut
+  désormais `POST /api/v1/deploy?uuid=…`, le GET répond 405) : vérifié en
+  ligne sur https://xenia.chris-ia.com — 9 pages 200, vraie 404, vignettes et
+  `llms.txt` servis, 45 pictos inline sur l'accueil, console vide.
 
 ### 2026-09-12 (après-midi — les 8 P1 impeccable corrigés, EN LOCAL, non committés)
 - ✅ **Décisions utilisateur** : corriger les 8 P1 seulement, garder les trois
@@ -565,10 +573,11 @@ Aucune. Site 100 % statique, aucun secret.
   nginx (et valider la syntaxe), adresse de siège de l'éditrice à demander.
 - **Corrections impeccable du 12/09 (8 P1) committées le 13/09** (`528fa01`),
   puis allègement + iconographie (commit du même jour).
-- **Accueil desktop à 7 398 px** : sous les 8 230 px d'avant mais au-dessus de la
-  cible ≤ 6 000 px de la spec du 13/09 (les vignettes occupent une part de la
-  place libérée par le texte). Descendre plus bas = retirer des blocs
-  (approche B, écartée).
+- **Accueil desktop à 8 370 px (mobile 10 021)** : hauteur stable malgré −35 %
+  de texte, les cinq vignettes occupant la place libérée ; cible ≤ 6 000 px de
+  la spec du 13/09 non atteinte. Leviers : vignettes en position absolue dans
+  la zone du blob plutôt qu'en flux (≈ −500 px), tailles réduites, ou retirer
+  des blocs (approche B, écartée).
 - **Reste impeccable (P2/P3, non corrigés)** (`docs/impeccable/2026-09-12/synthese.md`) :
   `mailto:` visio sans adresse visible, pétales animés en reduced-motion,
   déroulant non refermable par Échap, verre dans l'élément qui respire, 20
