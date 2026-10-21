@@ -1,0 +1,170 @@
+---
+// Module de la direction C « Les cabinets sur la carte » (section #cabinets de l'accueil).
+// Le contour du Brabant wallon (trait brun) se trace au premier passage (≈ 1 s), la liaison en pointillés terracotta
+// suit, les trois pastilles se posent. Pastille ou onglet de ville (clic ou focus) → la fiche du cabinet : nom, adresse,
+// jours, « Itinéraire », « Rendez-vous ». Sans JS : les onglets sont retirés et les trois fiches se lisent en liste sous
+// la carte (chaque pastille est un lien vers sa fiche). Mouvement réduit : tout est posé.
+import Icone from './Icone.astro';
+import Vague from './Vague.astro';
+import { cabinets, cabinetsIntro, carteBrabant, itineraire, lienRendezVous, visio } from '../../data/contenu';
+import { heures, jourEtMoment, plateforme, typo } from './outils';
+import './carte.css';
+
+const [vbX, vbY, vbL, vbH] = carteBrabant.viewBox.split(' ').map(Number);
+const pct = (v: number, total: number, origine: number) => `${(((v - origine) / total) * 100).toFixed(3)}%`;
+const actif = cabinets[0].id;
+---
+<section class="c-carte-section" id="cabinets" aria-labelledby="c-cabinets-titre">
+  <Vague forme={4} couleur="var(--c-fond)" position="haut" />
+  <div class="c-contenu">
+    <div class="c-carte-section__tete" data-apparait>
+      <h2 id="c-cabinets-titre">{cabinetsIntro.titre}</h2>
+      <p>{cabinetsIntro.ligne}</p>
+    </div>
+
+    <div class="c-carte-module" data-carte-module>
+      <div class="c-carte" data-carte>
+        <svg class="c-carte__svg" viewBox={carteBrabant.viewBox} aria-hidden="true" focusable="false">
+          <path class="c-carte__ombre" d={carteBrabant.contour} transform="translate(6 8)" />
+          <path class="c-carte__contour" d={carteBrabant.contour} pathLength="1" />
+          <path class="c-carte__liaison" d={carteBrabant.liaison} />
+          {cabinets.map(c => (
+            <g class="c-carte__point" data-point={c.id}>
+              <circle class="c-carte__halo" cx={c.carte.x} cy={c.carte.y} r="15" />
+              <circle class="c-carte__pastille" cx={c.carte.x} cy={c.carte.y} r="6.5" />
+            </g>
+          ))}
+        </svg>
+        <p class="c-carte__region" aria-hidden="true">Brabant wallon</p>
+        <ul class="c-carte__reperes" aria-label="Les cabinets sur la carte">
+          {cabinets.map(c => (
+            <li>
+              <a
+                class:list={['c-repere', `c-repere--${c.carte.ancre}`, `c-repere--${c.id}`]}
+                href={`#fiche-${c.id}`}
+                data-repere={c.id}
+                aria-current={c.id === actif ? 'true' : undefined}
+                style={`--x: ${pct(c.carte.x, vbL, vbX)}; --y: ${pct(c.carte.y, vbH, vbY)}`}
+              >
+                <span class="c-repere__cible" aria-hidden="true"></span>
+                <span class="c-repere__nom">{c.ville}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="c-carte-fiches">
+        <div class="c-onglets" role="tablist" aria-label="Choisir un cabinet" data-onglets>
+          {cabinets.map(c => (
+            <button
+              class="c-onglet"
+              type="button"
+              role="tab"
+              id={`onglet-${c.id}`}
+              aria-controls={`fiche-${c.id}`}
+              aria-selected={c.id === actif ? 'true' : 'false'}
+              tabindex={c.id === actif ? 0 : -1}
+              data-onglet={c.id}
+            >{c.ville}</button>
+          ))}
+        </div>
+        {cabinets.map(c => (
+          <article class="c-fiche" id={`fiche-${c.id}`} data-fiche={c.id} data-actif={c.id === actif ? '' : undefined} aria-labelledby={`fiche-titre-${c.id}`}>
+            <h3 class="c-fiche__ville" id={`fiche-titre-${c.id}`}>{c.ville}</h3>
+            <p class="c-fiche__nom">{typo(c.nom)}</p>
+            <p class="c-fiche__adresse">{c.adresse}<br />{c.codePostal} {c.ville}</p>
+            <ul class="c-fiche__plages" aria-label="Jours de consultation">
+              {c.plages.map(p => <li><span class="c-fiche__jour">{jourEtMoment(p)}</span><span class="c-fiche__heures">{heures(p)}</span></li>)}
+            </ul>
+            <div class="c-fiche__actions">
+              <a class="c-bouton c-bouton--plein" href={lienRendezVous(c)} target="_blank" rel="noopener">
+                Rendez-vous sur {plateforme(c)}<span class="visuellement-cache"> (nouvel onglet)</span>
+              </a>
+              <a class="c-bouton c-bouton--trait" href={itineraire(c)} target="_blank" rel="noopener">
+                <Icone nom="itineraire" taille={22} />Itinéraire<span class="visuellement-cache"> vers {c.ville} (nouvel onglet)</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <div class="c-carte-section__suite">
+      <div class="c-visio" data-apparait>
+        <Icone nom="ordinateur" taille={40} class="c-visio__icone" />
+        <div>
+          <h3>{visio.titre}</h3>
+          <p>{typo(visio.texte)}</p>
+        </div>
+      </div>
+      <a class="c-lien-fleche" href="/c/cabinets/" data-apparait>Toutes les informations pratiques<Icone nom="fleche" taille={24} /></a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { REDUIT } from '../../lib/mouvement';
+
+  const module = document.querySelector<HTMLElement>('[data-carte-module]');
+  if (module) {
+    const carte = module.querySelector<HTMLElement>('[data-carte]')!;
+    const onglets = [...module.querySelectorAll<HTMLButtonElement>('[data-onglet]')];
+    const fiches = [...module.querySelectorAll<HTMLElement>('[data-fiche]')];
+    const reperes = [...module.querySelectorAll<HTMLAnchorElement>('[data-repere]')];
+    const points = [...module.querySelectorAll<SVGGElement>('[data-point]')];
+
+    // Le contour se trace une fois, au premier passage.
+    if (REDUIT || !('IntersectionObserver' in window)) carte.classList.add('tracee');
+    else {
+      const obs = new IntersectionObserver(entrees => {
+        if (entrees.some(e => e.isIntersecting)) { carte.classList.add('tracee'); obs.disconnect(); }
+      }, { threshold: 0.35 });
+      obs.observe(carte);
+    }
+
+    // Les fiches deviennent des panneaux d'onglets.
+    for (const fiche of fiches) {
+      fiche.setAttribute('role', 'tabpanel');
+      fiche.setAttribute('aria-labelledby', `onglet-${fiche.dataset.fiche}`);
+      fiche.tabIndex = -1;
+    }
+
+    const choisir = (id: string, focaliserOnglet = false) => {
+      for (const o of onglets) {
+        const oui = o.dataset.onglet === id;
+        o.setAttribute('aria-selected', String(oui));
+        o.tabIndex = oui ? 0 : -1;
+        if (oui && focaliserOnglet) o.focus();
+      }
+      for (const f of fiches) f.toggleAttribute('data-actif', f.dataset.fiche === id);
+      for (const r of reperes) {
+        if (r.dataset.repere === id) r.setAttribute('aria-current', 'true');
+        else r.removeAttribute('aria-current');
+      }
+      for (const p of points) p.classList.toggle('actif', p.dataset.point === id);
+    };
+    choisir(onglets.find(o => o.getAttribute('aria-selected') === 'true')?.dataset.onglet ?? onglets[0].dataset.onglet!);
+
+    for (const o of onglets) {
+      o.addEventListener('click', () => choisir(o.dataset.onglet!));
+      o.addEventListener('keydown', e => {
+        const i = onglets.indexOf(o);
+        let j = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = (i + 1) % onglets.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = (i - 1 + onglets.length) % onglets.length;
+        else if (e.key === 'Home') j = 0;
+        else if (e.key === 'End') j = onglets.length - 1;
+        if (j < 0) return;
+        e.preventDefault();
+        choisir(onglets[j].dataset.onglet!, true);
+      });
+    }
+    for (const r of reperes) {
+      r.addEventListener('focus', () => choisir(r.dataset.repere!));
+      r.addEventListener('click', e => { e.preventDefault(); choisir(r.dataset.repere!); });
+      r.addEventListener('pointerenter', () => { if (matchMedia('(hover: hover)').matches) points.forEach(p => p.classList.toggle('survol', p.dataset.point === r.dataset.repere)); });
+      r.addEventListener('pointerleave', () => points.forEach(p => p.classList.remove('survol')));
+    }
+  }
+</script>

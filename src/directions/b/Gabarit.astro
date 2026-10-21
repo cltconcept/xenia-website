@@ -1,0 +1,118 @@
+---
+// Gabarit de la direction B « Respirer » : tête, en-tête collant (logotype, navigation, téléphone, rendez-vous),
+// menu plein écran et barre d'appel sur téléphone, pied de page, sélecteur de direction.
+import Tete from '../../components/partage/Tete.astro';
+import SelecteurDirection from '../../components/partage/SelecteurDirection.astro';
+import Logotype from './composants/Logotype.astro';
+import Icone from './composants/Icone.astro';
+import Rameau from './composants/Rameau.astro';
+import { direction } from '../../data/directions';
+import { actions, cabinets, emailLien, identite, navigation, pied } from '../../data/contenu';
+import { fr } from './outils';
+import '../../styles/socle.css';
+import '../../styles/polices/libre-caslon-display.css';
+import '../../styles/polices/figtree.css';
+import './respirer.css';
+
+interface Props {
+  titre: string;
+  description?: string;
+  page: 'accueil' | 'cabinets';
+}
+const { titre, description, page } = Astro.props;
+
+// Les ancres pointent vers l'accueil de la direction depuis la page Cabinets.
+const liens = navigation.map(n => ({
+  libelle: n.libelle,
+  href: n.page ? `/b${n.page}` : page === 'accueil' ? n.ancre! : `/b/${n.ancre}`,
+  courant: n.page === '/cabinets/' && page === 'cabinets',
+}));
+const villes = fr(cabinets.map(c => c.ville).join(', ').replace(/, ([^,]+)$/, ' et $1'));
+---
+<!doctype html>
+<html lang="fr-BE">
+  <head>
+    <Tete titre={titre} description={description} couleurTheme="#F2F1EA" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/libre-caslon-display/libre-caslon-display-latin-400-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/figtree/figtree-latin-wght-normal.woff2" />
+  </head>
+  <body class="dir-b">
+    <a class="b-evitement" href="#contenu">Aller au contenu</a>
+
+    <header class="b-entete" data-entete>
+      <div class="b-entete-int">
+        <Logotype lien="/b/" class="b-entete-logo" />
+        <nav class="b-nav" aria-label="Navigation principale">
+          <ul>
+            {liens.map(l => <li><a href={l.href} aria-current={l.courant ? 'page' : undefined}>{l.libelle}</a></li>)}
+          </ul>
+        </nav>
+        <div class="b-entete-actions">
+          <a class="b-entete-tel" href={identite.telephoneLien}>
+            <Icone nom="telephone" taille={22} />
+            <span class="visuellement-cache">Appeler le </span>{identite.telephone}
+          </a>
+          <a class="b-bouton b-bouton--plein" href="#rendez-vous">{actions.rendezVous}</a>
+        </div>
+        <button type="button" class="b-menu-bouton" aria-expanded="false" aria-controls="menu-b" data-menu-bouton>
+          <span data-menu-libelle>Menu</span>
+          <svg class="b-menu-trait" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">
+            <path d="M4 9h16" vector-effect="non-scaling-stroke" /><path d="M4 15h16" vector-effect="non-scaling-stroke" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="b-menu" id="menu-b" hidden data-menu>
+      <nav aria-label="Navigation principale (menu)">
+        <ul class="b-menu-liens">
+          {liens.map(l => <li><a href={l.href} aria-current={l.courant ? 'page' : undefined}>{l.libelle}</a></li>)}
+        </ul>
+      </nav>
+      <div class="b-menu-actions">
+        <a class="b-bouton b-bouton--plein" href="#rendez-vous">{actions.rendezVous}</a>
+        <a class="b-menu-tel" href={identite.telephoneLien}><Icone nom="telephone" taille={24} /><span class="visuellement-cache">Appeler le </span>{identite.telephone}</a>
+        <p class="b-menu-villes">{villes}, ou en visio.</p>
+      </div>
+      <Rameau variante="marge" class="b-menu-brin" />
+    </div>
+
+    <slot />
+
+    <footer class="b-pied">
+      <div class="b-conteneur b-pied-int">
+        <div class="b-pied-marque">
+          <Logotype lien="/b/" class="b-pied-logo" />
+          <p>{identite.domaines}, en {identite.zone} et en visio.</p>
+        </div>
+        <nav class="b-pied-nav" aria-label="Pied de page">
+          <p class="b-pied-titre">Le site</p>
+          <ul>
+            <li><a href={page === 'accueil' ? '#contenu' : '/b/'}>Accueil</a></li>
+            {liens.map(l => <li><a href={l.href} aria-current={l.courant ? 'page' : undefined}>{l.libelle}</a></li>)}
+          </ul>
+        </nav>
+        <div class="b-pied-coord">
+          <p class="b-pied-titre">Coordonnées</p>
+          <ul>
+            <li><a href={identite.telephoneLien}><Icone nom="telephone" taille={20} /><span class="visuellement-cache">Appeler le </span>{identite.telephone}</a></li>
+            <li><a href={emailLien()}><Icone nom="mail" taille={20} />{identite.email}</a></li>
+            <li><a href="/b/cabinets/"><Icone nom="porte" taille={20} />{villes}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="b-conteneur b-pied-bas">
+        <p>{pied.ligne}</p>
+        <p>{pied.copyright}</p>
+      </div>
+    </footer>
+
+    <div class="b-barre-appel">
+      <a class="b-bouton b-bouton--trait" href={identite.telephoneLien}><Icone nom="telephone" taille={22} />{actions.appeler}</a>
+      <a class="b-bouton b-bouton--plein" href="#rendez-vous"><Icone nom="calendrier" taille={22} />Rendez-vous</a>
+    </div>
+
+    <SelecteurDirection direction={direction('b')} chemin={page === 'accueil' ? '/' : '/cabinets/'} />
+    <script>import './respirer';</script>
+  </body>
+</html>

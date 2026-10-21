@@ -1,0 +1,110 @@
+---
+// Direction A Le carnet — page Cabinets (/a/cabinets/) : tête en bandeau (ambiance pièce), feuille posée à
+// cheval avec le fil d'Ariane, le titre et les accès directs ; une section par cabinet (ville, nom, adresse, jours et
+// heures, rendez-vous sur la plateforme, itinéraire, contour du Brabant wallon avec le point du cabinet) ;
+// Doctoranytime ou Rosa, les quatre modalités et la visio ; questions ; rendez-vous ; pied.
+import Gabarit from './Gabarit.astro';
+import CarteBrabant from './CarteBrabant.astro';
+import Icone from './Icone.astro';
+import Questions from './Questions.astro';
+import RendezVous from './RendezVous.astro';
+import Section from './Section.astro';
+import Titre from './Titre.astro';
+import Visio from './Visio.astro';
+import { cabinets, identite, itineraire, lienRendezVous, pageCabinets } from '../../data/contenu';
+import { ambiances, srcset } from '../../data/medias';
+import { heures, insecables, jourMoment, nomPlateforme } from './texte';
+import type { NomIcone } from './icones';
+
+const piece = ambiances.a.piece;
+const iconesModalites: NomIcone[] = ['porte', 'mobile', 'bouclier', 'ecran'];
+---
+<Gabarit titre={`${pageCabinets.titre} · ${identite.nom}`} description={pageCabinets.ligne} page="cabinets">
+  <main id="contenu" tabindex="-1">
+    <header class="a-tete-page">
+      <div class="a-tete-page-image">
+        <img src={piece.src} srcset={srcset(piece)} sizes="100vw" width={piece.largeur} height={piece.hauteur}
+          alt={piece.alt} fetchpriority="high" decoding="async" />
+      </div>
+      <div class="a-cadre a-grille-marge">
+        <div class="a-marge" aria-hidden="true"></div>
+        <div class="a-corps">
+          <div class="a-tete-page-feuille">
+            <nav class="a-ariane" aria-label="Fil d’Ariane">
+              <ol>
+                <li><a href="/a/">Accueil</a></li>
+                <li><span aria-current="page">Cabinets</span></li>
+              </ol>
+            </nav>
+            <div class="a-tete" data-apparait>
+              <Titre niveau={1} texte={pageCabinets.titre} id="a-titre" variante={0} />
+              <p class="a-chapo">{insecables(pageCabinets.ligne)}</p>
+            </div>
+            <ul class="a-sommaire" aria-label="Sur cette page">
+              {cabinets.map(c => <li><a href={`#${c.id}`}><Icone nom="epingle" taille={20} />{c.ville}</a></li>)}
+              <li><a href="#visio"><Icone nom="ecran" taille={20} />En visio</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {cabinets.map((c, i) => (
+      <Section id={c.id} numero={i + 1} fond={i === 1 ? 'bleu' : 'papier'} titre={`a-cab-${c.id}`} classe="a-cabinet">
+        <div class="a-cabinet-grille">
+          <div class="a-cabinet-texte">
+            <div class="a-tete" data-apparait>
+              <Titre texte={c.ville} id={`a-cab-${c.id}`} variante={(i % 3) as 0 | 1 | 2} />
+              <p class="a-cabinet-nom">{c.nom}</p>
+            </div>
+            <dl class="a-cabinet-infos" data-apparait>
+              <div class="a-info">
+                <dt><Icone nom="epingle" taille={22} />Adresse</dt>
+                <dd>{c.adresse}<br />{c.codePostal} {c.ville}</dd>
+              </div>
+              <div class="a-info">
+                <dt><Icone nom="horloge" taille={22} />Jours et heures</dt>
+                <dd>
+                  <ul class="a-plages">
+                    {c.plages.map(p => <li><span class="a-plage-jour">{jourMoment(p)}</span><span>{heures(p)}</span></li>)}
+                  </ul>
+                </dd>
+              </div>
+              <div class="a-info">
+                <dt><Icone nom="calendrier" taille={22} />Rendez-vous</dt>
+                <dd>En ligne sur {nomPlateforme(c)}, ou par téléphone</dd>
+              </div>
+            </dl>
+            <div class="a-actions" data-apparait>
+              <a class="a-bouton" href={lienRendezVous(c)} target="_blank" rel="noopener">Rendez-vous sur {nomPlateforme(c)}<Icone nom="externe" taille={18} /><span class="visuellement-cache"> (nouvel onglet)</span></a>
+              <a class="a-bouton a-bouton--contour" href={itineraire(c)} target="_blank" rel="noopener"><Icone nom="epingle" taille={22} />Itinéraire<span class="visuellement-cache"> vers {c.ville} (nouvel onglet)</span></a>
+            </div>
+          </div>
+          <figure class="a-carte" data-apparait>
+            <CarteBrabant cabinet={c} />
+          </figure>
+        </div>
+      </Section>
+    ))}
+
+    <Section id="en-pratique" numero={4} fond="bleu" titre="a-plateformes-titre" classe="a-pratique">
+      <div class="a-tete" data-apparait>
+        <Titre texte={pageCabinets.plateformesTitre} id="a-plateformes-titre" variante={1} />
+        <p class="a-chapo">{insecables(pageCabinets.plateformesTexte)}</p>
+      </div>
+      <ul class="a-valeurs a-modalites" data-apparait>
+        {pageCabinets.modalites.map((m, i) => (
+          <li class="a-valeur">
+            <Icone nom={iconesModalites[i]} taille={34} />
+            <h3 class="a-h3">{m.titre}</h3>
+            <p>{insecables(m.texte)}</p>
+          </li>
+        ))}
+      </ul>
+      <Visio id="visio" />
+    </Section>
+
+    <Questions numero={5} />
+    <RendezVous numero={6} />
+  </main>
+</Gabarit>

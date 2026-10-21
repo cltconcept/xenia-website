@@ -1,0 +1,19 @@
+---
+// Titre de section (h2) de la direction A, avec son trait souligné à la main : un coup de stylo sous le titre, tracé
+// une fois au premier passage (0,6 s, voir a.css), posé sans JS ou en mouvement réduit. `italique` : un mot du titre
+// au plus, en Literata italique.
+import { insecables } from './texte';
+interface Props { texte: string; id: string; italique?: string; variante?: 0 | 1 | 2; niveau?: 1 | 2 }
+const { texte, id, italique, variante = 0, niveau = 2 } = Astro.props;
+// Le h1 reste strictement le texte de contenu.ts ; les h2 reçoivent les espaces insécables.
+const t = niveau === 1 ? texte : insecables(texte);
+const i = italique ? t.indexOf(italique) : -1;
+const traits = [
+  'M3 9.5C28 6.2 52 8.8 80 7.4S136 5.6 177 8.1',
+  'M2 8C30 10.6 58 5.6 92 7.2S150 9.8 178 6.4',
+  'M4 7.6C26 9.4 61 6 96 8.2c22 1.4 52-.6 80-2.2',
+];
+const Balise = niveau === 1 ? 'h1' : 'h2';
+---
+<Balise class:list={['a-titre', niveau === 1 ? 'a-h1-page' : 'a-h2']} id={id}>{i < 0 ? t : <Fragment>{t.slice(0, i)}<em>{italique}</em>{t.slice(i + (italique?.length ?? 0))}</Fragment>}</Balise>
+<svg class="a-trait" viewBox="0 0 180 14" width="180" height="14" fill="none" aria-hidden="true" focusable="false"><path d={traits[variante]} pathLength="1" /></svg>

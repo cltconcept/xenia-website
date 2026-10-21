@@ -1,0 +1,8 @@
+[
+  {"id": "literata", "nom": "Literata", "pour": "a", "paquet": "@fontsource-variable/literata", "variable": true, "styles": [["wght", "normal"], ["wght", "italic"]]},
+  {"id": "albert-sans", "nom": "Albert Sans", "pour": "a", "paquet": "@fontsource-variable/albert-sans", "variable": true, "styles": [["wght", "normal"], ["wght", "italic"]]},
+  {"id": "libre-caslon-display", "nom": "Libre Caslon Display", "pour": "b", "paquet": "@fontsource/libre-caslon-display", "styles": [["400", "normal"]]},
+  {"id": "figtree", "nom": "Figtree", "pour": "b", "paquet": "@fontsource-variable/figtree", "variable": true, "styles": [["wght", "normal"], ["wght", "italic"]]},
+  {"id": "alice", "nom": "Alice", "pour": "c", "paquet": "@fontsource/alice", "styles": [["400", "normal"]]},
+  {"id": "karla", "nom": "Karla", "pour": "c", "paquet": "@fontsource-variable/karla", "variable": true, "styles": [["wght", "normal"], ["wght", "italic"]]}
+]

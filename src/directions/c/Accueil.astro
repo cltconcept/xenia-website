@@ -1,0 +1,236 @@
+---
+// Direction C « Le salon » — accueil (/c/). Ce qui est construit :
+// - Hero sur rose blush : son nom et son métier en Alice à gauche, la ligne, « Prendre rendez-vous » et le numéro ; à
+//   droite sa photo debout (noir et blanc) dans une forme de galet qui respire à l'arrivée (morph doux de 1,2 s, une
+//   fois), une forme ocre et un contour brun au trait derrière. Une vague ocre part sous le hero.
+// - Qui je suis : sa présentation à la première personne, sa photo dans le canapé dans une autre forme organique, ses
+//   trois repères (formation, agrément, formation en cours) avec des icônes au trait.
+// - Accompagnements : une bande ocre pleine largeur aux bords ondulés ; les quatre accompagnements, chacun avec un objet
+//   de salon dessiné au trait crème (fauteuil, lampe arc, canapé, tasse), sa ligne et ses thèmes. Sous la bande, le
+//   bandeau « tapis » : les losanges du tapis berbère de son salon, en texture discrète.
+// - Module « Les cabinets sur la carte » (section #cabinets) : le contour du Brabant wallon se trace au premier passage,
+//   la liaison en pointillés terracotta, trois pastilles ; pastille ou onglet de ville → fiche (nom, adresse, jours,
+//   rendez-vous, itinéraire). Sans JS, les trois fiches en liste. Puis la visio et le lien vers la page Cabinets.
+// - Mon approche (bande rose pâle) : quatre repères, chacun avec un objet du quotidien au trait.
+// - Comment se passe un premier rendez-vous (bande ocre) : trois étapes numérotées dans des galets.
+// - Questions pratiques, Prendre rendez-vous (un bouton par cabinet, le numéro en grand, e-mail, visio), pied brun.
+// Mouvement : entrée du hero (≤ 1,4 s), forme qui respire, carte tracée, apparitions douces ; rien sous mouvement réduit.
+import Gabarit from './Gabarit.astro';
+import Icone from './Icone.astro';
+import Objet from './Objet.astro';
+import Vague from './Vague.astro';
+import Tapis from './Tapis.astro';
+import CarteCabinets from './CarteCabinets.astro';
+import Questions from './Questions.astro';
+import RendezVous from './RendezVous.astro';
+import { accompagnements, actions, approche, etapes, heros, identite, presentation } from '../../data/contenu';
+import { photos, srcset } from '../../data/medias';
+import { site } from '../../data/site';
+import { numero, typo } from './outils';
+import type { NomObjet } from './Objet.astro';
+import type { NomIcone } from './Icone.astro';
+import './accueil.css';
+
+// Forme du hero : même structure de tracé au départ et à l'arrivée (le morph interpole les nombres).
+const formeArrivee = 'M0.56 0.02C0.78 0.03 0.97 0.17 0.98 0.4C0.99 0.58 0.88 0.66 0.9 0.8C0.92 0.95 0.72 1 0.52 0.98C0.3 0.96 0.06 0.88 0.03 0.64C0 0.42 0.12 0.32 0.17 0.19C0.24 0.04 0.38 0.01 0.56 0.02Z';
+const formeDepart = 'M0.54 0.06C0.75 0.07 0.93 0.2 0.94 0.41C0.95 0.6 0.87 0.68 0.87 0.8C0.87 0.93 0.7 0.97 0.5 0.95C0.3 0.93 0.1 0.86 0.07 0.64C0.05 0.44 0.15 0.33 0.2 0.21C0.27 0.08 0.39 0.05 0.54 0.06Z';
+const formePortrait = 'M0.42 0.03C0.62 0 0.86 0.06 0.95 0.27C1 0.44 0.93 0.56 0.95 0.72C0.97 0.9 0.8 1 0.6 0.98C0.42 0.96 0.32 0.9 0.18 0.88C0.04 0.85 0 0.7 0.02 0.52C0.04 0.34 0.1 0.24 0.17 0.14C0.24 0.06 0.32 0.05 0.42 0.03Z';
+
+const objets: Record<string, NomObjet> = {
+  'adolescents-adultes': 'fauteuil',
+  'perinatalite-parentalite': 'lampe',
+  'enfants-famille': 'canape',
+  'nutrition-sante': 'tasse',
+};
+const iconesReperes: NomIcone[] = ['livre', 'attestation', 'carnet'];
+const iconesValeurs: NomIcone[] = ['panier', 'plante', 'coussin', 'bascule'];
+const hero = photos.debout;
+const portrait = photos.canape;
+---
+<Gabarit titre={site.nom} page="accueil">
+  <svg class="c-formes" width="0" height="0" aria-hidden="true" focusable="false">
+    <clipPath id="c-forme-hero" clipPathUnits="objectBoundingBox">
+      <path id="c-forme-hero-trace" d={formeArrivee} data-depart={formeDepart} data-arrivee={formeArrivee} />
+    </clipPath>
+    <clipPath id="c-forme-portrait" clipPathUnits="objectBoundingBox"><path d={formePortrait} /></clipPath>
+  </svg>
+  <script is:inline>
+    (function () {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var trace = document.getElementById('c-forme-hero-trace');
+      if (!trace) return;
+      trace.setAttribute('d', trace.getAttribute('data-depart'));
+      document.documentElement.classList.add('c-hero-respire');
+    })();
+  </script>
+
+  <main id="contenu" tabindex="-1">
+    <section class="c-hero" aria-labelledby="c-hero-titre">
+      <div class="c-hero__grille c-contenu">
+        <div class="c-hero__texte">
+          <h1 id="c-hero-titre">{heros.c.titre}</h1>
+          <p class="c-hero__ligne">{heros.c.ligne}</p>
+          <div class="c-hero__actions">
+            <a class="c-bouton c-bouton--plein" href="#rendez-vous"><Icone nom="calendrier" taille={22} />{actions.rendezVous}</a>
+            <a class="c-hero__tel" href={identite.telephoneLien}><Icone nom="telephone" taille={22} /><span>{numero(identite.telephone)}</span></a>
+          </div>
+        </div>
+        <div class="c-hero__visuel">
+          <svg class="c-hero__fond" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M50 2C74 0 95 14 98 38C101 62 90 88 66 96C44 103 16 96 6 74C-3 54 2 28 18 14C27 6 38 3 50 2Z" />
+          </svg>
+          <svg class="c-hero__trait" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M58 1C80 3 99 18 99 42C99 60 89 67 91 81C93 96 73 101 53 99C30 97 5 89 2 64C-1 42 11 31 16 18C23 3 38 0 58 1Z" />
+          </svg>
+          <div class="c-hero__photo">
+            <img
+              src={hero.src}
+              srcset={srcset(hero)}
+              sizes="(min-width: 1240px) 520px, (min-width: 761px) 42vw, 80vw"
+              width={hero.largeur}
+              height={hero.hauteur}
+              alt={hero.alt}
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="c-hero__vagues" aria-hidden="true">
+        <Vague forme={2} couleur="var(--c-ocre)" position="bas" class="c-hero__vague-ocre" />
+        <Vague forme={2} couleur="var(--c-blush)" position="bas" class="c-hero__vague-rose" />
+      </div>
+    </section>
+
+    <section class="c-presentation" id="qui-je-suis" aria-labelledby="c-presentation-titre">
+      <div class="c-presentation__grille c-contenu">
+        <div class="c-presentation__visuel" data-apparait>
+          <svg class="c-presentation__fond" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M44 4C68 1 94 12 97 38C100 60 92 84 70 94C50 102 22 98 9 78C-2 60 0 32 14 18C22 10 32 5 44 4Z" />
+          </svg>
+          <div class="c-presentation__photo">
+            <img
+              src={portrait.src}
+              srcset={srcset(portrait)}
+              sizes="(min-width: 1240px) 460px, (min-width: 861px) 38vw, 86vw"
+              width={portrait.largeur}
+              height={portrait.hauteur}
+              alt={portrait.alt}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+        <div class="c-presentation__texte">
+          <h2 id="c-presentation-titre" data-apparait>{presentation.titre}</h2>
+          <div class="c-presentation__paragraphes" data-apparait>
+            {presentation.paragraphes.map(p => <p>{typo(p)}</p>)}
+          </div>
+          <ul class="c-reperes" data-apparait>
+            {presentation.reperes.map((r, i) => (
+              <li>
+                <span class="c-reperes__icone"><Icone nom={iconesReperes[i]} taille={26} /></span>
+                <span class="c-reperes__libelle">{r.libelle}</span>
+                <span class="c-reperes__valeur">{typo(r.valeur)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="c-accomp" id="accompagnements" aria-labelledby="c-accomp-titre">
+      <Vague forme={1} couleur="var(--c-ocre)" position="haut" />
+      <div class="c-contenu">
+        <h2 id="c-accomp-titre" class="c-accomp__titre" data-apparait>Accompagnements</h2>
+        <ul class="c-accomp__liste">
+          {accompagnements.map(a => (
+            <li class="c-accomp__item" id={a.id} data-apparait>
+              <Objet nom={objets[a.id]} taille={104} class="c-accomp__objet" />
+              <h3>{a.nom}</h3>
+              <p class="c-accomp__ligne">{typo(a.ligne)}</p>
+              <div class="c-accomp__corps">
+                <ul class="c-accomp__themes">
+                  {a.themes.map(t => <li>{typo(t)}</li>)}
+                </ul>
+                {a.note && <p class="c-accomp__note">{typo(a.note)}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Vague forme={3} couleur="var(--c-ocre)" position="bas" miroir />
+    </section>
+    <Tapis />
+
+    <CarteCabinets />
+
+    <section class="c-approche" id="approche" aria-labelledby="c-approche-titre">
+      <Vague forme={1} couleur="var(--c-rose-pale)" position="haut" miroir />
+      <div class="c-contenu">
+        <div class="c-approche__tete" data-apparait>
+          <h2 id="c-approche-titre">{approche.titre}</h2>
+          <p>{typo(approche.intro)}</p>
+        </div>
+        <ul class="c-approche__valeurs">
+          {approche.valeurs.map((v, i) => (
+            <li data-apparait>
+              <span class="c-approche__icone"><Icone nom={iconesValeurs[i]} taille={36} /></span>
+              <h3>{v.nom}</h3>
+              <p>{typo(v.texte)}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="c-etapes" aria-labelledby="c-etapes-titre">
+      <Vague forme={4} couleur="var(--c-ocre)" position="haut" />
+      <div class="c-contenu">
+        <h2 id="c-etapes-titre" data-apparait>{etapes.titre}</h2>
+        <ol class="c-etapes__liste">
+          {etapes.liste.map((e, i) => (
+            <li data-apparait>
+              <span class="c-etapes__numero" aria-hidden="true">
+                <svg viewBox="0 0 80 80" focusable="false"><path d="M47 6.5c14.6 1.6 27.4 11.6 28.4 26.4 1.2 16.4-7.6 30.6-23 37.4C37.6 76.8 18.8 75 9.4 62 1.2 50.6 3.4 33 12.4 21.4 20.2 11.4 33.6 5 47 6.5z" /></svg>
+                <span>{i + 1}</span>
+              </span>
+              <h3><span class="visuellement-cache">Étape {i + 1}&nbsp;: </span>{e.titre}</h3>
+              <p>{typo(e.texte)}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <Vague forme={2} couleur="var(--c-ocre)" position="bas" miroir />
+    </section>
+
+    <Questions />
+    <RendezVous />
+  </main>
+</Gabarit>
+
+<script>
+  // La forme du hero « respire » une fois à l'arrivée : interpolation des nombres du tracé (même structure).
+  const trace = document.getElementById('c-forme-hero-trace');
+  if (trace && document.documentElement.classList.contains('c-hero-respire')) {
+    const nombre = /-?\d*\.?\d+/g;
+    const depart = (trace.dataset.depart ?? '').match(nombre)?.map(Number) ?? [];
+    const arrivee = (trace.dataset.arrivee ?? '').match(nombre)?.map(Number) ?? [];
+    const morceaux = (trace.dataset.arrivee ?? '').split(nombre);
+    if (depart.length && depart.length === arrivee.length) {
+      const duree = 1200;
+      const adoucir = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      let debut = 0;
+      const pas = (maintenant: number) => {
+        if (!debut) debut = maintenant;
+        const t = Math.min(1, (maintenant - debut) / duree);
+        const e = adoucir(t);
+        let d = morceaux[0];
+        for (let i = 0; i < arrivee.length; i++) d += (depart[i] + (arrivee[i] - depart[i]) * e).toFixed(4) + morceaux[i + 1];
+        trace.setAttribute('d', d);
+        if (t < 1) requestAnimationFrame(pas);
+      };
+      requestAnimationFrame(() => requestAnimationFrame(pas));
+    } else trace.setAttribute('d', trace.dataset.arrivee ?? '');
+  }
+</script>

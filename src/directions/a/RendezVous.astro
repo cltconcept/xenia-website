@@ -1,0 +1,50 @@
+---
+// Prendre rendez-vous (direction A), sur les deux pages : un bouton par cabinet vers sa plateforme (nouvel onglet), le
+// numéro écrit en grand, l'e-mail et la demande de visio. Bande bleu poudré, ambiance tasse à droite.
+import { cabinets, contact, emailLien, identite, lienRendezVous } from '../../data/contenu';
+import { ambiances, srcset } from '../../data/medias';
+import Icone from './Icone.astro';
+import Section from './Section.astro';
+import Titre from './Titre.astro';
+import { insecables, nomPlateforme, sansCoupure } from './texte';
+
+interface Props { numero: number }
+const { numero } = Astro.props;
+const m = ambiances.a.tasse;
+const tel = sansCoupure(identite.telephone);
+---
+<Section id="rendez-vous" numero={numero} fond="bleu" titre="a-rdv-titre" classe="a-rdv">
+  <div class="a-rdv-grille">
+    <div class="a-rdv-texte">
+      <div class="a-tete" data-apparait>
+        <Titre texte={contact.titre} id="a-rdv-titre" variante={0} />
+        <p class="a-chapo">{insecables(contact.texte)}</p>
+      </div>
+      <div class="a-rdv-bloc" data-apparait>
+        <p class="a-etiquette"><Icone nom="calendrier" taille={20} />En ligne</p>
+        <ul class="a-rdv-cabinets">
+          {cabinets.map(c => (
+            <li>
+              <a class="a-rdv-cabinet" href={lienRendezVous(c)} target="_blank" rel="noopener">
+                <span class="a-rdv-ville">{c.ville}</span>
+                <span class="a-rdv-plateforme">sur {nomPlateforme(c)}<Icone nom="externe" taille={18} /></span>
+                <span class="visuellement-cache"> (nouvel onglet)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="a-rdv-bloc a-rdv-bloc--tel" data-apparait>
+        <a class="a-rdv-numero" href={identite.telephoneLien}><Icone nom="telephone" taille={34} /><span><span class="visuellement-cache">Appeler le </span>{tel}</span></a>
+        <ul class="a-rdv-autres">
+          <li><a class="a-lien" href={emailLien()}><Icone nom="enveloppe" taille={22} />{identite.email}</a></li>
+          <li><a class="a-lien" href={emailLien('Demande de consultation en visio')}><Icone nom="ecran" taille={22} />Demander une visio</a></li>
+        </ul>
+      </div>
+    </div>
+    <figure class="a-tirage a-rdv-image" data-apparait>
+      <img src={m.src} srcset={srcset(m)} sizes="(min-width: 1100px) 380px, (min-width: 901px) 32vw, 0px"
+        width={m.largeur} height={m.hauteur} alt={m.alt} loading="lazy" decoding="async" />
+    </figure>
+  </div>
+</Section>

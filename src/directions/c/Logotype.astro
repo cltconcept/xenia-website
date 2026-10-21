@@ -1,0 +1,17 @@
+---
+// Logotype de la direction C : son nom en Alice, son métier en Karla, et une petite forme de galet ocre qui porte
+// l'initiale. Typographique, sans logo (la cliente n'en a pas).
+import { identite } from '../../data/contenu';
+interface Props { ton?: 'fonce' | 'clair' }
+const { ton = 'fonce' } = Astro.props;
+---
+<span class:list={['c-logotype', `c-logotype--${ton}`]}>
+  <span class="c-logotype__galet" aria-hidden="true">
+    <svg viewBox="0 0 44 44" width="44" height="44" focusable="false"><path d="M23.6 2.6c8.8.6 16.4 6.4 17.6 15.4 1.2 9.2-3.4 19.4-12.6 22.6-8.6 3-19.4.6-24.4-7.2C-.4 26.2 1.6 16.6 6.4 10.2 10.4 4.8 16.8 2.2 23.6 2.6z" /></svg>
+    <span class="c-logotype__initiale">X</span>
+  </span>
+  <span class="c-logotype__texte">
+    <span class="c-logotype__nom">{identite.nom}</span>
+    <span class="c-logotype__metier">{identite.titre}</span>
+  </span>
+</span>

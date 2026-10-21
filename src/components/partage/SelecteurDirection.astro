@@ -1,0 +1,190 @@
+---
+// Sélecteur de direction de la démonstration : « Direction A · B · C », vers LA MÊME page dans l'autre habillage
+// (requête et ancre conservées : /a/cabinets/#nivelles → /b/cabinets/#nivelles). Neutre (gris, police du système) pour
+// ne dénaturer aucun habillage. Coin bas gauche, au-dessus de la barre d'appel du téléphone : l'habillage pose
+// --selecteur-decalage-bas (hauteur de sa barre fixe). Masquable par le bouton ou Alt+Maj+D (mémorisé pour l'onglet).
+// Mémorise la direction visitée (localStorage « xenia-direction ») : le présentoir peut s'en servir.
+// Pages provisoires (`provisoire`) : la barre porte la pastille « Page en conception ».
+import { directions, cheminDans, type Direction } from '../../data/directions';
+
+interface Props {
+  direction: Direction;
+  /** Chemin de la page après le préfixe de direction : « / » (accueil) ou « /cabinets/ ». */
+  chemin: string;
+  /** Page en synthèse (props `provisoire`) : pastille « Page en conception » dans la barre. */
+  provisoire?: boolean;
+}
+
+const { direction, chemin, provisoire = false } = Astro.props;
+---
+<nav class="selecteur-direction" aria-label="Directions de la démonstration" data-selecteur-direction data-direction-courante={direction.id}>
+  <span class="sd-titre" aria-hidden="true">Direction</span>
+  <ul class="sd-liste">
+    {directions.map(d => (
+      <li>
+        <a class="sd-lien" href={cheminDans(d.id, chemin)} data-direction-lien={d.id} aria-current={d.id === direction.id ? 'page' : undefined}>
+          <span class="sd-lettre">{d.lettre}</span>
+          <span class="sd-invisible">, {d.nom}</span>
+          <span class="sd-bulle" aria-hidden="true">{d.lettre} · {d.nom}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  {provisoire && <span class="sd-provisoire" data-selecteur-provisoire>Page en conception</span>}
+  <button type="button" class="sd-masquer" data-selecteur-masquer aria-keyshortcuts="Alt+Shift+D" title="Réduire (Alt+Maj+D)">
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" /></svg>
+    <span class="sd-invisible">Réduire le sélecteur de direction</span>
+  </button>
+</nav>
+<button type="button" class="sd-rouvrir" data-selecteur-rouvrir hidden aria-keyshortcuts="Alt+Shift+D" title="Changer de direction (Alt+Maj+D)">
+  <span aria-hidden="true">A·B·C</span>
+  <span class="sd-invisible">Afficher le sélecteur de direction</span>
+</button>
+<script is:inline>
+  try { if (sessionStorage.getItem('xenia-selecteur-masque') === '1') { document.querySelector('[data-selecteur-direction]').hidden = true; document.querySelector('[data-selecteur-rouvrir]').hidden = false; } } catch (e) {}
+</script>
+
+<script>
+  const CLE_DIRECTION = 'xenia-direction';
+  const CLE = 'xenia-selecteur-masque';
+  const barre = document.querySelector<HTMLElement>('[data-selecteur-direction]');
+  const lire = () => { try { return sessionStorage.getItem(CLE) === '1'; } catch { return false; } };
+  const ecrire = (masque: boolean) => { try { sessionStorage.setItem(CLE, masque ? '1' : '0'); } catch { /* pour la page seulement */ } };
+
+  if (barre) {
+    try { localStorage.setItem(CLE_DIRECTION, barre.dataset.directionCourante ?? 'a'); } catch { /* stockage indisponible */ }
+    const rouvrir = document.querySelector<HTMLButtonElement>('[data-selecteur-rouvrir]');
+    const appliquer = (masque: boolean) => { barre.hidden = masque; if (rouvrir) rouvrir.hidden = !masque; };
+    appliquer(lire());
+
+    // Même page dans l'autre direction, avec la requête et l'ancre courantes.
+    const actualiserLiens = () => {
+      for (const lien of barre.querySelectorAll<HTMLAnchorElement>('[data-direction-lien]')) {
+        const cible = new URL(lien.getAttribute('href')!, location.href);
+        cible.search = location.search;
+        cible.hash = location.hash;
+        lien.href = cible.pathname + cible.search + cible.hash;
+      }
+    };
+    actualiserLiens();
+    barre.addEventListener('pointerdown', actualiserLiens);
+    barre.addEventListener('focusin', actualiserLiens);
+    barre.addEventListener('click', actualiserLiens, true);
+
+    barre.querySelector('[data-selecteur-masquer]')?.addEventListener('click', () => { appliquer(true); ecrire(true); rouvrir?.focus(); });
+    rouvrir?.addEventListener('click', () => { appliquer(false); ecrire(false); barre.querySelector<HTMLElement>('[aria-current="page"]')?.focus(); });
+    document.addEventListener('keydown', evenement => {
+      if (!(evenement.altKey && evenement.shiftKey && evenement.code === 'KeyD')) return;
+      evenement.preventDefault();
+      const masque = !barre.hidden;
+      appliquer(masque);
+      ecrire(masque);
+      if (!masque) barre.querySelector<HTMLElement>('[aria-current="page"]')?.focus();
+    });
+  }
+</script>
+
+<style>
+  .selecteur-direction {
+    position: fixed;
+    left: max(12px, env(safe-area-inset-left));
+    bottom: calc(max(12px, env(safe-area-inset-bottom)) + var(--selecteur-decalage-bas, 0px));
+    z-index: 2147483000;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(28, 28, 30, 0.92);
+    color: #f2f2f2;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+    font: 500 15px/1.3 system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    letter-spacing: normal;
+    text-transform: none;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .selecteur-direction[hidden] { display: none; }
+  .sd-rouvrir {
+    position: fixed;
+    left: max(12px, env(safe-area-inset-left));
+    bottom: calc(max(12px, env(safe-area-inset-bottom)) + var(--selecteur-decalage-bas, 0px));
+    z-index: 2147483000;
+    min-width: 48px; min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(28, 28, 30, 0.92);
+    color: #f2f2f2;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+    font: 600 14px/1 system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    letter-spacing: .04em;
+    cursor: pointer;
+  }
+  .sd-rouvrir[hidden] { display: none; }
+  .sd-rouvrir:hover { background: rgba(48, 48, 52, 0.96); }
+  .sd-rouvrir:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  @media print { .sd-rouvrir { display: none !important; } }
+  .sd-provisoire { margin: 0 4px 0 8px; padding: 4px 10px; border-radius: 999px; background: #f2d36b; color: #1c1c1e; font: 600 14px/1.3 system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; white-space: nowrap; }
+  @media (max-width: 26rem) { .sd-provisoire { display: none; } }
+  .sd-titre { margin-right: 6px; color: #c9c9cc; font: inherit; }
+  .sd-liste { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .sd-liste li { margin: 0; padding: 0; }
+  .sd-lien {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 999px;
+    color: #f2f2f2;
+    background: transparent;
+    font: 600 15px/1.3 system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    text-decoration: none;
+  }
+  .sd-lien:hover { background: rgba(255, 255, 255, 0.12); }
+  .sd-lien[aria-current='page'] { background: #f2f2f2; color: #1c1c1e; }
+  .sd-lien:focus-visible, .sd-masquer:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; box-shadow: 0 0 0 4px #1c1c1e; }
+  .sd-bulle {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%);
+    padding: 6px 9px;
+    border-radius: 6px;
+    background: #1c1c1e;
+    color: #f2f2f2;
+    font: 500 14px/1.35 system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.12s ease;
+  }
+  .sd-liste li:first-child .sd-bulle { left: 0; transform: none; }
+  .sd-lien:hover .sd-bulle, .sd-lien:focus-visible .sd-bulle { opacity: 1; visibility: visible; }
+  .sd-masquer {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #c9c9cc;
+    cursor: pointer;
+  }
+  .sd-masquer:hover { background: rgba(255, 255, 255, 0.12); color: #ffffff; }
+  .sd-invisible { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  @media (prefers-reduced-motion: reduce) { .sd-bulle { transition: none; } }
+  @media (forced-colors: active) {
+    .selecteur-direction { border-color: CanvasText; }
+    .sd-lien[aria-current='page'] { outline: 2px solid Highlight; }
+  }
+  @media print { .selecteur-direction { display: none !important; } }
+
+</style>

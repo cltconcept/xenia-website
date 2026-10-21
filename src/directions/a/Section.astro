@@ -1,0 +1,19 @@
+---
+// Une section de la grille à marge (direction A) : à gauche, la marge du cahier qui porte le numéro de la section et
+// la fine ligne verticale ; à droite, le contenu. Sur téléphone, le numéro passe en tête de section.
+// `fond` : papier (défaut), blanc, ou bleu poudré (grand aplat avec lignes de carnet).
+interface Props {
+  id?: string;
+  numero: number;
+  fond?: 'papier' | 'blanc' | 'bleu';
+  classe?: string;
+  titre: string;
+}
+const { id, numero, fond = 'papier', classe, titre } = Astro.props;
+---
+<section id={id} class:list={['a-section', `a-fond-${fond}`, classe]} aria-labelledby={titre}>
+  <div class="a-cadre a-grille-marge">
+    <div class="a-marge" aria-hidden="true"><span class="a-numero">{numero}</span></div>
+    <div class="a-corps"><slot /></div>
+  </div>
+</section>

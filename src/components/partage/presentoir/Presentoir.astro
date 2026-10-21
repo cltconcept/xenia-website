@@ -1,0 +1,181 @@
+---
+// Le présentoir de la seconde proposition (docs/forge/brief-directions.md, section « Présentoir ») : la page racine qui
+// montre les trois directions avant le choix de la cliente. Chrome clair et neutre (police du système), aucune direction
+// mise en avant, jamais l'agence.
+//
+// Chaque panneau est la miniature du premier écran de sa direction, dans sa charte : son logotype en tête, sa scène
+// (A : le tirage photo sur la bande bleu poudré aux lignes de carnet, Xénia écrit au stylo ; B : la photo dans l'arche
+// sur le voile sauge, le rameau d'olivier le long de l'arche ; C : la photo dans la forme organique, la forme ocre et le
+// contour au trait, la vague ocre), puis la lettre et le nom de la direction dans sa voix, le titre de son accueil dans
+// sa police, son intention et son bouton. Tout le panneau mène à la direction.
+// Signatures (stylo, rameau, forme qui respire) : jouées à l'ouverture, au survol ou au focus, et sur téléphone au
+// premier passage d'un panneau à l'écran (presentoir.ts). Sans JS ou sous « réduire les animations » : posées.
+// Composants des habillages réutilisés tels quels (aucun CSS de page n'est importé) : le manuscrit de A, le rameau et
+// le logotype de B, le logotype et la vague de C.
+import { directions } from '../../../data/directions';
+import { photos, srcset } from '../../../data/medias';
+import { heros, identite } from '../../../data/contenu';
+import Manuscrit from '../../../directions/a/Manuscrit.astro';
+import Rameau from '../../../directions/b/composants/Rameau.astro';
+import LogotypeB from '../../../directions/b/composants/Logotype.astro';
+import LogotypeC from '../../../directions/c/Logotype.astro';
+import Vague from '../../../directions/c/Vague.astro';
+import '../../../styles/socle.css';
+import '../../../styles/polices/literata.css';
+import '../../../styles/polices/albert-sans.css';
+import '../../../styles/polices/libre-caslon-display.css';
+import '../../../styles/polices/figtree.css';
+import '../../../styles/polices/alice.css';
+import '../../../styles/polices/karla.css';
+import './presentoir.css';
+
+// Typographie française à l'affichage : espace insécable avant « : ; ? ! » (U+00A0, présente dans les six polices ;
+// l'espace fine U+202F n'y est pas).
+const typo = (t: string) => t.replace(/ ([:;?!])/g, ' $1');
+
+const [dA, dB, dC] = directions;
+
+// A : un mot du titre en italique ardoise, comme le h1 de son accueil.
+const titreA = heros.a.titre;
+const motA = 'clinicienne';
+const coupeA = titreA.indexOf(motA);
+
+// C : la forme du hero (même tracé que son accueil) ; la respiration interpole les nombres entre le départ et l'arrivée.
+const formeArrivee = 'M0.56 0.02C0.78 0.03 0.97 0.17 0.98 0.4C0.99 0.58 0.88 0.66 0.9 0.8C0.92 0.95 0.72 1 0.52 0.98C0.3 0.96 0.06 0.88 0.03 0.64C0 0.42 0.12 0.32 0.17 0.19C0.24 0.04 0.38 0.01 0.56 0.02Z';
+const formeDepart = 'M0.54 0.06C0.75 0.07 0.93 0.2 0.94 0.41C0.95 0.6 0.87 0.68 0.87 0.8C0.87 0.93 0.7 0.97 0.5 0.95C0.3 0.93 0.1 0.86 0.07 0.64C0.05 0.44 0.15 0.33 0.2 0.21C0.27 0.08 0.39 0.05 0.54 0.06Z';
+
+const tailles = '(min-width: 1024px) 240px, (min-width: 640px) 220px, 200px';
+---
+<div class="pr" data-pr>
+  <header class="pr-tete">
+    <div class="pr-tete-haut">
+      <p class="pr-marque">
+        <span class="pr-marque-nom">{identite.nom}</span>
+        <span class="pr-marque-metier">{identite.titre}</span>
+      </p>
+      <button type="button" class="pr-passer" data-pr-passer>Passer l’introduction</button>
+    </div>
+    <div class="pr-tete-bas">
+      <div class="pr-annonce">
+        <h1 class="pr-titre">Votre site, trois directions.</h1>
+        <p class="pr-consigne">Parcourez-les, puis choisissez.</p>
+      </div>
+      <p class="pr-mention">Mêmes contenus dans les trois directions{' :'} passez de l’une à l’autre à tout moment avec le sélecteur en bas à gauche.</p>
+    </div>
+  </header>
+
+  <main class="pr-panneaux" data-pr-panneaux tabindex="-1">
+    <svg class="pr-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <clipPath id="pr-forme-c" clipPathUnits="objectBoundingBox">
+        <path d={formeArrivee} data-pr-forme data-depart={formeDepart} data-arrivee={formeArrivee} />
+      </clipPath>
+    </svg>
+
+    {/* ── A « Le carnet » ─────────────────────────────────────────────────────────────────────────────────── */}
+    <article class="pr-panneau pr-a" data-pr-panneau="a" aria-labelledby="pr-nom-a" style="--i: 0">
+      <div class="pr-scene" aria-hidden="true">
+        <div class="pr-logo pr-a-logo"><span>{identite.nom}</span></div>
+        <div class="pr-plateau">
+          <div class="pr-a-bande"></div>
+          <figure class="pr-a-tirage">
+            <img src={photos.carnet.variantes[0].src} srcset={srcset(photos.carnet)} sizes={tailles}
+              width={photos.carnet.largeur} height={photos.carnet.hauteur} alt="" fetchpriority="high" decoding="async" />
+          </figure>
+          <Manuscrit classe="pr-a-prenom" />
+        </div>
+      </div>
+      <div class="pr-texte">
+        <h2 class="pr-nom" id="pr-nom-a">
+          <span class="pr-lettre" aria-hidden="true">{dA.lettre}</span>
+          <span class="visuellement-cache">Direction {dA.lettre}{' :'} </span>
+          <span class="pr-nom-texte">{dA.nom}</span>
+        </h2>
+        <svg class="pr-a-trait" viewBox="0 0 180 14" fill="none" aria-hidden="true" focusable="false"><path d="M3 9.5C28 6.2 52 8.8 80 7.4S136 5.6 177 8.1" pathLength="1" /></svg>
+        <p class="pr-hero"><span class="visuellement-cache">Titre de son accueil{' :'} </span>{coupeA < 0 ? titreA : <Fragment>{titreA.slice(0, coupeA)}<em>{motA}</em>{titreA.slice(coupeA + motA.length)}</Fragment>}</p>
+        <p class="pr-intention">{typo(dA.intention)}</p>
+        <p class="pr-action">
+          <a class="pr-voir" href={`/${dA.id}/`}>
+            <span>Voir la direction</span><span class="visuellement-cache"> {dA.lettre}, {dA.nom}</span>
+            <svg class="pr-fleche" viewBox="0 0 22 12" aria-hidden="true" focusable="false"><path d="M1 6h19M15.2 1.2 20 6l-4.8 4.8" /></svg>
+          </a>
+        </p>
+      </div>
+    </article>
+
+    {/* ── B « Respirer » ──────────────────────────────────────────────────────────────────────────────────── */}
+    <article class="pr-panneau pr-b" data-pr-panneau="b" aria-labelledby="pr-nom-b" style="--i: 1">
+      <div class="pr-scene" aria-hidden="true">
+        <div class="pr-logo"><LogotypeB sousTitre={false} class="pr-b-logo" /></div>
+        <div class="pr-plateau">
+          <div class="pr-b-scene">
+            <svg class="pr-b-contour" viewBox="0 0 560 700" fill="none" stroke="currentColor" focusable="false">
+              <path d="M54 700V280A226 226 0 0 1 506 280V700" vector-effect="non-scaling-stroke" />
+            </svg>
+            <div class="pr-b-arche">
+              <img src={photos.canape.variantes[0].src} srcset={srcset(photos.canape)} sizes={tailles}
+                width={photos.canape.largeur} height={photos.canape.hauteur} alt="" loading="lazy" decoding="async" />
+            </div>
+            <Rameau variante="hero" trace class="pr-b-rameau" />
+          </div>
+        </div>
+      </div>
+      <div class="pr-texte">
+        <h2 class="pr-nom" id="pr-nom-b">
+          <span class="pr-surtitre" aria-hidden="true">Direction {dB.lettre}</span>
+          <span class="visuellement-cache">Direction {dB.lettre}{' :'} </span>
+          <span class="pr-nom-texte">{dB.nom}</span>
+        </h2>
+        <p class="pr-hero"><span class="visuellement-cache">Titre de son accueil{' :'} </span>{heros.b.titre}</p>
+        <p class="pr-intention">{typo(dB.intention)}</p>
+        <p class="pr-action">
+          <a class="pr-voir" href={`/${dB.id}/`}>
+            <span>Voir la direction</span><span class="visuellement-cache"> {dB.lettre}, {dB.nom}</span>
+            <svg class="pr-fleche" viewBox="0 0 22 12" aria-hidden="true" focusable="false"><path d="M1 6h19M15.2 1.2 20 6l-4.8 4.8" /></svg>
+          </a>
+        </p>
+      </div>
+    </article>
+
+    {/* ── C « Le salon » ──────────────────────────────────────────────────────────────────────────────────── */}
+    <article class="pr-panneau pr-c" data-pr-panneau="c" aria-labelledby="pr-nom-c" style="--i: 2">
+      <div class="pr-scene" aria-hidden="true">
+        <div class="pr-logo"><LogotypeC /></div>
+        <div class="pr-plateau">
+          <div class="pr-c-visuel">
+            <svg class="pr-c-fond" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+              <path d="M50 2C74 0 95 14 98 38C101 62 90 88 66 96C44 103 16 96 6 74C-3 54 2 28 18 14C27 6 38 3 50 2Z" />
+            </svg>
+            <svg class="pr-c-trait" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+              <path d="M58 1C80 3 99 18 99 42C99 60 89 67 91 81C93 96 73 101 53 99C30 97 5 89 2 64C-1 42 11 31 16 18C23 3 38 0 58 1Z" />
+            </svg>
+            <div class="pr-c-photo">
+              <img src={photos.debout.variantes[0].src} srcset={srcset(photos.debout)} sizes={tailles}
+                width={photos.debout.largeur} height={photos.debout.hauteur} alt="" loading="lazy" decoding="async" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pr-texte">
+        <h2 class="pr-nom" id="pr-nom-c">
+          <span class="pr-lettre" aria-hidden="true">{dC.lettre}</span>
+          <span class="visuellement-cache">Direction {dC.lettre}{' :'} </span>
+          <span class="pr-nom-texte">{dC.nom}</span>
+        </h2>
+        <p class="pr-hero"><span class="visuellement-cache">Titre de son accueil{' :'} </span>{heros.c.titre}</p>
+        <p class="pr-intention">{typo(dC.intention)}</p>
+        <p class="pr-action">
+          <a class="pr-voir" href={`/${dC.id}/`}>
+            <span>Voir la direction</span><span class="visuellement-cache"> {dC.lettre}, {dC.nom}</span>
+            <svg class="pr-fleche" viewBox="0 0 22 12" aria-hidden="true" focusable="false"><path d="M1 6h19M15.2 1.2 20 6l-4.8 4.8" /></svg>
+          </a>
+        </p>
+      </div>
+      <Vague forme={2} couleur="#DAAD58" position="haut" class="pr-c-vague" />
+    </article>
+  </main>
+</div>
+
+<script>
+  import { demarrerPresentoir } from './presentoir';
+  demarrerPresentoir();
+</script>

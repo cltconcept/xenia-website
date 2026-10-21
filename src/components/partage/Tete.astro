@@ -1,0 +1,44 @@
+---
+// <head> commun : titre, description, canonical, noindex, Open Graph (sa photo debout), icônes, statistiques.
+// À placer dans le <head> de chaque page, qui ajoute ensuite ses préchargements de polices.
+import { site } from '../../data/site';
+import { identite } from '../../data/contenu';
+import { photos } from '../../data/medias';
+import Statistiques from './Statistiques.astro';
+interface Props {
+  titre: string;
+  description?: string;
+  /** Chemin canonique (par défaut la page elle-même) ; null pour la 404. */
+  canonical?: string | null;
+  couleurTheme?: string;
+  /** noindex (par défaut celui du site ; toujours vrai pour la 404). */
+  noindex?: boolean;
+}
+const { titre, description = site.description, canonical = Astro.url.pathname, couleurTheme, noindex = site.noindex } = Astro.props;
+const url = canonical ? new URL(canonical, site.site).href : null;
+const image = photos.debout;
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{titre}</title>
+<meta name="description" content={description} />
+{url && <link rel="canonical" href={url} />}
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<meta property="og:title" content={titre} />
+<meta property="og:description" content={description} />
+{url && <meta property="og:url" content={url} />}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={identite.nom} />
+<meta property="og:locale" content="fr_BE" />
+<meta property="og:image" content={new URL(image.src, site.site).href} />
+<meta property="og:image:width" content={String(image.largeur)} />
+<meta property="og:image:height" content={String(image.hauteur)} />
+<meta property="og:image:alt" content={image.alt} />
+<meta name="format-detection" content="telephone=no" />
+{couleurTheme && <meta name="theme-color" content={couleurTheme} />}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<script is:inline>document.documentElement.classList.add('js');</script>
+<Statistiques />
+<style is:global>[hidden] { display: none !important; }</style>

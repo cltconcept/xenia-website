@@ -1,0 +1,114 @@
+---
+// Direction C « Le salon » — page Cabinets (/c/cabinets/) : bandeau du salon ocre au bord ondulé, fil d'Ariane, titre ;
+// les trois cabinets en détail (adresse, jours et heures, rendez-vous, itinéraire, petite carte du Brabant wallon avec le
+// point du cabinet) ; Doctoranytime ou Rosa, les modalités, la visio ; questions, rendez-vous, pied.
+import Gabarit from './Gabarit.astro';
+import Icone from './Icone.astro';
+import Vague from './Vague.astro';
+import MiniCarte from './MiniCarte.astro';
+import Questions from './Questions.astro';
+import RendezVous from './RendezVous.astro';
+import { cabinets, emailLien, identite, itineraire, lienRendezVous, pageCabinets, visio } from '../../data/contenu';
+import { ambiances, srcset } from '../../data/medias';
+import { heures, jourEtMoment, plateforme, typo } from './outils';
+import type { NomIcone } from './Icone.astro';
+import './cabinets.css';
+
+const piece = ambiances.c.piece;
+const iconesModalites: NomIcone[] = ['feuille', 'smartphone', 'carte', 'ordinateur'];
+---
+<Gabarit titre={`${pageCabinets.titre} · ${identite.nom}`} description={pageCabinets.ligne} page="cabinets">
+  <main id="contenu" tabindex="-1">
+    <div class="c-tete">
+      <div class="c-tete__image">
+        <img
+          src={piece.src}
+          srcset={srcset(piece)}
+          sizes="100vw"
+          width={piece.largeur}
+          height={piece.hauteur}
+          alt={piece.alt}
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <div class="c-tete__texte">
+        <Vague forme={2} couleur="var(--c-fond)" position="haut" />
+        <div class="c-contenu">
+          <nav class="c-ariane" aria-label="Fil d'Ariane">
+            <ol>
+              <li><a href="/c/">Accueil</a></li>
+              <li><span aria-current="page">Cabinets</span></li>
+            </ol>
+          </nav>
+          <h1>{pageCabinets.titre}</h1>
+          <p class="c-tete__ligne">{pageCabinets.ligne}</p>
+          <ul class="c-tete__villes" aria-label="Aller au cabinet">
+            {cabinets.map(c => <li><a href={`#${c.id}`}><Icone nom="itineraire" taille={20} />{c.ville}</a></li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-cabs c-contenu">
+      {cabinets.map((c, i) => (
+        <section class:list={['c-cab', { 'c-cab--inverse': i % 2 === 1 }]} id={c.id} aria-labelledby={`c-cab-titre-${c.id}`} data-apparait>
+          <div class="c-cab__texte">
+            <h2 id={`c-cab-titre-${c.id}`}>{c.ville}</h2>
+            <p class="c-cab__nom">{typo(c.nom)}</p>
+            <p class="c-cab__adresse">{c.adresse}<br />{c.codePostal} {c.ville}</p>
+            <h3 class="c-cab__intertitre">Jours de consultation</h3>
+            <ul class="c-cab__plages">
+              {c.plages.map(p => <li><span class="c-cab__jour">{jourEtMoment(p)}</span><span>{heures(p)}</span></li>)}
+            </ul>
+            <div class="c-cab__actions">
+              <a class="c-bouton c-bouton--plein" href={lienRendezVous(c)} target="_blank" rel="noopener">
+                <Icone nom="calendrier" taille={22} />Rendez-vous sur {plateforme(c)}<span class="visuellement-cache"> (nouvel onglet)</span>
+              </a>
+              <a class="c-bouton c-bouton--trait" href={itineraire(c)} target="_blank" rel="noopener">
+                <Icone nom="itineraire" taille={22} />Itinéraire<span class="visuellement-cache"> vers {c.ville} (nouvel onglet)</span>
+              </a>
+            </div>
+          </div>
+          <div class="c-cab__carte">
+            <MiniCarte actif={c.id} />
+            <p class="c-cab__region" aria-hidden="true">{c.ville}, Brabant wallon</p>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <section class="c-pratique" aria-labelledby="c-pratique-titre">
+      <Vague forme={3} couleur="var(--c-rose-pale)" position="haut" miroir />
+      <div class="c-contenu">
+        <div class="c-pratique__tete" data-apparait>
+          <h2 id="c-pratique-titre">{typo(pageCabinets.plateformesTitre)}</h2>
+          <p>{pageCabinets.plateformesTexte}</p>
+        </div>
+        <ul class="c-modalites">
+          {pageCabinets.modalites.map((m, i) => (
+            <li data-apparait>
+              <span class="c-modalites__icone"><Icone nom={iconesModalites[i]} taille={30} /></span>
+              <h3>{m.titre}</h3>
+              <p>{typo(m.texte)}</p>
+            </li>
+          ))}
+        </ul>
+        <div class="c-pratique__visio" data-apparait>
+          <div class="c-visio">
+            <Icone nom="ordinateur" taille={40} class="c-visio__icone" />
+            <div>
+              <h3>{visio.titre}</h3>
+              <p>{typo(visio.texte)}</p>
+            </div>
+          </div>
+          <a class="c-bouton c-bouton--trait" href={emailLien('Demande de consultation en visio')}><Icone nom="courrier" taille={22} />Demander une visio</a>
+        </div>
+      </div>
+      <Vague forme={1} couleur="var(--c-rose-pale)" position="bas" />
+    </section>
+
+    <Questions />
+    <RendezVous />
+  </main>
+</Gabarit>

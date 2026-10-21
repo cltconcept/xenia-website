@@ -1,0 +1,24 @@
+---
+// Bord ondulé d'une bande pleine largeur (direction C : aucun coin vif). Posé par la bande elle-même, dans sa couleur :
+// « haut » déborde au-dessus d'elle, « bas » en dessous. Quatre tracés à la main pour que deux bords ne se répètent pas.
+const formes = {
+  1: 'M0 44C150 20 300 14 470 30C650 47 790 70 980 58C1160 47 1300 22 1440 30V80H0Z',
+  2: 'M0 28C210 60 400 70 640 50C880 30 1050 14 1250 32C1340 40 1400 48 1440 46V80H0Z',
+  3: 'M0 54C170 58 300 24 520 22C740 20 860 58 1070 60C1250 62 1350 36 1440 24V80H0Z',
+  4: 'M0 36C120 30 230 50 390 54C600 60 700 26 900 24C1100 22 1230 52 1440 56V80H0Z',
+} as const;
+
+interface Props {
+  forme?: keyof typeof formes;
+  /** Couleur de la bande (variable CSS ou valeur). */
+  couleur: string;
+  position: 'haut' | 'bas';
+  /** Retourne le tracé de gauche à droite. */
+  miroir?: boolean;
+  class?: string;
+}
+const { forme = 1, couleur, position, miroir = false, class: classe } = Astro.props;
+---
+<svg class:list={['c-vague', `c-vague--${position}`, { 'c-vague--miroir': miroir }, classe]} viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true" focusable="false" style={`--c-vague-couleur: ${couleur}`}>
+  <path d={formes[forme]} />
+</svg>

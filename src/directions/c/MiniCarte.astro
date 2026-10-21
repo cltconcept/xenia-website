@@ -1,0 +1,19 @@
+---
+// Petite carte de la page Cabinets (direction C) : le contour du Brabant wallon, les trois points, celui du cabinet
+// en avant. Décorative (aria-hidden) : l'adresse et les jours sont écrits à côté.
+import { cabinets, carteBrabant } from '../../data/contenu';
+interface Props { actif: string }
+const { actif } = Astro.props;
+---
+<svg class="c-minicarte" viewBox={carteBrabant.viewBox} aria-hidden="true" focusable="false">
+  <path class="c-minicarte__ombre" d={carteBrabant.contour} transform="translate(5 7)" />
+  <path class="c-minicarte__contour" d={carteBrabant.contour} />
+  <path class="c-minicarte__liaison" d={carteBrabant.liaison} />
+  {cabinets.filter(c => c.id !== actif).map(c => <circle class="c-minicarte__autre" cx={c.carte.x} cy={c.carte.y} r="5" />)}
+  {cabinets.filter(c => c.id === actif).map(c => (
+    <g>
+      <circle class="c-minicarte__halo" cx={c.carte.x} cy={c.carte.y} r="20" />
+      <circle class="c-minicarte__point" cx={c.carte.x} cy={c.carte.y} r="8" />
+    </g>
+  ))}
+</svg>

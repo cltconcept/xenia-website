@@ -1,0 +1,36 @@
+---
+// Bloc « Prendre rendez-vous » (direction C), commun aux deux pages : un bouton par cabinet vers sa plateforme
+// (nouvel onglet), le numéro en grand, l'e-mail, la visio.
+import Vague from './Vague.astro';
+import Icone from './Icone.astro';
+import { cabinets, contact, emailLien, identite, lienRendezVous } from '../../data/contenu';
+import { numero, plateforme } from './outils';
+---
+<section class="c-rdv" id="rendez-vous" aria-labelledby="c-rdv-titre">
+  <Vague forme={3} couleur="var(--c-blush)" position="haut" />
+  <div class="c-rdv__grille c-contenu">
+    <div class="c-rdv__en-ligne" data-apparait>
+      <h2 id="c-rdv-titre">{contact.titre}</h2>
+      <p class="c-rdv__texte">{contact.texte}</p>
+      <ul class="c-rdv__cabinets">
+        {cabinets.map(c => (
+          <li>
+            <a class="c-rdv__cabinet" href={lienRendezVous(c)} target="_blank" rel="noopener">
+              <span class="c-rdv__ville">{c.ville}</span>
+              <span class="c-rdv__plateforme">sur {plateforme(c)}<span class="visuellement-cache"> (nouvel onglet)</span></span>
+              <Icone nom="onglet" taille={22} class="c-rdv__fleche" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="c-rdv__direct" data-apparait>
+      <p class="c-rdv__etiquette">Par téléphone</p>
+      <a class="c-rdv__numero" href={identite.telephoneLien}>{numero(identite.telephone)}</a>
+      <ul class="c-rdv__autres">
+        <li><a href={emailLien()}><Icone nom="courrier" taille={24} /><span>{identite.email}</span></a></li>
+        <li><a href={emailLien('Demande de consultation en visio')}><Icone nom="ordinateur" taille={24} /><span>Demander une visio</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>

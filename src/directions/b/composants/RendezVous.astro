@@ -1,0 +1,39 @@
+---
+// Rendez-vous (#rendez-vous), commun aux deux pages : un grand panneau lin en arche surbaissée sur la bande sauge,
+// encadré de deux rameaux symétriques ; un bouton par cabinet (plateforme, nouvel onglet), le numéro écrit en grand,
+// l'e-mail et la demande de visio.
+import Icone from './Icone.astro';
+import Rameau from './Rameau.astro';
+import { cabinets, contact, emailLien, identite, lienRendezVous } from '../../../data/contenu';
+import { fr, nomPlateforme } from '../outils';
+---
+<section id="rendez-vous" class="b-section b-bande-sauge b-rdv" aria-labelledby="rdv-titre">
+  <div class="b-conteneur b-rdv-scene">
+    <Rameau variante="marge" class="b-rdv-brin b-rdv-brin--g" />
+    <Rameau variante="marge" class="b-rdv-brin b-rdv-brin--d" />
+    <div class="b-rdv-panneau" data-apparait>
+      <p class="b-surtitre">Rendez-vous</p>
+      <h2 id="rdv-titre">{contact.titre}</h2>
+      <p class="b-rdv-texte">{fr(contact.texte)}</p>
+      <ul class="b-rdv-cabinets">
+        {cabinets.map(c => (
+          <li>
+            <a class="b-bouton b-bouton--plein" href={lienRendezVous(c)} target="_blank" rel="noopener">
+              {c.ville}
+              <span class="visuellement-cache">, rendez-vous sur {nomPlateforme(c)} (nouvel onglet)</span>
+              <Icone nom="externe" taille={20} />
+            </a>
+            <span class="b-rdv-plateforme" aria-hidden="true">sur {nomPlateforme(c)}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="b-rdv-filet" aria-hidden="true"></div>
+      <p class="b-rdv-tel-libelle">Par téléphone</p>
+      <a class="b-rdv-tel" href={identite.telephoneLien}><span class="visuellement-cache">Appeler le </span>{identite.telephone}</a>
+      <ul class="b-rdv-autres">
+        <li><a href={emailLien()}><Icone nom="mail" taille={22} /><span class="visuellement-cache">Écrire à </span>{identite.email}</a></li>
+        <li><a href={emailLien('Demande de consultation en visio')}><Icone nom="visio" taille={22} />Demander une visio</a></li>
+      </ul>
+    </div>
+  </div>
+</section>

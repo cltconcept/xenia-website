@@ -1,0 +1,11 @@
+---
+// Une icône de la direction A, en ligne. Le trait est recalculé pour rester ≈ 1,6 px à l'écran quelle que soit la
+// taille (trait d'encre constant). Décorative : toujours accompagnée d'un mot (aria-hidden).
+import { icones, type NomIcone } from './icones';
+interface Props { nom: NomIcone; taille?: number; classe?: string }
+const { nom, taille = 24, classe } = Astro.props;
+const trait = (1.6 * 24 / taille).toFixed(2);
+---
+<svg class:list={['a-icone', classe]} viewBox="0 0 24 24" width={taille} height={taille} fill="none" stroke="currentColor"
+  stroke-width={trait} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"
+  set:html={icones[nom]} />

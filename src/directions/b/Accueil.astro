@@ -1,0 +1,203 @@
+---
+// Accueil de la direction B « Respirer » (lin, sauge, arches ; Libre Caslon Display + Figtree). Ce qui est construit :
+// - Hero : voile en dégradé monochrome sauge claire vers lin ; sa photo au canapé dans une grande arche qui s'ouvre de
+//   bas en haut à l'arrivée (clip-path, 1 s), puis la signature : un rameau d'olivier au trait, dessin original, qui se
+//   dessine le long de l'arche (feuille après feuille). Titre, ligne, bouton de rendez-vous et téléphone, rien d'autre.
+// - Qui je suis : sa photo au carnet dans une arche, sa présentation à la première personne, trois repères illustrés.
+// - Les accompagnements : bande sauge, quatre cartes lin avec une icône dessinée chacune, les thèmes en liste.
+// - Module « Quel jour, quel cabinet ? » : cinq onglets du lundi au vendredi, le jour courant présélectionné ; le panneau
+//   en verre dépoli (la transparence demandée en juillet) posé sur l'ambiance de l'arche ; tableau de la semaine sans JS.
+// - Mon approche : intro et rameau, puis les quatre valeurs en rangée de colonnes bordées.
+// - Premier rendez-vous : trois cartes arrondies rose poudré, numérotées 1, 2, 3.
+// - Trois cabinets : bande sauge, trois cartes en arche (ville, lieu, adresse, jours, itinéraire, plateforme), la visio,
+//   le lien vers la page Cabinets.
+// - Questions pratiques (quatre volets) et Rendez-vous (panneau lin en arche, un bouton par cabinet, le numéro en grand).
+// Mouvement : arche, rameau, apparitions douces ; tout est posé avec la préférence de mouvement réduit.
+import Gabarit from './Gabarit.astro';
+import Icone from './composants/Icone.astro';
+import type { NomIcone } from './icones';
+import Rameau from './composants/Rameau.astro';
+import Semaine from './composants/Semaine.astro';
+import Questions from './composants/Questions.astro';
+import RendezVous from './composants/RendezVous.astro';
+import { accompagnements, actions, approche, cabinets, cabinetsIntro, etapes, heros, identite, itineraire, lienRendezVous, presentation, visio } from '../../data/contenu';
+import { ambiances, photos, srcset } from '../../data/medias';
+import { site } from '../../data/site';
+import { adresseComplete, fr, heures, jourEtMoment, nomPlateforme } from './outils';
+
+const iconesAccompagnements: Record<string, NomIcone> = {
+  'adolescents-adultes': 'ensemble',
+  'perinatalite-parentalite': 'pousse',
+  'enfants-famille': 'maison',
+  'nutrition-sante': 'pomme',
+};
+const iconesValeurs: NomIcone[] = ['cercles', 'profil', 'ecoute', 'souffle'];
+const iconesReperes: NomIcone[] = ['toque', 'sceau', 'germe'];
+const hero = photos.canape;
+const portrait = photos.carnet;
+const olivier = ambiances.b.olivier;
+---
+<Gabarit titre={`${identite.nom}, ${identite.titre.toLowerCase()} en ${identite.zone}`} description={site.description} page="accueil">
+  <main id="contenu" tabindex="-1">
+
+    <section class="b-hero" aria-labelledby="hero-titre">
+      <div class="b-conteneur b-hero-grille">
+        <div class="b-hero-texte">
+          <h1 id="hero-titre">{heros.b.titre}</h1>
+          <p class="b-hero-ligne">{fr(heros.b.ligne)}</p>
+          <div class="b-hero-actions">
+            <a class="b-bouton b-bouton--plein" href="#rendez-vous">{actions.rendezVous}</a>
+            <a class="b-lien-icone b-hero-tel" href={identite.telephoneLien}>
+              <Icone nom="telephone" taille={22} /><span class="visuellement-cache">Appeler le </span>{identite.telephone}
+            </a>
+          </div>
+        </div>
+        <div class="b-hero-scene">
+          <svg class="b-hero-contour" viewBox="0 0 560 700" aria-hidden="true" focusable="false" fill="none" stroke="currentColor">
+            <path d="M54 700V280A226 226 0 0 1 506 280V700" vector-effect="non-scaling-stroke" />
+          </svg>
+          <div class="b-hero-arche">
+            <img src={hero.src} srcset={srcset(hero)} sizes="(min-width: 900px) 380px, 66vw"
+              width={hero.largeur} height={hero.hauteur} alt={hero.alt} fetchpriority="high" decoding="async" />
+          </div>
+          <Rameau variante="hero" trace class="b-hero-rameau" />
+        </div>
+      </div>
+    </section>
+
+    <section id="qui-je-suis" class="b-section b-qui" aria-labelledby="qui-titre">
+      <div class="b-conteneur b-qui-grille">
+        <div class="b-qui-visuel" data-apparait>
+          <div class="b-arche b-qui-photo">
+            <img src={portrait.src} srcset={srcset(portrait)} sizes="(min-width: 900px) 420px, 84vw"
+              width={portrait.largeur} height={portrait.hauteur} alt={portrait.alt} loading="lazy" decoding="async" />
+          </div>
+          <Rameau variante="marge" class="b-qui-brin" />
+        </div>
+        <div class="b-qui-texte" data-apparait>
+          <p class="b-surtitre">Qui je suis</p>
+          <h2 id="qui-titre">{presentation.titre}</h2>
+          {presentation.paragraphes.map(p => <p>{fr(p)}</p>)}
+          <dl class="b-reperes">
+            {presentation.reperes.map((r, i) => (
+              <div class="b-repere">
+                <Icone nom={iconesReperes[i]} taille={32} />
+                <dt>{r.libelle}</dt>
+                <dd>{r.valeur}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="accompagnements" class="b-section b-bande-sauge b-accompagnements" aria-labelledby="accompagnements-titre">
+      <div class="b-conteneur">
+        <header class="b-section-tete b-centre" data-apparait>
+          <p class="b-surtitre">{identite.domaines}</p>
+          <h2 id="accompagnements-titre">Les accompagnements</h2>
+        </header>
+        <div class="b-accomp-grille">
+          {accompagnements.map(a => (
+            <article id={a.id} class="b-accomp" data-apparait aria-labelledby={`${a.id}-titre`}>
+              <span class="b-accomp-icone"><Icone nom={iconesAccompagnements[a.id]} taille={40} /></span>
+              <h3 id={`${a.id}-titre`}>{a.nom}</h3>
+              <p class="b-accomp-ligne">{a.ligne}</p>
+              <ul class="b-themes">
+                {a.themes.map(t => <li>{fr(t)}</li>)}
+              </ul>
+              {a.note && <p class="b-accomp-note">{fr(a.note)}</p>}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <Semaine />
+
+    <section id="approche" class="b-section b-approche" aria-labelledby="approche-titre">
+      <div class="b-conteneur">
+        <div class="b-approche-tete">
+          <div class="b-approche-texte" data-apparait>
+            <Rameau variante="ornement" class="b-approche-ornement" />
+            <h2 id="approche-titre">{approche.titre}</h2>
+            <p class="b-intro">{approche.intro}</p>
+          </div>
+          <div class="b-arche b-approche-image" data-apparait>
+            <img src={olivier.src} srcset={srcset(olivier)} sizes="(min-width: 900px) 340px, 70vw"
+              width={olivier.largeur} height={olivier.hauteur} alt={olivier.alt} loading="lazy" decoding="async" />
+          </div>
+        </div>
+        <ul class="b-valeurs" data-apparait>
+          {approche.valeurs.map((v, i) => (
+            <li class="b-valeur">
+              <Icone nom={iconesValeurs[i]} taille={40} />
+              <h3>{v.nom}</h3>
+              <p>{v.texte}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="b-section b-etapes" aria-labelledby="etapes-titre">
+      <div class="b-conteneur">
+        <header class="b-section-tete b-centre" data-apparait>
+          <p class="b-surtitre">Premier rendez-vous</p>
+          <h2 id="etapes-titre">{etapes.titre}</h2>
+        </header>
+        <ol class="b-etapes-liste">
+          {etapes.liste.map((e, i) => (
+            <li class="b-etape" data-apparait>
+              <span class="b-etape-num" aria-hidden="true">{i + 1}</span>
+              <h3><span class="visuellement-cache">Étape {i + 1}&nbsp;: </span>{e.titre}</h3>
+              <p>{fr(e.texte)}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="cabinets" class="b-section b-bande-sauge b-cabinets" aria-labelledby="cabinets-titre">
+      <div class="b-conteneur">
+        <header class="b-section-tete b-centre" data-apparait>
+          <p class="b-surtitre">Les cabinets</p>
+          <h2 id="cabinets-titre">{cabinetsIntro.titre}</h2>
+          <p class="b-intro">{fr(cabinetsIntro.ligne)}</p>
+        </header>
+        <ul class="b-cabinets-liste">
+          {cabinets.map(c => (
+            <li class="b-cabinet" data-apparait>
+              <Icone nom="porte" taille={36} />
+              <h3>{c.ville}</h3>
+              <p class="b-cabinet-nom">{c.nom}</p>
+              <p class="b-cabinet-adresse">{adresseComplete(c)}</p>
+              <ul class="b-cabinet-plages">
+                {c.plages.map(p => <li><span>{jourEtMoment(p)}</span><span class="b-heures">{heures(p)}</span></li>)}
+              </ul>
+              <div class="b-cabinet-actions">
+                <a class="b-bouton b-bouton--plein" href={lienRendezVous(c)} target="_blank" rel="noopener">
+                  Rendez-vous sur {nomPlateforme(c)}<span class="visuellement-cache"> pour {c.ville} (nouvel onglet)</span>
+                </a>
+                <a class="b-lien-icone" href={itineraire(c)} target="_blank" rel="noopener">
+                  <Icone nom="repere" taille={20} />Itinéraire<span class="visuellement-cache"> vers {c.ville} (nouvel onglet)</span>
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div class="b-visio" data-apparait>
+          <Icone nom="visio" taille={36} />
+          <div>
+            <h3>{visio.titre}</h3>
+            <p>{fr(visio.texte)}</p>
+          </div>
+        </div>
+        <p class="b-cabinets-suite"><a class="b-lien-fleche" href="/b/cabinets/">Toutes les informations pratiques<Icone nom="fleche" taille={20} /></a></p>
+      </div>
+    </section>
+
+    <Questions />
+    <RendezVous />
+  </main>
+</Gabarit>

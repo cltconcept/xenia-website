@@ -1,0 +1,80 @@
+---
+// Les objets du salon (direction C) : dessins originaux au trait, grille 96 px, trait constant 2,25 px arrondi, posés en
+// crème sur la bande ocre des accompagnements (référence de la cliente : objets du salon dessinés sur une bande moutarde).
+// Décoratifs (aria-hidden) : chaque objet accompagne le nom d'un accompagnement.
+const traces = {
+  fauteuil: [
+    // dossier arrondi
+    'M30 53c-2.4-11.6-2.6-22.8 1.6-28.6 3.2-4.4 9.4-6.4 16.4-6.4s13.2 2 16.4 6.4c4.2 5.8 4 17 1.6 28.6',
+    // accoudoirs en boudin
+    'M30 53c.4-5.4-3.6-8.8-8.4-8-4.8.8-7 5.4-5.4 10.2l3.4 15.8',
+    'M66 53c-.4-5.4 3.6-8.8 8.4-8 4.8.8 7 5.4 5.4 10.2l-3.4 15.8',
+    // coussin d'assise
+    'M30.4 57.6c11.4-2.6 23.8-2.6 35.2 0',
+    'M30 53v18',
+    'M66 53v18',
+    // base et pieds
+    'M19.6 71h56.8',
+    'M21.6 71c.4 3.4 2 4.8 5.4 4.8h42c3.4 0 5-1.4 5.4-4.8',
+    'M29 75.8l-2.2 7.4',
+    'M67 75.8l2.2 7.4',
+    // capiton
+    'M48 29.6v.2',
+    'M39.6 37.4v.2',
+    'M56.4 37.4v.2',
+  ],
+  canape: [
+    // dossier
+    'M17 50.4c-.4-9 2.6-14.4 10.4-14.4h41.2c7.8 0 10.8 5.4 10.4 14.4',
+    'M48 36.4v15.8',
+    // accoudoirs
+    'M17 50.4c-5.6-.4-8.6 3-7.8 7.8l2.2 13.8',
+    'M17 50.4c4.2.2 5.8 3 5.8 6.6V72',
+    'M79 50.4c5.6-.4 8.6 3 7.8 7.8L84.6 72',
+    'M79 50.4c-4.2.2-5.8 3-5.8 6.6V72',
+    // assise
+    'M22.8 59.2c8.4-1.4 17-2 25.2-2s16.8.6 25.2 2',
+    'M48 57.2V72',
+    // base et pieds
+    'M11.4 72h73.2',
+    'M15.6 72l-1.2 7.6',
+    'M80.4 72l1.2 7.6',
+    // un coussin posé de biais
+    'M27.6 45.2c3.4-2.6 8.6-2.8 11.8-.6 1.6 3.4 1.2 7.4-1 10.2-3.8 1-8 .4-11.2-1.6-1.2-2.6-1-5.6.4-8z',
+  ],
+  tasse: [
+    // la tasse
+    'M28.6 44.6h36.8l-2.8 18.8c-.9 6.2-6 10.6-12.2 10.6h-6.8c-6.2 0-11.3-4.4-12.2-10.6z',
+    // anse
+    'M64.6 49.4c7.4-1.8 11.8 2.4 10.4 7.8-1.2 4.6-6 6.6-11.8 6',
+    // soucoupe
+    'M18.4 77c9.4 5.4 49.8 5.4 59.2 0',
+    // vapeur
+    'M40.6 37c-3.8-4.2 3.6-7.6-.2-12.8',
+    'M51 37.4c-3.8-4.2 3.6-7.6-.2-12.8',
+    // fil du sachet
+    'M57.4 44.6c1.4-3.6 3.6-5.4 6.8-6',
+    'M64 35.6h4.6v5h-4.6z',
+  ],
+  lampe: [
+    // pied en dôme
+    'M13.4 84.6c.4-4.6 4.4-7.6 10.4-7.6s10 3 10.4 7.6z',
+    // le grand arc
+    'M23.8 77c-1.6-25.4 6.2-47.6 25.4-58.4 7.8-4.4 15.6-5.4 22-3.4',
+    // l'abat-jour
+    'M58.2 32.6c-.4-9.6 5.6-16.2 13.4-16.2s13.8 6.6 13.4 16.2z',
+    'M71.6 16.4v-1.4',
+    // la lumière
+    'M64.4 39.4l-2.4 6.8',
+    'M71.6 40.6v7.4',
+    'M78.8 39.4l2.4 6.8',
+  ],
+} as const;
+export type NomObjet = keyof typeof traces;
+
+interface Props { nom: NomObjet; taille?: number; class?: string }
+const { nom, taille = 96, class: classe } = Astro.props;
+---
+<svg class:list={['c-objet', classe]} viewBox="0 0 96 96" width={taille} height={taille} aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+  {traces[nom].map(d => <path d={d} vector-effect="non-scaling-stroke" />)}
+</svg>

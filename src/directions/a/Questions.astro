@@ -1,0 +1,40 @@
+---
+// Questions pratiques (direction A), sur les deux pages : les quatre questions en <details> (résumé ≥ 52 px, signe
+// plus dessiné qui pivote en croix à l'ouverture). `image` : l'ambiance carnet sous le titre (accueil).
+import { questions } from '../../data/contenu';
+import { ambiances, srcset } from '../../data/medias';
+import Icone from './Icone.astro';
+import Section from './Section.astro';
+import Titre from './Titre.astro';
+import { insecables } from './texte';
+
+interface Props { numero: number; image?: boolean }
+const { numero, image = false } = Astro.props;
+const m = ambiances.a.carnet;
+---
+<Section id="questions" numero={numero} fond="blanc" titre="a-questions-titre" classe="a-questions">
+  <div class:list={['a-questions-grille', { 'a-questions-grille--image': image }]}>
+    <div class="a-questions-tete">
+      <div class="a-tete" data-apparait>
+        <Titre texte="Questions pratiques" id="a-questions-titre" variante={1} />
+      </div>
+      {image && (
+        <figure class="a-tirage a-questions-image" data-apparait>
+          <img src={m.src} srcset={srcset(m)} sizes="(min-width: 1100px) 360px, (min-width: 901px) 30vw, 0px"
+            width={m.largeur} height={m.hauteur} alt={m.alt} loading="lazy" decoding="async" />
+        </figure>
+      )}
+    </div>
+    <div class="a-questions-liste" data-apparait>
+      {questions.map(q => (
+        <details class="a-question">
+          <summary>
+            <span class="a-question-texte">{insecables(q.q)}</span>
+            <span class="a-question-signe" aria-hidden="true"><Icone nom="plus" taille={22} /></span>
+          </summary>
+          <div class="a-question-reponse"><p>{insecables(q.r)}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</Section>

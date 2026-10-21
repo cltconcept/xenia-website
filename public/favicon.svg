@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#FDFBF8"/>
-  <g style="mix-blend-mode:multiply">
-    <ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/>
-  </g>
-  <g style="mix-blend-mode:multiply">
-    <ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#F5F4F0"/><g fill="#1D2A3F"><path d="M9.1 8h3.9l9.9 16h-3.9z"/><path d="M19.9 8h1.25L12.1 24h-1.25z"/><path d="M7.4 7.3h7.2v1.1H7.4zM18 7.3h5.6v1.1H18zM8.6 23.6h5.6v1.1H8.6zM17.4 23.6h7.2v1.1h-7.2z"/></g></svg>

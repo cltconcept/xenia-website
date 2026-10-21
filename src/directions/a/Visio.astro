@@ -1,0 +1,16 @@
+---
+// La visio (direction A) : bandeau à bord pointillé, comme une page détachable du carnet ; demande par e-mail.
+import { emailLien, visio } from '../../data/contenu';
+import Icone from './Icone.astro';
+import { insecables } from './texte';
+interface Props { id?: string }
+const { id } = Astro.props;
+---
+<div class="a-visio" id={id} data-apparait>
+  <span class="a-visio-icone"><Icone nom="ecran" taille={32} /></span>
+  <div class="a-visio-texte">
+    <h3 class="a-h3">{visio.titre}</h3>
+    <p>{insecables(visio.texte)}</p>
+  </div>
+  <a class="a-bouton a-bouton--contour" href={emailLien('Demande de consultation en visio')}><Icone nom="enveloppe" taille={22} />Demander une visio</a>
+</div>

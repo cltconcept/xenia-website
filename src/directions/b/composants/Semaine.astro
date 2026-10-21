@@ -1,0 +1,84 @@
+---
+// Module « Quel jour, quel cabinet ? » : cinq onglets du lundi au vendredi (tablist, flèches, Début, Fin). Rendu serveur :
+// lundi sélectionné ; le script choisit le jour courant (le week-end : lundi). Le panneau, en verre dépoli sur l'ambiance
+// « arche », donne le ou les cabinets du jour, la plage, l'adresse, l'itinéraire et la plateforme de rendez-vous.
+// Sans JS : le tableau de la semaine (les onglets restent masqués).
+import Icone from './Icone.astro';
+import { emailLien, itineraire, jourSansCabinet, lienRendezVous, semaine } from '../../../data/contenu';
+import { ambiances, srcset } from '../../../data/medias';
+import { adresseComplete, fr, heures, majuscule, momentEtHeures, nomPlateforme, triPlages } from '../outils';
+const image = ambiances.b.arche;
+const jours = semaine.map(j => ({ ...j, plages: triPlages(j.plages) }));
+---
+<section class="b-section b-semaine" aria-labelledby="semaine-titre">
+  <div class="b-conteneur">
+    <header class="b-section-tete b-centre" data-apparait>
+      <p class="b-surtitre">La semaine</p>
+      <h2 id="semaine-titre">Quel jour, quel cabinet&nbsp;?</h2>
+      <p class="b-intro">Choisissez un jour&nbsp;: le cabinet, les heures et l’adresse s’affichent.</p>
+    </header>
+
+    <div class="b-semaine-scene">
+      <div class="b-arche b-semaine-image" data-apparait>
+        <img src={image.src} srcset={srcset(image)} sizes="(min-width: 900px) 46vw, 88vw"
+          width={image.largeur} height={image.hauteur} alt={image.alt} loading="lazy" decoding="async" />
+      </div>
+
+      <div class="b-verre b-semaine-panneau" data-semaine>
+        <div class="b-jours" role="tablist" aria-label="Jours de la semaine">
+          {jours.map((j, i) => (
+            <button type="button" role="tab" class="b-jour" id={`jour-${j.jour}`} aria-controls={`panneau-${j.jour}`}
+              aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-jour={i}>
+              <span class="b-jour-nom">{majuscule(j.jour)}</span>
+              <span class="b-jour-abrege" aria-hidden="true">{majuscule(j.jour.slice(0, 3))}</span>
+              <span class="b-jour-aujourdhui visuellement-cache" data-aujourdhui hidden>, aujourd’hui</span>
+            </button>
+          ))}
+        </div>
+
+        {jours.map((j, i) => (
+          <div class="b-jour-panneau" role="tabpanel" id={`panneau-${j.jour}`} aria-labelledby={`jour-${j.jour}`} tabindex="0" hidden={i !== 0}>
+            <p class="b-jour-titre">{majuscule(j.jour)}<span data-aujourdhui-titre hidden>, aujourd’hui</span></p>
+            {j.plages.length ? j.plages.map(p => (
+              <article class="b-jour-cabinet">
+                <p class="b-jour-plage"><Icone nom="horloge" taille={20} />{momentEtHeures(p)}</p>
+                <h3>{p.cabinet.ville}</h3>
+                <p class="b-jour-lieu">{p.cabinet.nom}</p>
+                <p class="b-jour-adresse"><Icone nom="repere" taille={20} />{adresseComplete(p.cabinet)}</p>
+                <div class="b-actions">
+                  <a class="b-bouton b-bouton--plein" href={lienRendezVous(p.cabinet)} target="_blank" rel="noopener">
+                    Rendez-vous sur {nomPlateforme(p.cabinet)}<span class="visuellement-cache"> (nouvel onglet)</span>
+                  </a>
+                  <a class="b-lien-icone" href={itineraire(p.cabinet)} target="_blank" rel="noopener">
+                    <Icone nom="repere" taille={20} />Itinéraire<span class="visuellement-cache"> vers {p.cabinet.ville} (nouvel onglet)</span>
+                  </a>
+                </div>
+              </article>
+            )) : (
+              <div class="b-jour-vide">
+                <p>{fr(jourSansCabinet)}</p>
+                <a class="b-lien-icone" href={emailLien('Demande de consultation en visio')}><Icone nom="visio" taille={20} />Demander une visio</a>
+              </div>
+            )}
+          </div>
+        ))}
+
+        <table class="b-semaine-tableau">
+          <caption>Les jours de consultation</caption>
+          <thead><tr><th scope="col">Jour</th><th scope="col">Cabinet</th><th scope="col">Heures</th></tr></thead>
+          <tbody>
+            {jours.map(j => j.plages.length ? j.plages.map((p, k) => (
+              <tr>
+                {k === 0 && <th scope="row" rowspan={j.plages.length}>{majuscule(j.jour)}</th>}
+                <td>{p.cabinet.ville}<br /><span class="b-tableau-adresse">{adresseComplete(p.cabinet)}</span></td>
+                <td class="b-heures">{heures(p)}</td>
+              </tr>
+            )) : (
+              <tr><th scope="row">{majuscule(j.jour)}</th><td colspan="2">{fr(jourSansCabinet)}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

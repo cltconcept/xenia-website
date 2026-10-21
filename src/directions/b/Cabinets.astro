@@ -1,0 +1,103 @@
+---
+// Page « Les cabinets et les rendez-vous » de la direction B : tête centrée (fil d'Ariane, titre, ligne) au-dessus de
+// l'ambiance « pièce » dans une large arche surbaissée ; une section par cabinet (jours et heures, adresse, itinéraire,
+// plateforme) avec le contour du Brabant wallon et le point du cabinet ; Doctoranytime ou Rosa, les quatre modalités en
+// colonnes bordées, la visio ; puis les questions et le rendez-vous communs à l'accueil.
+import Gabarit from './Gabarit.astro';
+import Icone from './composants/Icone.astro';
+import Rameau from './composants/Rameau.astro';
+import CarteBrabant from './composants/CarteBrabant.astro';
+import Questions from './composants/Questions.astro';
+import RendezVous from './composants/RendezVous.astro';
+import type { NomIcone } from './icones';
+import { cabinets, identite, itineraire, lienRendezVous, pageCabinets, visio, emailLien } from '../../data/contenu';
+import { ambiances, srcset } from '../../data/medias';
+import { adresseComplete, fr, heures, jourEtMoment, joursDuCabinet, nomPlateforme } from './outils';
+
+const piece = ambiances.b.piece;
+const iconesModalites: NomIcone[] = ['entree', 'mobile', 'bouclier', 'visio'];
+---
+<Gabarit titre={`${pageCabinets.titre} · ${identite.nom}`} description={pageCabinets.ligne} page="cabinets">
+  <main id="contenu" tabindex="-1">
+
+    <section class="b-page-tete" aria-labelledby="page-titre">
+      <div class="b-conteneur b-centre b-page-tete-texte">
+        <nav class="b-ariane" aria-label="Fil d’Ariane">
+          <ol>
+            <li><a href="/b/">Accueil</a></li>
+            <li aria-current="page">Cabinets</li>
+          </ol>
+        </nav>
+        <h1 id="page-titre">{pageCabinets.titre}</h1>
+        <p class="b-hero-ligne">{fr(pageCabinets.ligne)}</p>
+      </div>
+      <div class="b-page-image">
+        <img src={piece.src} srcset={srcset(piece)} sizes="(min-width: 1240px) 1180px, 94vw"
+          width={piece.largeur} height={piece.hauteur} alt={piece.alt} fetchpriority="high" decoding="async" />
+      </div>
+    </section>
+
+    {cabinets.map((c, i) => (
+      <section id={c.id} class:list={['b-section', 'b-fiche', { 'b-fiche--inverse': i % 2 === 1 }]} aria-labelledby={`${c.id}-titre`}>
+        <div class="b-conteneur b-fiche-grille">
+          <div class="b-fiche-texte" data-apparait>
+            <p class="b-surtitre">{joursDuCabinet(c)}</p>
+            <h2 id={`${c.id}-titre`}>{c.ville}</h2>
+            <p class="b-fiche-nom">{c.nom}</p>
+            <p class="b-fiche-adresse"><Icone nom="repere" taille={24} /><span>{c.adresse}<br />{c.codePostal} {c.ville}</span></p>
+            <table class="b-fiche-horaires">
+              <caption>Jours et heures</caption>
+              <tbody>
+                {c.plages.map(p => <tr><th scope="row">{jourEtMoment(p)}</th><td class="b-heures">{heures(p)}</td></tr>)}
+              </tbody>
+            </table>
+            <div class="b-actions">
+              <a class="b-bouton b-bouton--plein" href={lienRendezVous(c)} target="_blank" rel="noopener">
+                Rendez-vous sur {nomPlateforme(c)}<span class="visuellement-cache"> pour {c.ville} (nouvel onglet)</span>
+              </a>
+              <a class="b-bouton b-bouton--trait" href={itineraire(c)} target="_blank" rel="noopener">
+                <Icone nom="repere" taille={20} />Itinéraire<span class="visuellement-cache"> vers {adresseComplete(c)} (nouvel onglet)</span>
+              </a>
+            </div>
+          </div>
+          <div class="b-fiche-carte" data-apparait>
+            <CarteBrabant actif={c} />
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <section class="b-section b-bande-sauge b-plateformes" aria-labelledby="plateformes-titre">
+      <div class="b-conteneur">
+        <header class="b-section-tete b-centre" data-apparait>
+          <Rameau variante="ornement" class="b-ornement-centre" />
+          <h2 id="plateformes-titre">{pageCabinets.plateformesTitre}</h2>
+          <p class="b-intro">{fr(pageCabinets.plateformesTexte)}</p>
+        </header>
+        <ul class="b-valeurs b-valeurs--modalites" data-apparait>
+          {pageCabinets.modalites.map((m, i) => (
+            <li class="b-valeur">
+              <Icone nom={iconesModalites[i]} taille={40} />
+              <h3>{m.titre}</h3>
+              <p>{fr(m.texte)}</p>
+            </li>
+          ))}
+        </ul>
+        <div class="b-visio b-visio--page" data-apparait>
+          <Icone nom="visio" taille={36} />
+          <div>
+            <h3>{visio.titre}</h3>
+            <p>{fr(visio.texte)}</p>
+            <p class="b-visio-liens">
+              <a class="b-lien-icone" href={emailLien('Demande de consultation en visio')}><Icone nom="mail" taille={20} />Demander une visio</a>
+              <a class="b-lien-icone" href={identite.telephoneLien}><Icone nom="telephone" taille={20} /><span class="visuellement-cache">Appeler le </span>{identite.telephone}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Questions />
+    <RendezVous />
+  </main>
+</Gabarit>

@@ -1,0 +1,12 @@
+---
+// Icônes de la direction B, dessinées pour elle : grille 24 px, trait fin 1,25 px forêt (non mis à l'échelle),
+// extrémités rondes, une petite feuille d'olivier en accent sur certaines. Toujours accompagnées d'un mot : décoratives.
+import { traces, type NomIcone } from '../icones';
+interface Props { nom: NomIcone; taille?: number; class?: string }
+const { nom, taille = 24, class: classe } = Astro.props;
+
+---
+<svg class:list={['b-icone', classe]} viewBox="0 0 24 24" width={taille} height={taille} aria-hidden="true" focusable="false"
+  fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+  {traces[nom].map(d => <path d={d} vector-effect="non-scaling-stroke" />)}
+</svg>

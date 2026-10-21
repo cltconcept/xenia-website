@@ -1,0 +1,21 @@
+---
+// Contour simplifié du Brabant wallon (une évocation, pas une carte) au trait forêt, la liaison des trois cabinets
+// en pointillés et le point du cabinet présenté, cerclé. Les deux autres cabinets restent en pastilles claires.
+import { cabinets, carteBrabant, type Cabinet } from '../../../data/contenu';
+interface Props { actif: Cabinet }
+const { actif } = Astro.props;
+---
+<svg class="b-carte" viewBox="-30 0 460 240" role="img" aria-label={`Carte schématique du Brabant wallon : le cabinet de ${actif.ville} parmi les trois cabinets`}>
+  <path class="b-carte-contour" d={carteBrabant.contour} vector-effect="non-scaling-stroke" />
+  <path class="b-carte-liaison" d={carteBrabant.liaison} vector-effect="non-scaling-stroke" />
+  {cabinets.map(c => {
+    const courant = c.id === actif.id;
+    return (
+      <g class:list={['b-carte-point', { 'b-carte-point--actif': courant }]}>
+        {courant && <circle cx={c.carte.x} cy={c.carte.y} r="16" class="b-carte-halo" vector-effect="non-scaling-stroke" />}
+        <circle cx={c.carte.x} cy={c.carte.y} r={courant ? 7 : 5} vector-effect="non-scaling-stroke" />
+        <text x={c.carte.x + c.carte.dx * (courant ? 1.5 : 1)} y={c.carte.y + c.carte.dy} text-anchor={c.carte.ancre}>{c.ville}</text>
+      </g>
+    );
+  })}
+</svg>

@@ -1,0 +1,21 @@
+---
+// Logotype typographique de la direction B : une petite arche au trait qui abrite un brin d'olivier, puis le nom en
+// Libre Caslon Display et, dessous, le titre en petites capitales espacées. Aucun logo existant (la cliente n'en a pas).
+import Rameau from './Rameau.astro';
+import { identite } from '../../../data/contenu';
+interface Props { lien?: string; sousTitre?: boolean; class?: string }
+const { lien, sousTitre = true, class: classe } = Astro.props;
+const Balise = lien ? 'a' : 'div';
+---
+<Balise class:list={['b-logo', classe]} href={lien} aria-label={lien ? `${identite.nom}, accueil` : undefined}>
+  <span class="b-logo-arche" aria-hidden="true">
+    <svg viewBox="0 0 30 38" fill="none" stroke="currentColor" stroke-width="1" focusable="false">
+      <path d="M2.5 37.5V15a12.5 12.5 0 0 1 25 0v22.5" vector-effect="non-scaling-stroke" />
+    </svg>
+    <Rameau variante="logo" class="b-logo-brin" />
+  </span>
+  <span class="b-logo-texte">
+    <span class="b-logo-nom">{identite.nom}</span>
+    {sousTitre && <span class="b-logo-titre">{identite.titre}</span>}
+  </span>
+</Balise>

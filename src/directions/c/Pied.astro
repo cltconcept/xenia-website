@@ -1,0 +1,48 @@
+---
+// Pied de page de la direction C : bande brune au bord ondulé, logotype clair, navigation, coordonnées, mentions.
+import Logotype from './Logotype.astro';
+import Vague from './Vague.astro';
+import Icone from './Icone.astro';
+import { cabinets, emailLien, identite, navigation, pied } from '../../data/contenu';
+import { ancre, numero } from './outils';
+
+interface Props { page: 'accueil' | 'cabinets' }
+const { page } = Astro.props;
+const liens = navigation.map(n => ({
+  libelle: n.libelle,
+  href: n.page ? `/c${n.page}` : ancre(page, n.ancre!),
+  courant: n.page === '/cabinets/' && page === 'cabinets',
+}));
+---
+<footer class="c-pied">
+  <Vague forme={4} couleur="var(--c-brun)" position="haut" miroir />
+  <div class="c-pied__grille c-contenu">
+    <div class="c-pied__marque">
+      <a class="c-pied__logo" href="/c/" aria-label={`${identite.nom}, accueil`}><Logotype ton="clair" /></a>
+      <p class="c-pied__titre">{identite.domaines}<br />{identite.zone}</p>
+    </div>
+    <nav class="c-pied__nav" aria-label="Navigation du pied de page">
+      <p class="c-pied__intertitre">Le site</p>
+      <ul>
+        {liens.map(l => <li><a href={l.href} aria-current={l.courant ? 'page' : undefined}>{l.libelle}</a></li>)}
+      </ul>
+    </nav>
+    <div class="c-pied__contact">
+      <p class="c-pied__intertitre">Me joindre</p>
+      <ul>
+        <li><a href={identite.telephoneLien}><Icone nom="telephone" taille={22} />{numero(identite.telephone)}</a></li>
+        <li><a href={emailLien()}><Icone nom="courrier" taille={22} />{identite.email}</a></li>
+      </ul>
+    </div>
+    <div class="c-pied__cabinets">
+      <p class="c-pied__intertitre">Les cabinets</p>
+      <ul>
+        {cabinets.map(c => <li><a href={`/c/cabinets/#${c.id}`}>{c.ville}</a><span>{c.adresse}, {c.codePostal}</span></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="c-pied__mentions c-contenu">
+    <p>{pied.ligne}</p>
+    <p>{pied.copyright}</p>
+  </div>
+</footer>

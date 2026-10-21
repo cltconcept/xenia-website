@@ -1,9 +1,21 @@
-# Sans cette liste, COPY . . écrase le node_modules Linux du conteneur
-# par celui de la machine hôte (binaires incompatibles) et le build casse.
-node_modules
-dist
-.astro
-.git
-.gstack
-docs
-brief
+**
+!package.json
+!package-lock.json
+!astro.config.mjs
+!tsconfig.json
+!site.config.json
+!polices.json
+!forge-checks.json
+!src/
+!src/**
+!public/
+!public/**
+!scripts/
+!scripts/**
+!nginx.conf
+!Dockerfile
+**/.env*
+**/brief/**
+**/remarques/**
+**/PROJET.*
+**/docs/**

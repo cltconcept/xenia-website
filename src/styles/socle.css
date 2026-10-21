@@ -1,0 +1,12 @@
+/* Socle commun aux trois habillages et au présentoir : MÉCANIQUE seulement (accessibilité, défilement bloqué). Aucun
+   choix de look ici : couleurs, polices, formes et mouvements appartiennent aux habillages.
+   Sélecteurs en :where() (spécificité nulle) : l'habillage les surcharge sans lutte. */
+
+/* Texte réservé aux lecteurs d'écran */
+:where(.visuellement-cache) {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Défilement bloqué (menu plein écran) : arreterDefilement() / reprendreDefilement() de src/lib/mouvement.ts */
+:where(html.defilement-arrete) { overflow: clip; }

@@ -1,0 +1,90 @@
+---
+// Gabarit de la direction C « Le salon » : <head>, lien d'évitement, en-tête collant, menu du téléphone, barre d'appel,
+// pied, sélecteur de direction. Les jetons de la direction vivent dans salon.css, sous .dir-c.
+import Tete from '../../components/partage/Tete.astro';
+import SelecteurDirection from '../../components/partage/SelecteurDirection.astro';
+import Entete from './Entete.astro';
+import Pied from './Pied.astro';
+import { direction } from '../../data/directions';
+import '../../styles/socle.css';
+import '../../styles/polices/alice.css';
+import '../../styles/polices/karla.css';
+import './salon.css';
+
+interface Props {
+  titre: string;
+  description?: string;
+  page: 'accueil' | 'cabinets';
+}
+const { titre, description, page } = Astro.props;
+---
+<!doctype html>
+<html lang="fr-BE">
+  <head>
+    <Tete titre={titre} description={description} couleurTheme={page === 'accueil' ? '#EFD5CA' : '#FBF6F0'} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/alice/alice-latin-400-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/karla/karla-latin-wght-normal.woff2" />
+  </head>
+  <body class:list={['dir-c', `dir-c--${page}`]}>
+    <a class="c-evitement" href="#contenu">Aller au contenu</a>
+    <Entete page={page} />
+    <slot />
+    <Pied page={page} />
+    <SelecteurDirection direction={direction('c')} chemin={page === 'accueil' ? '/' : '/cabinets/'} />
+  </body>
+</html>
+
+<script>
+  import { activerApparitions, arreterDefilement, reprendreDefilement, pieger } from '../../lib/mouvement';
+
+  // L'en-tête prend le fond de la page dès qu'on a quitté le haut.
+  const entete = document.querySelector<HTMLElement>('[data-entete]');
+  if (entete) {
+    let attente = false;
+    const maj = () => { entete.classList.toggle('c-entete--defile', window.scrollY > 8); attente = false; };
+    maj();
+    addEventListener('scroll', () => { if (!attente) { attente = true; requestAnimationFrame(maj); } }, { passive: true });
+  }
+
+  // Menu du téléphone : panneau plein écran, focus gardé, Échap, défilement bloqué.
+  const bouton = document.querySelector<HTMLButtonElement>('[data-menu-bouton]');
+  const panneau = document.querySelector<HTMLElement>('[data-menu]');
+  if (bouton && panneau) {
+    const libelle = bouton.querySelector<HTMLElement>('[data-menu-libelle]');
+    const iconeOuvrir = bouton.querySelector<HTMLElement>('[data-menu-ouvrir]');
+    const iconeFermer = bouton.querySelector<HTMLElement>('[data-menu-fermer]');
+    let retirerPiege: (() => void) | null = null;
+    const ouvert = () => bouton.getAttribute('aria-expanded') === 'true';
+    const fermer = (rendreFocus = true) => {
+      if (!ouvert()) return;
+      bouton.setAttribute('aria-expanded', 'false');
+      panneau.hidden = true;
+      if (libelle) libelle.textContent = 'Menu';
+      if (iconeOuvrir) iconeOuvrir.hidden = false;
+      if (iconeFermer) iconeFermer.hidden = true;
+      document.body.classList.remove('c-menu-ouvert');
+      reprendreDefilement();
+      retirerPiege?.();
+      retirerPiege = null;
+      if (rendreFocus) bouton.focus();
+    };
+    const ouvrir = () => {
+      bouton.setAttribute('aria-expanded', 'true');
+      panneau.hidden = false;
+      if (libelle) libelle.textContent = 'Fermer';
+      if (iconeOuvrir) iconeOuvrir.hidden = true;
+      if (iconeFermer) iconeFermer.hidden = false;
+      document.body.classList.add('c-menu-ouvert');
+      arreterDefilement();
+      retirerPiege = pieger(panneau, [bouton]);
+      panneau.querySelector<HTMLElement>('a')?.focus();
+    };
+    bouton.addEventListener('click', () => (ouvert() ? fermer() : ouvrir()));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && ouvert()) { e.preventDefault(); fermer(); } });
+    for (const lien of panneau.querySelectorAll<HTMLAnchorElement>('[data-menu-lien]')) lien.addEventListener('click', () => fermer(false));
+    // Retour sur ordinateur : le panneau n'a plus lieu d'être.
+    matchMedia('(min-width: 901px)').addEventListener('change', e => { if (e.matches) fermer(false); });
+  }
+
+  activerApparitions();
+</script>

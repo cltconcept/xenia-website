@@ -1,38 +1,33 @@
 ---
-import Base from '../layouts/Base.astro';
+// 404 unique (hébergement statique), sobre et neutre : les trois accueils et les coordonnées.
+import Tete from '../components/partage/Tete.astro';
+import { directions } from '../data/directions';
+import { emailLien, identite } from '../data/contenu';
+import '../styles/socle.css';
 ---
-<Base
-  title="Page introuvable — Xénia Van Outryve"
-  description="Cette page n'existe pas ou plus. Retrouvez les accompagnements, les lieux de consultation et la prise de rendez-vous depuis l'accueil."
->
-  <section class="nf">
-    <div class="aurora" aria-hidden="true">
-      <div class="aurora__blob" style="--blob-c: rgba(255,217,196,0.85); width: 46vw; height: 46vw; top: -14vw; left: -10vw;"></div>
-      <div class="aurora__blob aurora__blob--slow" style="--blob-c: rgba(223,210,244,0.8); width: 40vw; height: 40vw; bottom: -12vw; right: -8vw;"></div>
-      <div class="halo" style="--halo-c: rgba(246,200,219,0.7); width: 32vw; height: 32vw; top: 8vw; right: 12vw;"></div>
-    </div>
-    <div class="container nf__inner">
-      <p class="overline">Erreur 404</p>
-      <h1 class="headline">Cette page a pris <em>une grande respiration</em>… et a disparu</h1>
-      <p class="copy">
-        L'adresse n'existe pas ou plus. Le plus simple : repartir de l'accueil,
-        ou aller directement à la prise de rendez-vous.
-      </p>
-      <div class="actions">
-        <a class="btn-pill" href="/">Retour à l'accueil</a>
-        <a class="link-arrow" href="/lieux-contact/#rdv">Prendre rendez-vous</a>
-      </div>
-    </div>
-  </section>
-</Base>
-
-<style>
-  .nf {
-    position: relative;
-    min-height: 80svh;
-    display: flex; align-items: center;
-    padding-block: clamp(140px, 16vw, 190px) clamp(70px, 9vw, 110px);
-    overflow: clip;
-  }
-  .nf__inner { position: relative; max-width: 760px; }
-</style>
+<!doctype html>
+<html lang="fr-BE">
+  <head>
+    <Tete titre={`Page introuvable · ${identite.nom}`} canonical={null} noindex couleurTheme="#F5F4F0" />
+    <style is:global>
+      body { margin: 0; background: #F5F4F0; color: #1D2A3F; font: 18px/1.65 system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; }
+      .p404 { box-sizing: border-box; max-width: 40rem; margin: 0 auto; padding: clamp(48px, 12vh, 120px) 20px 96px; }
+      .p404 h1 { margin: 0 0 16px; font-size: clamp(32px, 4vw, 44px); font-weight: 600; line-height: 1.15; }
+      .p404 p { margin: 0 0 28px; }
+      .p404 a { color: #1D2A3F; text-underline-offset: 3px; }
+      .p404 a:focus-visible { outline: 3px solid #1D2A3F; outline-offset: 3px; }
+      .p404 ul { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+      .p404 li a { display: flex; align-items: center; min-height: 52px; padding: 0 20px; border: 1px solid #B9BFC8; border-radius: 10px; background: #FFFFFF; font-weight: 600; text-decoration: none; }
+      .p404 li a:hover { border-color: #1D2A3F; }
+    </style>
+  </head>
+  <body>
+    <main class="p404">
+      <h1>Page introuvable</h1>
+      <p>Cette adresse ne mène à aucune page. Reprenez depuis l’un des trois accueils, appelez le <a href={identite.telephoneLien}>{identite.telephone}</a> ou écrivez à <a href={emailLien()}>{identite.email}</a>.</p>
+      <ul>
+        {directions.map(d => <li><a href={`/${d.id}/`}>Direction {d.lettre} · {d.nom}</a></li>)}
+      </ul>
+    </main>
+  </body>
+</html>

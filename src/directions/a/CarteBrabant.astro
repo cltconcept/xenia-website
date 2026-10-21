@@ -1,0 +1,24 @@
+---
+// Le contour simplifié du Brabant wallon (une évocation, pas une carte) avec le point du cabinet, les deux autres en
+// retrait. Trait d'encre, papier blanc. Page Cabinets de la direction A.
+import { cabinets, carteBrabant, type Cabinet } from '../../data/contenu';
+interface Props { cabinet: Cabinet }
+const { cabinet } = Astro.props;
+const autres = cabinets.filter(c => c.id !== cabinet.id);
+const { x, y, dx, dy, ancre } = cabinet.carte;
+---
+<svg class="a-carte-svg" viewBox={carteBrabant.viewBox} role="img" aria-labelledby={`a-carte-${cabinet.id}`}>
+  <title id={`a-carte-${cabinet.id}`}>Carte schématique du Brabant wallon, avec la position du cabinet de {cabinet.ville}</title>
+  <path class="a-carte-contour" d={carteBrabant.contour} />
+  {autres.map(c => (
+    <g class="a-carte-autre">
+      <circle cx={c.carte.x} cy={c.carte.y} r="4.5" />
+      <text x={c.carte.x + c.carte.dx} y={c.carte.y + c.carte.dy} text-anchor={c.carte.ancre}>{c.ville}</text>
+    </g>
+  ))}
+  <g class="a-carte-ici">
+    <circle class="a-carte-halo" cx={x} cy={y} r="13" />
+    <circle cx={x} cy={y} r="6.5" />
+    <text x={x + dx * 1.25} y={y + dy * 1.1} text-anchor={ancre}>{cabinet.ville}</text>
+  </g>
+</svg>

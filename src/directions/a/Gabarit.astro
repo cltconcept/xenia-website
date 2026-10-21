@@ -1,0 +1,133 @@
+---
+// Gabarit de la direction A Le carnet : <head>, en-tête collant (logotype, navigation, téléphone, Prendre
+// rendez-vous), menu plein écran et barre d'appel sur téléphone (≤ 900 px), pied, sélecteur de direction.
+// Les pages (Accueil, Cabinets) y glissent leur <main>.
+import Tete from '../../components/partage/Tete.astro';
+import SelecteurDirection from '../../components/partage/SelecteurDirection.astro';
+import { direction } from '../../data/directions';
+import { actions, cabinets, emailLien, identite, navigation, pied } from '../../data/contenu';
+import Icone from './Icone.astro';
+import { sansCoupure } from './texte';
+import '../../styles/socle.css';
+import '../../styles/polices/literata.css';
+import '../../styles/polices/albert-sans.css';
+import './a.css';
+
+interface Props {
+  titre: string;
+  description?: string;
+  page: 'accueil' | 'cabinets';
+}
+const { titre, description, page } = Astro.props;
+
+// Ancres de l'accueil : locales sur l'accueil, vers /a/#… depuis la page Cabinets.
+const liens = navigation.map(n => n.page
+  ? { libelle: n.libelle, href: `/a${n.page}`, actuel: page === 'cabinets' }
+  : { libelle: n.libelle, href: page === 'accueil' ? n.ancre : `/a/${n.ancre}`, actuel: false });
+const tel = sansCoupure(identite.telephone);
+---
+<!doctype html>
+<html lang="fr-BE">
+  <head>
+    <Tete titre={titre} description={description} couleurTheme="#F5F6F3" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/literata/literata-latin-wght-normal.woff2" />
+  </head>
+  <body class:list={['dir-a', `a-page-${page}`]}>
+    <a class="a-evitement" href="#contenu">Aller au contenu</a>
+
+    <header class="a-entete" data-entete>
+      <div class="a-entete-int">
+        <a class="a-logo" href="/a/" aria-label={`${identite.nom}, accueil`}>
+          <span class="a-logo-nom">{identite.nom}</span>
+          <span class="a-logo-metier">{identite.titre}</span>
+        </a>
+        <nav class="a-nav" aria-label="Navigation principale">
+          <ul>
+            {liens.map(l => (
+              <li><a href={l.href} aria-current={l.actuel ? 'page' : undefined}>{l.libelle}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <div class="a-entete-actions">
+          <a class="a-entete-tel" href={identite.telephoneLien}>
+            <Icone nom="telephone" taille={22} />
+            <span><span class="visuellement-cache">Téléphone&nbsp;: </span>{tel}</span>
+          </a>
+          <a class="a-bouton a-entete-rdv" href="#rendez-vous">{actions.rendezVous}</a>
+          <a class="a-menu-repli" href="#a-pied-nav">Menu</a>
+          <button class="a-menu-bouton" type="button" aria-expanded="false" aria-controls="a-menu" data-menu-bouton>
+            <span class="a-menu-icone" aria-hidden="true"><Icone nom="menu" taille={24} classe="a-menu-ouvrir" /><Icone nom="fermer" taille={24} classe="a-menu-fermer" /></span>
+            <span class="a-menu-mot" data-menu-mot>Menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="a-menu" id="a-menu" data-menu hidden>
+      <div class="a-menu-feuille">
+        <nav aria-label="Menu principal">
+          <ul class="a-menu-liens">
+            <li><a href="/a/" aria-current={page === 'accueil' ? 'page' : undefined}>Accueil</a></li>
+            {liens.map(l => <li><a href={l.href} aria-current={l.actuel ? 'page' : undefined}>{l.libelle}</a></li>)}
+          </ul>
+        </nav>
+        <div class="a-menu-contact">
+          <a class="a-bouton a-bouton--large" href="#rendez-vous">{actions.rendezVous}</a>
+          <a class="a-menu-tel" href={identite.telephoneLien}><Icone nom="telephone" taille={24} /><span><span class="visuellement-cache">Appeler le </span>{tel}</span></a>
+          <a class="a-lien a-menu-mail" href={emailLien()}><Icone nom="enveloppe" taille={22} />{identite.email}</a>
+        </div>
+      </div>
+    </div>
+
+    <slot />
+
+    <footer class="a-pied">
+      <div class="a-cadre a-pied-grille">
+        <div class="a-pied-marque">
+          <a class="a-logo a-logo--pied" href="/a/" aria-label={`${identite.nom}, accueil`}>
+            <span class="a-logo-nom">{identite.nom}</span>
+            <span class="a-logo-metier">{identite.titre}</span>
+          </a>
+          <p class="a-pied-domaines">{identite.domaines}, en {identite.zone} et en visio.</p>
+        </div>
+        <nav class="a-pied-bloc" id="a-pied-nav" aria-label="Pied de page">
+          <p class="a-pied-titre">Le site</p>
+          <ul>
+            <li><a href="/a/" aria-current={page === 'accueil' ? 'page' : undefined}>Accueil</a></li>
+            {liens.map(l => <li><a href={l.href} aria-current={l.actuel ? 'page' : undefined}>{l.libelle}</a></li>)}
+          </ul>
+        </nav>
+        <div class="a-pied-bloc">
+          <p class="a-pied-titre">Contact</p>
+          <ul>
+            <li><a href={identite.telephoneLien}><Icone nom="telephone" taille={20} /><span><span class="visuellement-cache">Appeler le </span>{tel}</span></a></li>
+            <li><a href={emailLien()}><Icone nom="enveloppe" taille={20} />{identite.email}</a></li>
+          </ul>
+        </div>
+        <div class="a-pied-bloc">
+          <p class="a-pied-titre">Les cabinets</p>
+          <ul>
+            {cabinets.map(c => (
+              <li><a href={page === 'cabinets' ? `#${c.id}` : `/a/cabinets/#${c.id}`}>{c.ville}</a><span class="a-pied-adresse">{c.adresse}, {c.codePostal}</span></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div class="a-cadre a-pied-bas">
+        <p>{pied.ligne}</p>
+        <p>{pied.copyright}</p>
+      </div>
+    </footer>
+
+    <aside class="a-barre-appel" aria-label="Contact rapide">
+      <a class="a-barre-lien" href={identite.telephoneLien}><Icone nom="telephone" taille={22} />{actions.appeler}<span class="visuellement-cache"> le {tel}</span></a>
+      <a class="a-barre-lien a-barre-lien--plein" href="#rendez-vous"><Icone nom="calendrier" taille={22} />Rendez-vous</a>
+    </aside>
+
+    <SelecteurDirection direction={direction('a')} chemin={page === 'accueil' ? '/' : '/cabinets/'} />
+
+    <script>
+      import './a';
+    </script>
+  </body>
+</html>

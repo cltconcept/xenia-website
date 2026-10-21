@@ -1,0 +1,59 @@
+---
+// Module de la direction A Par où commencer ? : quatre onglets en intercalaires de classeur (tablist vertical,
+// flèches, Début, Fin) ; le panneau montre le texte de la porte, les thèmes de l'accompagnement lié, où me rencontrer
+// (les trois villes et leurs jours) et Prendre rendez-vous. Sans JS : les intercalaires sont masqués et les quatre
+// panneaux se lisent l'un sous l'autre, chacun avec son libellé.
+import { accompagnements, actions, cabinets, orientation } from '../../data/contenu';
+import Icone from './Icone.astro';
+import Section from './Section.astro';
+import Titre from './Titre.astro';
+import { iconeDe, insecables, joursEnLigne } from './texte';
+
+interface Props { numero: number }
+const { numero } = Astro.props;
+const portes = orientation.portes.map(p => {
+  const acc = accompagnements.find(a => a.id === p.accompagnement);
+  if (!acc) throw new Error(`Accompagnement inconnu : ${p.accompagnement}`);
+  return { ...p, acc };
+});
+---
+<Section numero={numero} titre="a-orientation-titre" classe="a-orientation">
+  <div class="a-tete" data-apparait>
+    <Titre texte={orientation.titre} id="a-orientation-titre" variante={2} />
+    <p class="a-chapo">{insecables(orientation.intro)}</p>
+  </div>
+  <div class="a-classeur" data-orientation data-apparait>
+    <div class="a-onglets" role="tablist" aria-label="Par où commencer" aria-orientation="vertical" data-onglets>
+      {portes.map((p, i) => (
+        <button type="button" role="tab" class="a-onglet" id={`a-onglet-${p.id}`} aria-controls={`a-panneau-${p.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-onglet={p.id}>
+          <span class="a-onglet-icone"><Icone nom={iconeDe[p.acc.id]} taille={26} /></span>
+          <span class="a-onglet-mot">{p.libelle}</span>
+        </button>
+      ))}
+    </div>
+    <div class="a-feuilles">
+      {portes.map(p => (
+        <div class="a-feuille" id={`a-panneau-${p.id}`} data-panneau={p.id}>
+          <p class="a-feuille-porte"><Icone nom={iconeDe[p.acc.id]} taille={24} />{p.libelle}</p>
+          <p class="a-feuille-texte">{insecables(p.texte)}</p>
+          <div class="a-feuille-grille">
+            <div class="a-feuille-themes">
+              <h3 class="a-h3"><a href={`#${p.acc.id}`}>{p.acc.nom}</a></h3>
+              <ul class="a-tirets">
+                {p.acc.themes.map(t => <li>{insecables(t)}</li>)}
+              </ul>
+            </div>
+            <div class="a-feuille-lieux">
+              <p class="a-etiquette"><Icone nom="epingle" taille={20} />Où me rencontrer</p>
+              <ul class="a-lieux">
+                {cabinets.map(c => <li><span class="a-lieu-ville">{c.ville}</span><span class="a-lieu-jours">{joursEnLigne(c)}</span></li>)}
+              </ul>
+              <a class="a-bouton" href="#rendez-vous">{actions.rendezVous}</a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Section>

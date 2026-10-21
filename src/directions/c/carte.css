@@ -1,0 +1,129 @@
+/* Module Les cabinets sur la carte (direction C) */
+
+.c-carte-section { position: relative; z-index: 2; padding-block: calc(var(--c-pad) + 8px) calc(var(--c-pad) + var(--c-vague-h)); background: var(--c-fond); }
+.c-carte-section__tete { max-width: 760px; }
+.c-carte-section__tete p { margin-top: 16px; max-width: 58ch; font-size: 19px; }
+
+.c-carte-module {
+  display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px); align-items: center;
+  margin-top: clamp(32px, 4vw, 56px);
+}
+
+/* La carte */
+.c-carte { position: relative; aspect-ratio: 400 / 240; isolation: isolate; container-type: inline-size; }
+.c-carte::before {
+  content: ''; position: absolute; inset: -6% -5% -10% -4%; z-index: -1;
+  border-radius: 58% 42% 50% 50% / 46% 58% 42% 54%;
+  background: var(--c-rose-pale);
+}
+.c-carte__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.c-carte__ombre { fill: var(--c-blush); }
+.c-carte__contour {
+  fill: var(--c-fond); stroke: var(--c-brun); stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round;
+  stroke-dasharray: 1 1; stroke-dashoffset: 0;
+}
+.c-carte__liaison { fill: none; stroke: var(--c-terracotta); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 0.1 7; }
+.c-carte__halo { fill: var(--c-ocre); opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(0.5); transition: opacity 0.35s ease, transform 0.35s ease; }
+.c-carte__pastille { fill: var(--c-terracotta); stroke: var(--c-fond); stroke-width: 2.5; transform-box: fill-box; transform-origin: center; transition: transform 0.3s ease, fill 0.3s ease; }
+.c-carte__point.actif .c-carte__halo { opacity: 0.55; transform: scale(1); }
+.c-carte__point.actif .c-carte__pastille { fill: var(--c-brun); transform: scale(1.25); }
+.c-carte__point.survol:not(.actif) .c-carte__halo { opacity: 0.35; transform: scale(0.85); }
+.c-carte__region {
+  position: absolute; right: 3%; bottom: -2%;
+  color: var(--c-brun-doux); font: 400 19px/1 var(--c-titre);
+}
+
+/* Le premier passage : le contour se trace, la liaison suit, les pastilles se posent. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .c-carte__contour { transition: stroke-dashoffset 1.05s cubic-bezier(0.45, 0.05, 0.3, 1), fill-opacity 0.6s ease 0.7s; }
+  html.js .c-carte__ombre { transition: opacity 0.6s ease 0.8s; }
+  html.js .c-carte__liaison { transition: opacity 0.5s ease 0.85s; }
+  html.js .c-carte__point { transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.3, 1.5, 0.5, 1); transform-box: fill-box; transform-origin: center; }
+  html.js .c-carte__point:nth-of-type(1) { transition-delay: 1s; }
+  html.js .c-carte__point:nth-of-type(2) { transition-delay: 1.12s; }
+  html.js .c-carte__point:nth-of-type(3) { transition-delay: 1.24s; }
+  html.js .c-repere { transition: opacity 0.4s ease 1.2s; }
+  html.js .c-carte:not(.tracee) .c-carte__contour { stroke-dashoffset: 1; fill-opacity: 0; }
+  html.js .c-carte:not(.tracee) .c-carte__ombre,
+  html.js .c-carte:not(.tracee) .c-carte__liaison { opacity: 0; }
+  html.js .c-carte:not(.tracee) .c-carte__point { opacity: 0; transform: scale(0.4); }
+  html.js .c-carte:not(.tracee) .c-repere { opacity: 0; }
+}
+
+/* Les repères : la pastille est un lien vers la fiche (cible de 44 px centrée sur le point), le nom à côté. */
+.c-carte__reperes { list-style: none; }
+.c-repere {
+  position: absolute; left: var(--x); top: var(--y);
+  display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding-right: 6px;
+  border-radius: 999px; color: var(--c-brun); text-decoration: none; white-space: nowrap;
+  transform: translate(-22px, -50%);
+}
+.c-repere--end { flex-direction: row-reverse; padding: 0 0 0 6px; transform: translate(calc(-100% + 22px), -50%); }
+.c-repere__cible { width: 44px; height: 44px; flex: none; border-radius: 50%; }
+.c-repere__nom {
+  padding: 5px 13px; border-radius: 999px;
+  background: var(--c-fond); box-shadow: 0 0 0 1.5px rgba(43, 30, 22, 0.22);
+  font: 600 16px/1.2 var(--c-texte);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.c-repere:hover .c-repere__nom { background: var(--c-blush); }
+.c-repere[aria-current] .c-repere__nom { background: var(--c-brun); color: var(--c-fond); box-shadow: none; }
+.c-repere:focus-visible { outline: none; }
+.c-repere:focus-visible .c-repere__cible { outline: 3px solid var(--c-brun); outline-offset: -6px; }
+.c-repere:focus-visible .c-repere__nom { outline: 3px solid var(--c-brun); outline-offset: 3px; }
+
+/* Carte étroite (téléphone) : les noms passent au-dessus ou en dessous du point pour rester dans la carte. */
+@container (max-width: 540px) {
+  .c-repere--court-saint-etienne { flex-direction: column; gap: 0; padding: 0; transform: translate(-50%, -22px); }
+  .c-repere--nivelles { flex-direction: column-reverse; gap: 0; padding: 0; transform: translate(-50%, calc(-100% + 22px)); }
+}
+
+/* Les fiches */
+.c-carte-fiches { display: grid; gap: 18px; }
+.c-onglets { display: flex; flex-wrap: wrap; gap: 8px; }
+html:not(.js) .c-onglets { display: none; }
+.c-onglet {
+  min-height: 48px; padding: 0 20px;
+  border: 2px solid rgba(43, 30, 22, 0.28); border-radius: 999px; background: transparent;
+  color: var(--c-brun); font: 600 17px/1.2 var(--c-texte); cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.c-onglet:hover { border-color: var(--c-brun); background: var(--c-rose-pale); }
+.c-onglet[aria-selected='true'] { border-color: var(--c-brun); background: var(--c-brun); color: var(--c-fond); }
+
+.c-fiche {
+  padding: clamp(26px, 3vw, 38px) clamp(24px, 3vw, 40px);
+  border-radius: var(--c-coussin); background: var(--c-rose-pale);
+}
+html.js .c-fiche:not([data-actif]) { display: none; }
+html.js .c-fiche[data-actif] { animation: c-fiche-entree 0.35s ease-out; }
+@keyframes c-fiche-entree { from { opacity: 0.4; transform: translateY(6px); } }
+.c-fiche:focus-visible { outline-offset: 4px; }
+.c-fiche__ville { font-size: 25px; }
+.c-fiche__nom { margin-top: 6px; font-weight: 600; }
+.c-fiche__adresse { margin-top: 10px; }
+.c-fiche__plages { list-style: none; display: grid; gap: 6px; margin-top: 18px; padding-top: 16px; border-top: 1.5px dashed rgba(43, 30, 22, 0.28); }
+.c-fiche__plages li { display: flex; flex-wrap: wrap; gap: 0 12px; }
+.c-fiche__jour { font-weight: 600; min-width: 10.5ch; }
+.c-fiche__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.c-fiche__actions .c-bouton { padding-inline: 22px; }
+
+.c-carte-section__suite {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 48px;
+  margin-top: clamp(48px, 6vw, 80px); padding-top: clamp(32px, 4vw, 48px);
+  border-top: 1.5px solid rgba(43, 30, 22, 0.14);
+}
+
+@media (max-width: 960px) {
+  .c-carte-module { grid-template-columns: 1fr; }
+  .c-carte { max-width: 640px; width: 100%; justify-self: center; margin-block: 8px 20px; }
+}
+@media (max-width: 560px) {
+  .c-repere__nom { padding: 4px 10px; font-size: 15px; }
+  .c-carte__region { font-size: 16px; bottom: -8%; }
+  .c-fiche__actions .c-bouton { width: 100%; }
+}
+/* Sans JS : les trois fiches en liste sous la carte. */
+html:not(.js) .c-carte-fiches { gap: 16px; }
+html:not(.js) .c-carte-module { align-items: start; }

@@ -1,0 +1,18 @@
+---
+// Statistiques de fréquentation (Umami, sans cookie ni stockage) : hors bandeau de consentement.
+// Le traceur passe par /stats/ (relais nginx) : aucune adresse tierce dans les pages.
+// Inactif en local (dev, QA) pour ne pas compter nos propres essais.
+import { site } from '../../data/site';
+const id = site.umami;
+---
+{id && (
+  <script is:inline define:vars={{ id }}>
+    if (!/^(localhost|127\.|\[::1\])/.test(location.hostname)) {
+      const s = document.createElement('script');
+      s.src = '/stats/script.js';
+      s.defer = true;
+      s.dataset.websiteId = id;
+      document.head.append(s);
+    }
+  </script>
+)}

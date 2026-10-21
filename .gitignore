@@ -1,20 +1,27 @@
-# build
-dist/
+# Dépendances et sorties
 node_modules/
+node_modules/.vite*
+dist/
+dist-*/
 .astro/
 
-# Matériau client : le mail contient un fil privé (téléphone, e-mails) —
-# le dépôt sera PUBLIC pour Coolify, ces fichiers ne doivent jamais y figurer.
-brief/
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
 
-# divers
+# Preuves de QA locales (captures, PDF de test)
+artifacts/
+playwright-report/
+test-results/
+
+# Matériau client : le mail contient un fil privé (téléphone, e-mails) — jamais dans le dépôt.
+brief/
+remarques/
+docs/forge/propositions/
+
+# Outils locaux
 .DS_Store
 __MACOSX/
 .gstack/
-
-# Polices rapatriées pour le rendu de la charte (Google Fonts, re-téléchargeables
-# par scripts/… : `node ~/.claude/skills/charte-url/scripts/fetch-assets.cjs chartes/xenia/assets.json`)
-chartes/*/assets/fonts/
-
-# Compagnon visuel du brainstorming (maquettes de session)
 .superpowers/

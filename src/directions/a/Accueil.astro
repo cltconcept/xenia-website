@@ -1,0 +1,189 @@
+---
+// Direction A Le carnet — accueil (/a/). Ce qui est construit :
+// - Hero en deux colonnes : à gauche le titre (un mot en italique), la ligne, Prendre rendez-vous et le téléphone ; à
+//   droite sa photo au carnet en tirage (passe-partout blanc, filet, ombre de papier) posée à cheval sur une bande
+//   bleu poudré aux lignes de carnet. Signature : le prénom Xénia s'écrit au stylo, en ardoise, à côté de la photo
+//   à l'arrivée (glyphes Hershey, lettre après lettre, ≈ 1,4 s, une fois).
+// - Grille éditoriale à marge sur toute la page : chaque section porte son numéro dans la marge et une fine ligne
+//   verticale de cahier ; chaque titre reçoit un trait souligné à la main au premier passage.
+// - Sections : 1 Qui je suis (présentation, trois repères, photo debout) · 2 Mes accompagnements (quatre fiches sur
+//   bleu poudré) · 3 Par où commencer ? (module : quatre intercalaires de classeur → texte, thèmes, où me rencontrer,
+//   rendez-vous) · 4 Mon approche (rangée de quatre valeurs) · 5 Comment se passe un premier rendez-vous (trois étapes
+//   numérotées, ambiance chaise) · 6 Trois cabinets en Brabant wallon (trois fiches avec jours, itinéraire et
+//   plateforme, la visio, lien vers la page Cabinets) · 7 Questions pratiques · 8 Prendre rendez-vous (un bouton par
+//   cabinet, numéro en grand, e-mail, visio).
+// - Iconographie au trait d'encre dessinée pour la direction (24 px), toujours avec un mot.
+import Gabarit from './Gabarit.astro';
+import Icone from './Icone.astro';
+import Manuscrit from './Manuscrit.astro';
+import Orientation from './Orientation.astro';
+import Questions from './Questions.astro';
+import RendezVous from './RendezVous.astro';
+import Section from './Section.astro';
+import Titre from './Titre.astro';
+import Visio from './Visio.astro';
+import {
+  accompagnements, actions, approche, cabinets, cabinetsIntro, etapes, heros, identite, itineraire, lienRendezVous,
+  presentation,
+} from '../../data/contenu';
+import { ambiances, photos, srcset } from '../../data/medias';
+import { site } from '../../data/site';
+import { heures, iconeDe, insecables, jourMoment, nomPlateforme, sansCoupure } from './texte';
+import type { NomIcone } from './icones';
+
+const titre = heros.a.titre;
+const mot = 'clinicienne';
+const coupe = titre.indexOf(mot);
+const tel = sansCoupure(identite.telephone);
+const hero = photos.carnet;
+const debout = photos.debout;
+const chaise = ambiances.a.chaise;
+const iconesReperes: NomIcone[] = ['toque', 'agrement', 'crayon'];
+const iconesValeurs: NomIcone[] = ['cercles', 'pousse', 'bulles', 'vague'];
+---
+<Gabarit titre={site.nom} page="accueil">
+  <main id="contenu" tabindex="-1">
+    <section class="a-hero" aria-labelledby="a-titre">
+      <div class="a-cadre a-hero-grille">
+        <div class="a-hero-texte">
+          <h1 class="a-h1" id="a-titre">{coupe < 0 ? titre : <Fragment>{titre.slice(0, coupe)}<em>{mot}</em>{titre.slice(coupe + mot.length)}</Fragment>}</h1>
+          <p class="a-hero-ligne">{heros.a.ligne}</p>
+          <div class="a-hero-actions">
+            <a class="a-bouton a-bouton--large" href="#rendez-vous">{actions.rendezVous}</a>
+            <a class="a-hero-tel" href={identite.telephoneLien}><Icone nom="telephone" taille={24} /><span><span class="visuellement-cache">Appeler le </span>{tel}</span></a>
+          </div>
+        </div>
+        <div class="a-hero-visuel">
+          <div class="a-hero-cadre">
+            <figure class="a-tirage a-tirage--hero">
+              <img src={hero.src} srcset={srcset(hero)} sizes="(min-width: 901px) 400px, 300px"
+                width={hero.largeur} height={hero.hauteur} alt={hero.alt} fetchpriority="high" decoding="async" />
+            </figure>
+            <Manuscrit classe="a-hero-prenom" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Section id="qui-je-suis" numero={1} titre="a-qui-titre" classe="a-qui">
+      <div class="a-qui-grille">
+        <div class="a-qui-texte">
+          <div class="a-tete" data-apparait>
+            <Titre texte={presentation.titre} italique={identite.prenom} id="a-qui-titre" />
+          </div>
+          <div class="a-prose" data-apparait>
+            {presentation.paragraphes.map(p => <p>{insecables(p)}</p>)}
+          </div>
+          <dl class="a-reperes" data-apparait>
+            {presentation.reperes.map((r, i) => (
+              <div class="a-repere">
+                <dt><Icone nom={iconesReperes[i]} taille={24} />{r.libelle}</dt>
+                <dd>{insecables(r.valeur)}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <figure class="a-tirage a-qui-photo" data-apparait>
+          <img src={debout.src} srcset={srcset(debout)} sizes="(min-width: 1100px) 400px, (min-width: 901px) 34vw, 86vw"
+            width={debout.largeur} height={debout.hauteur} alt={debout.alt} loading="lazy" decoding="async" />
+        </figure>
+      </div>
+    </Section>
+
+    <Section id="accompagnements" numero={2} fond="bleu" titre="a-acc-titre" classe="a-acc">
+      <div class="a-tete" data-apparait>
+        <Titre texte="Mes accompagnements" id="a-acc-titre" variante={1} />
+      </div>
+      <div class="a-acc-grille">
+        {accompagnements.map(a => (
+          <article class="a-acc-carte" id={a.id} aria-labelledby={`a-acc-${a.id}`} data-apparait>
+            <div class="a-acc-tete">
+              <span class="a-pastille-icone"><Icone nom={iconeDe[a.id]} taille={30} /></span>
+              <h3 class="a-h3" id={`a-acc-${a.id}`}>{a.nom}</h3>
+            </div>
+            <p class="a-acc-ligne">{insecables(a.ligne)}</p>
+            <ul class="a-tirets">
+              {a.themes.map(t => <li>{insecables(t)}</li>)}
+            </ul>
+            {a.note && <p class="a-acc-note">{insecables(a.note)}</p>}
+          </article>
+        ))}
+      </div>
+    </Section>
+
+    <Orientation numero={3} />
+
+    <Section id="approche" numero={4} fond="blanc" titre="a-approche-titre" classe="a-approche">
+      <div class="a-tete" data-apparait>
+        <Titre texte={approche.titre} id="a-approche-titre" variante={0} />
+        <p class="a-chapo">{insecables(approche.intro)}</p>
+      </div>
+      <ul class="a-valeurs" data-apparait>
+        {approche.valeurs.map((v, i) => (
+          <li class="a-valeur">
+            <Icone nom={iconesValeurs[i]} taille={34} />
+            <h3 class="a-h3">{v.nom}</h3>
+            <p>{insecables(v.texte)}</p>
+          </li>
+        ))}
+      </ul>
+    </Section>
+
+    <Section id="premier-rendez-vous" numero={5} fond="bleu" titre="a-etapes-titre" classe="a-etapes">
+      <div class="a-etapes-grille">
+        <figure class="a-tirage a-etapes-image" data-apparait>
+          <img src={chaise.src} srcset={srcset(chaise)} sizes="(min-width: 1100px) 380px, (min-width: 901px) 34vw, 86vw"
+            width={chaise.largeur} height={chaise.hauteur} alt={chaise.alt} loading="lazy" decoding="async" />
+        </figure>
+        <div class="a-etapes-texte">
+          <div class="a-tete" data-apparait>
+            <Titre texte={etapes.titre} id="a-etapes-titre" variante={2} />
+          </div>
+          <ol class="a-etapes-liste">
+            {etapes.liste.map((e, i) => (
+              <li class="a-etape" data-apparait>
+                <span class="a-etape-num" aria-hidden="true">{i + 1}</span>
+                <div>
+                  <h3 class="a-h3">{e.titre}</h3>
+                  <p>{insecables(e.texte)}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </Section>
+
+    <Section id="cabinets" numero={6} titre="a-cabinets-titre" classe="a-cabinets">
+      <div class="a-tete" data-apparait>
+        <Titre texte={cabinetsIntro.titre} id="a-cabinets-titre" variante={1} />
+        <p class="a-chapo">{insecables(cabinetsIntro.ligne)}</p>
+      </div>
+      <ul class="a-fiches">
+        {cabinets.map(c => (
+          <li class="a-fiche" data-apparait>
+            <div class="a-fiche-tete">
+              <h3 class="a-h3">{c.ville}</h3>
+              <p class="a-fiche-nom">{c.nom}</p>
+            </div>
+            <div class="a-fiche-infos">
+              <p class="a-fiche-ligne"><Icone nom="epingle" taille={22} /><span>{c.adresse}<br />{c.codePostal} {c.ville}</span></p>
+              <ul class="a-fiche-plages">
+                {c.plages.map(p => <li><Icone nom="horloge" taille={22} /><span><strong>{jourMoment(p)}</strong><span class="a-fiche-heures">{heures(p)}</span></span></li>)}
+              </ul>
+            </div>
+            <div class="a-fiche-actions">
+              <a class="a-bouton" href={lienRendezVous(c)} target="_blank" rel="noopener">Rendez-vous sur {nomPlateforme(c)}<span class="visuellement-cache"> (nouvel onglet)</span></a>
+              <a class="a-lien a-lien-icone" href={itineraire(c)} target="_blank" rel="noopener"><Icone nom="epingle" taille={20} />Itinéraire<span class="visuellement-cache"> vers {c.ville} (nouvel onglet)</span></a>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <Visio />
+      <p class="a-suite" data-apparait><a class="a-lien a-lien-fleche" href="/a/cabinets/">Toutes les informations pratiques<Icone nom="fleche" taille={22} /></a></p>
+    </Section>
+
+    <Questions numero={7} image />
+    <RendezVous numero={8} />
+  </main>
+</Gabarit>

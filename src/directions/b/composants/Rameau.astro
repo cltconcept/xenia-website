@@ -1,0 +1,32 @@
+---
+// Rameau d'olivier au trait (1 px forêt, non mis à l'échelle), dessin original généré par artifacts/b/rameau.mjs.
+// `trace` : chaque tracé porte pathLength="1" et sa position `--t` le long de la tige ; le CSS du hero les dessine
+// à l'arrivée (stroke-dashoffset), seulement sans préférence de mouvement réduit. Décoratif : aria-hidden.
+import { rameaux } from '../rameaux';
+interface Props {
+  variante: 'hero' | 'marge' | 'ornement' | 'logo';
+  class?: string;
+  trace?: boolean;
+  viewBox?: string;
+}
+const vues = { hero: '0 0 560 700', marge: '0 0 150 330', ornement: '0 0 220 70', logo: '0 0 26 34' } as const;
+const { variante, class: classe, trace = false, viewBox = vues[variante] } = Astro.props;
+const r = rameaux[variante];
+const pl = trace ? '1' : undefined;
+---
+<svg class:list={['b-rameau', `b-rameau--${variante}`, { 'b-rameau--trace': trace }, classe]} viewBox={viewBox}
+  aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+  <path class="b-rameau-tige" d={r.tige} pathLength={pl} vector-effect="non-scaling-stroke" />
+  {r.feuilles.map(f => (
+    <g class="b-rameau-feuille" style={`--t:${f.t}`}>
+      <path d={f.contour} pathLength={pl} vector-effect="non-scaling-stroke" />
+      {variante !== 'logo' && <path class="b-rameau-nervure" d={f.nervure} pathLength={pl} vector-effect="non-scaling-stroke" />}
+    </g>
+  ))}
+  {r.olives.map(o => (
+    <g class="b-rameau-feuille" style={`--t:${o.t}`}>
+      <path d={o.tige} pathLength={pl} vector-effect="non-scaling-stroke" />
+      <ellipse cx={o.cx} cy={o.cy} rx={o.rx} ry={o.ry} transform={`rotate(${o.rot} ${o.cx} ${o.cy})`} pathLength={pl} vector-effect="non-scaling-stroke" />
+    </g>
+  ))}
+</svg>
