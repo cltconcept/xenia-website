@@ -1,122 +1,112 @@
-# Xénia Van Outryve — site vitrine
-> Site de présentation d'une psychologue clinicienne (santé, périnatalité, nutrition) en Brabant wallon — design « L'éclaircie », Astro statique.
+# Xénia van Outryve — site vitrine
+> Site de présentation d'une psychologue clinicienne (santé, périnatalité, nutrition) en Brabant wallon — **seconde proposition (2026-10-20) : trois directions construites** (A « Le carnet », B « Respirer », C « Le salon ») + page présentoir, Astro statique. La v1 « L'éclaircie » est conservée sous l'étiquette git `v1-eclaircie`.
 
 ## Stack technique
 
 | Catégorie | Technologie |
 |-----------|-------------|
-| Framework | Astro 5 (statique, 9 pages + 404) |
-| Animations | GSAP 3 + ScrollTrigger, Lenis — **imports différés uniquement** |
-| Typographies | Fraunces Variable (display) + Hanken Grotesk Variable (body), Fontsource |
-| Styles | CSS vanilla, tokens dans `src/styles/global.css` |
+| Framework | Astro 7.3.5 (statique, 8 routes : présentoir `/`, `/a/ /b/ /c/` + `/a|b|c/cabinets/`, 404), npm |
+| Mouvement | CSS + WAAPI seulement (aucun GSAP, Lenis ni vidéo) ; `src/lib/mouvement.ts` (apparitions, menu, mouvement réduit) |
+| Typographies (auto-hébergées, latin + latin-ext) | A : Literata + Albert Sans (+ prénom au stylo, glyphes Hershey) · B : Libre Caslon Display + Figtree · C : Alice + Karla |
+| Styles | CSS vanilla, jetons par direction dans `src/directions/<x>/` |
 | Sitemap | @astrojs/sitemap |
-| Médias générés | Kie `nano-banana-pro` (aquarelles) · Higgsfield Seedance 2.5 (film du hero) · ffmpeg all-intra · sharp (WebP) |
+| Médias | 3 photos N&B de la cliente (reçues le 08/09) + 12 ambiances générées (Higgsfield `gpt_image_2_5`, high 2k, 33 cr) → WebP 720/1200 et 960/1920 (PIL) |
+| Contrôle de sortie | `scripts/verifier.mjs` + `forge-checks.json` (refuse « » “ ”, « Xénia Van », « spécialis », le nom de l'agence…) |
+| Statistiques | Umami « Noveo Analytics » via le relais nginx `/stats/` (site `1f82e5d6-e54c-4d27-b63e-dde05fbb5094`) |
 | Conteneur | Docker multi-étages → nginx:alpine (EXPOSE 80) |
-| Déploiement | Coolify maquettes (46.224.83.139) → `*.chris-ia.com` |
+| Déploiement | Serveur clients Coolify `srv.noveodigital.be` → `https://xenia.noveo-digital.be` (+ ancienne app maquettes `xenia.chris-ia.com`, auto-déployée par le même push) |
 
 ## Démarrage rapide
 ```bash
 # Installation
-pnpm install
+npm install
 
-# Développement — port dédié 4331 (4330 = dentalexpert, cf. mémoire sites-vitrines)
-pnpm dev          # http://localhost:4331
+# Développement — port dédié 4331
+npm run dev          # http://127.0.0.1:4331  (présentoir) ; /a/ /b/ /c/
 
-# Build production + aperçu
-pnpm build
-pnpm preview
+# Contrôles : check + build + contrôleur de sortie (mode aperçu)
+npm test
 ```
 
 ## Architecture
 ```
 xenia/
-├── brief/                  ← matériau client (mail, moodboard, refs) — GITIGNORÉ (privé)
-├── chartes/xenia/          ← charte graphique relevée (charte.json = source, PDF, CHARTE.md, tokens.css)
-├── docs/
-│   ├── DESIGN.md           ← design system « L'éclaircie »
-│   ├── dossier.html        ← source du dossier client unifié (09/09, 8 pages)
-│   ├── dossier-img/        ← captures du site et références en JPEG légers (dossier)
-│   ├── dossier-xenia-van-outryve.pdf ← LE document remis à la cliente
-│   ├── audit-seo-geo.html  ← source de l'audit SEO/GEO (09/09)
-│   ├── audit-seo-geo-xenia-van-outryve.pdf
-│   └── rapport-qa-xenia-chris-ia-com-2026-09-09.pdf ← contrôle qualité Noveo
-├── public/                 ← favicon, robots, llms.txt, og.png, copie du PDF
+├── brief/                 ← matériau client PRIVÉ, gitignoré : mail du 27/07, photos/, references-2026-09-14/,
+│                             v2-staging/ (contenu.ts source, ambiances-src/, manuscrit-xenia.svg)
+├── remarques/             ← e-mails de la cliente des 8 et 14/09 (gitignoré)
+├── docs/forge/            ← brief-directions.md (spec de la seconde proposition), etat.md
+├── public/                ← photos/ (N&B), a/ b/ c/ (ambiances par direction), fonts/, favicons
+├── scripts/               ← verifier.mjs, copier-polices.mjs, nettoyer-originaux.mjs, projet-html.py
 └── src/
-    ├── layouts/Base.astro  ← SEO, OG, JSON-LD, boot des reveals / traits / parallaxe
-    ├── data/               ← site.ts (lieux, RDV), themes.ts (bandeau), accompagnements.ts
-    │                          (carrousel), etapes.ts (première séance) — sources uniques
-    ├── lib/                ← motion.ts (GSAP différé, reveals, traits), blobs.ts
-    │                          (parallaxe), carte.ts (contour du Brabant wallon figé)
-    ├── components/         ← Header, Footer (LA vague unique), PageHero (médaillon + Blob),
-    │                          Blob (forme organique, parallaxe), Portrait, Bandeau (thèmes
-    │                          qui défilent), Carrousel (onglets ARIA, auto pausable),
-    │                          Etapes (frise / liste, ligne tracée), CarteCabinets (carte
-    │                          dessinée scrubée), LieuxCards (teintes, itinéraire, compact),
-    │                          Domaines, Tagline, Manuscrit, Closing, Logo, Wave
-    └── pages/              ← index, approche, accompagnements/×3,
-                               nutrition-sante, a-propos, lieux-contact, 404
+    ├── data/              ← contenu.ts (TOUS les textes, sans guillemets), medias.ts, directions.ts, site.ts
+    ├── lib/mouvement.ts   ← apparitions, piège du focus, défilement bloqué, mouvement réduit
+    ├── components/partage ← Tete (SEO, noindex, OG, stats), SelecteurDirection, Statistiques, presentoir/
+    ├── directions/
+    │   ├── CONTRAT.md     ← comment un habillage se branche (ancres, imports, ports)
+    │   ├── a/             ← « Le carnet » : grille à marge, prénom au stylo, module « Par où commencer ? »
+    │   ├── b/             ← « Respirer » : arches, rameau d'olivier, voile sauge + verre, module « Quel jour, quel cabinet ? »
+    │   └── c/             ← « Le salon » : formes organiques, vagues, motif du tapis, carte des cabinets
+    └── pages/             ← index (présentoir), a|b|c/index + cabinets, 404, robots.txt
 ```
-- **Flux** : contenu figé au build → HTML statique ; GSAP/Lenis se chargent à l'idle
-  (le site est complet sans JS).
-- **Design** : aurore pastel (pêche/rose/lilas/eau) + aubergine `#43324B` +
-  framboise `#C13D63` + sauge `#5E8E75` sur ivoire `#FDFBF8`. Signature : la
-  **traversée** (scène épinglée scrubée au scroll, deux phrases sur le film
-  d'aquarelle, indice de défilement) et le **halo qui respire** (cycle 7 s, coupé si
-  `prefers-reduced-motion`). Logo : deux pétales translucides croisés.
-- **Système de surfaces (recomposition 2026-09-09)** : plus de bandes ivoire à
-  vagues ; chaque section est `.section--blob` avec un `<Blob>` dégradé posé
-  derrière le contenu (5 formes, 7 teintes, mobile = grand lavis centré), cartes
-  teintées par thème (`.card--rose/lilac/aqua/peach`), verre dépoli toujours
-  posé sur un blob, une seule vague (avant le footer). Jetons neufs :
-  `--tint-*`, `--scrim-hero(-mobile)`, `--muted-hero`, `--radius-organique`,
-  `--petale-rose/sage`.
-- **Blocs et animations de l'accueil (2026-09-09, spec du même jour)** : ordre
-  « histoire d'abord » — hero → bandeau des thèmes → Ce qui vous amène →
-  carrousel des accompagnements → Qui je suis → première séance en 3 étapes →
-  nutrition → tagline → carte dessinée + cabinets → closing. Chaque section
-  bouge : bandeau en défilement CSS (pause au survol/focus), carrousel en
-  fondu-glissé (auto 7 s, pause, clavier), ligne des étapes et carte tracées
-  au scroll, **parallaxe** des blobs (`bootBlobs`, `gsap.matchMedia`), **trait**
-  sous le mot pivot des titres (`bootTraits`, IntersectionObserver).
-- **Scripts** : `scripts/illustration_hero.sh` (3 candidats Kie → `brief/illu-src/`),
-  `scripts/convertir_hero.mjs` (→ `public/media/illu/hero-cabinet-{640,1040,1600}.webp`),
-  `scripts/convertir_illustrations.mjs` (les autres aquarelles ; mode
-  `--vignette` = 3 tailles), `scripts/icones/decouper.mjs` (planche Recraft →
-  SVG mono-chemin, grille détectée, potrace), `scripts/compter_mots.mjs`
-  (mots visibles par page vs cibles).
-- **Iconographie (2026-09-13)** : `src/icons/*.svg` (33 pictos, style B) rendus
-  par `components/Icon.astro` (`name`, `size`, `petale` rose/sage/none,
-  `label`), vignettes aquarelle `public/media/illu/vignettes/` rendues par
-  `components/Vignette.astro` (`name`, `alt`, `size`, `rotate`, `eager`) ;
-  données `situations.ts` (6), `reperes.ts` (3), champs `icone` dans
-  `themes.ts` (8), `accompagnements.ts`, `etapes.ts`. Masters dans
-  `brief/illu-src/{icones,vignettes}/` (hors dépôt).
+- **Flux** : `contenu.ts` + `medias.ts` → trois habillages indépendants (chaque route n'importe que le sien) → HTML
+  statique ; tout est lisible sans JS.
+- **Contenu** : réécrit le 2026-10-20 sur la remarque de la cliente (« ces petites phrases entre guillemets […] un
+  aspect un peu trop commercial ») : aucun guillemet, titres descriptifs, sa voix (mail du 27/07), « van » en
+  minuscule.
+- **Choix du client** : quand elle aura choisi A, B ou C, retirer les deux autres habillages, le sélecteur et le
+  présentoir, servir la direction retenue à la racine, puis décliner les autres pages (approche, accompagnements,
+  nutrition, à propos, mentions légales) — voir `.claude/skills/forge/references/trois-directions.md`.
 
 ## Variables d'environnement
-Aucune. Site 100 % statique, aucun secret.
+Aucune au runtime. Variable de build Coolify `VERIFICATION=preview` (contrôleur de sortie en mode aperçu).
 
 ## Roadmap & Features
 
 | Feature | Statut | Date |
 |---------|--------|------|
-| Design system « L'éclaircie » + logo | ✅ Done | 2026-08-11 |
-| 8 pages + 404, contenus du mail cliente | ✅ Done | 2026-08-11 |
-| SEO/GEO : JSON-LD, FAQPage, sitemap, llms.txt, OG | ✅ Done | 2026-08-11 |
-| Dossier client PDF unifié et vulgarisé (8 pages, 2026-09-09) | ✅ Done | 2026-09-09 |
-| Dockerfile + nginx (prêt à déployer) | ✅ Done | 2026-08-11 |
-| Dépôt GitHub public + déploiement Coolify (HTTPS) | ✅ Done | 2026-08-11 |
-| Recomposition design (spec 2026-09-08) | ✅ Done | 2026-09-09 |
-| Blocs et animations de l'accueil (spec 2026-09-09) | ✅ Done | 2026-09-09 |
-| Mise en ligne de la maquette recomposée (GitHub + Coolify) | ✅ Done | 2026-09-09 |
-| Vérification impeccable (critique 29/40, audit 13/20) + 8 P1 corrigés | ✅ Done | 2026-09-12 |
-| Allègement du texte (−30/40 %) + iconographie sur mesure (33 pictos, 5 vignettes) | ✅ Done | 2026-09-13 |
-| Reste impeccable P2/P3 (mailto visio, Échap, pétales RM, cibles 44 px…) | 📋 Planned | — |
-| Photo de la cliente dans le hero + bloc tarifs (attendent ses éléments) | 📋 Planned | — |
-| Photos de la cliente (portrait « à venir ») | 📋 Planned | — |
+| v1 « L'éclaircie » (design, 9 pages, SEO/GEO, dossier PDF, impeccable, allègement) | ✅ Done | 2026-08-11 → 2026-09-13 |
+| Seconde proposition : trois directions (accueil + Cabinets) + présentoir, d'après les remarques du 14/09 | ✅ Done | 2026-10-20 |
+| Aperçu en ligne `xenia.noveo-digital.be` + mail « trois propositions » (brouillon) | ✅ Done | 2026-10-20 |
+| Choix de direction par la cliente, puis retrait des deux autres | 📋 Planned | — |
+| Déclinaison des autres pages dans la direction retenue + mentions légales | 📋 Planned | — |
 | Nom de domaine final + bascule DNS + Search Console | 📋 Planned | — |
-| Textes validés par la cliente | 📋 Planned | — |
+| Tarifs, photos des cabinets (attendent la cliente) | 📋 Planned | — |
 
 ## Journal des changements
+
+### 2026-10-21 (seconde proposition EN LIGNE + mail à la cliente)
+- 🚀 Aperçu en ligne : **https://xenia.noveo-digital.be** (serveur clients, commit `fd3843b`, déploiement Coolify
+  `u2cjhwfzn4old6d7cxrbsrw1` en ≈ 20 s). Vérifié en ligne : 7 pages + présentoir en 200, vraie 404, `cf-ray`
+  présent (Cloudflare devant), `noindex` en en-tête et en balise, canonical vers `www.xeniavanoutryve.be`, un seul
+  `<h1>` par page, aucune mention de l'agence, aucun guillemet, aucun « Xénia Van ». Statistiques : visite relayée
+  avec une IP japonaise → « JP » dans Umami, puis site remis à zéro.
+- 🗂️ Asana : Pré-Prod URL de la carte « XENIA VAN OUTRYVE » renseignée.
+- ✉️ Brouillon `XENIA VAN OUTRYVE.eml` (skill `forge-mail-da`) dans `Bureau\Mails DA 2026-10-05` : « Madame van
+  Outryve », trois descriptions, rien envoyé.
+- ℹ️ L'ancienne app maquettes (xenia.chris-ia.com) n'a PAS de webhook : elle sert toujours la v1, qui reste
+  consultable en archive. Étiquette `v1-eclaircie` poussée sur GitHub.
+- 🐛 Deux agents (habillage C, présentoir) figés pendant la nuit (PC en veille) : arrêtés, leur travail relu et
+  repris tel quel (correctif du hero téléphone de C fait, présentoir complet).
+
+### 2026-10-20 (seconde proposition : trois directions construites)
+- 📨 Retours de la cliente (e-mails des 8 et 14/09, transférés par Arnaud le 15/09, rangés dans `remarques/`,
+  gitignoré) : 4 photos N&B ; changer typo et couleurs ; « ces petites phrases entre guillemets […] un aspect un peu
+  trop commercial, alors qu'on cherche plutôt à transmettre une idée d'accompagnement bienveillant » ; garder les
+  itinéraires et les trois cabinets ; 3 nouvelles références (Anda, Amarie Lael, planche Pinterest de gabarits
+  pour thérapeutes).
+- ✨ Décision utilisateur : « fais 3 DA différentes, change tout et repropose ce qu'elle veut suivant les
+  remarques » ; accueil + page Cabinets par direction ; ses photos + 12 ambiances générées (33 cr Higgsfield).
+- ♻️ v1 étiquetée `v1-eclaircie` puis retirée du dossier de travail ; socle Astro 7.3.5 (npm) repris de la
+  mécanique de medicaldietcenter ; contrôleur de sortie qui refuse « » “ ” et « Xénia Van ».
+- ✍️ Contenu commun réécrit (`src/data/contenu.ts`) : plus aucune phrase entre guillemets ni accroche qui retourne
+  une objection, titres descriptifs, sa voix à la 1re personne (mail du 27/07), « van » en minuscule.
+- 🎨 Trois habillages en parallèle (un agent par direction) : A « Le carnet » (prénom « Xénia » écrit au stylo en
+  glyphes Hershey, préparé par l'orchestrateur), B « Respirer » (arches, rameau d'olivier, voile sauge + verre
+  dépoli, le souhait de juillet), C « Le salon » (formes organiques, vagues, motif du tapis de son salon, carte des
+  cabinets). Présentoir à la racine (ouverture ≤ 2,5 s, triptyque dans les trois chartes).
+- ✅ `npm test` : check 0 erreur, 8 pages, contrôleur 0 erreur 0 avertissement. Mots visibles à l'accueil : A 756,
+  B 773, C 625. Contrastes du texte courant ≥ 7,66:1. Hero téléphone mesuré à 390 × 844, 375 × 667 et 360 × 640 :
+  bouton et téléphone au-dessus du sélecteur de direction dans les trois directions.
 
 ### 2026-09-13 (soir — plus aucune mention de l'agence sur le site)
 - 🗑️ **« Site conçu et hébergé par Noveo Digital (noveodigital.be) » retiré des
@@ -569,56 +559,42 @@ Aucune. Site 100 % statique, aucun secret.
   public (le classifieur auto l'avait refusée une première fois).
 
 ## Problèmes connus / à confirmer cliente
-- **Nom de domaine non tranché** (Mindfoodyou.be abandonné) — placeholder
-  `xeniavanoutryve.be` dans `astro.config.mjs` (canonical/sitemap/JSON-LD).
-- **Tarifs et moyens de paiement précis** : seule certitude vérifiée
-  (Doctoranytime) : « paiement mobile accepté ». Remboursement mutualité
-  formulé prudemment.
-- **Portrait** : placeholder élégant en attendant les photos.
-- Nom d'état civil complet « van Outryve d'Ydewalle » vu sur les annuaires —
-  le site suit le brief (« Xenia Van Outryve ») ; à confirmer.
-- Réseaux sociaux « à venir » (brief) : rien d'affiché pour l'instant.
-- **Aquarelle du hero à valider par la cliente** (elle reste même après les
-  photos ; le portrait vit dans « Qui je suis » et À propos).
-- Hauteurs : accueil à 8 230 px après les nouveaux blocs — au-dessus des
-  cibles de la spec du 08/09 (≤ 6 800). À trancher à l'écran.
-- **Reste du contrôle qualité du 09/09** : redéployer pour activer les en-têtes
-  nginx (et valider la syntaxe), adresse de siège de l'éditrice à demander.
-- **Corrections impeccable du 12/09 (8 P1) committées le 13/09** (`528fa01`),
-  puis allègement + iconographie (commit du même jour).
-- **Accueil desktop à 8 370 px (mobile 10 021)** : hauteur stable malgré −35 %
-  de texte, les cinq vignettes occupant la place libérée ; cible ≤ 6 000 px de
-  la spec du 13/09 non atteinte. Leviers : vignettes en position absolue dans
-  la zone du blob plutôt qu'en flux (≈ −500 px), tailles réduites, ou retirer
-  des blocs (approche B, écartée).
-- **Reste impeccable (P2/P3, non corrigés)** (`docs/impeccable/2026-09-12/synthese.md`) :
-  `mailto:` visio sans adresse visible, pétales animés en reduced-motion,
-  déroulant non refermable par Échap, verre dans l'élément qui respire, 20
-  animations infinies sans pause hors viewport, cibles tactiles < 44 px
-  (capsules, Pause, liens du footer), nav coupée à 1024 px avec zoom texte
-  200 %, couleurs hors jetons, `lenis` et `Manuscrit.astro` morts, breakpoint
-  700 px, `sizes` du médaillon. Commandes : quieter/distill → adapt → polish.
+- **Choix de direction (A, B ou C) attendu** de la cliente ; ensuite retirer les deux autres habillages, le
+  sélecteur et le présentoir, puis décliner les autres pages (approche, accompagnements, nutrition, à propos,
+  **mentions légales**, absentes de la démonstration `noindex`).
+- Sa remarque orale à Arnaud sur « la typo et les couleurs » n'a jamais été transcrite : les trois directions
+  suivent ses références écrites.
+- **Nom de domaine non tranché** (placeholder `xeniavanoutryve.be` dans `site.config.json`).
+- **Tarifs, photos des trois cabinets** : à demander. La phrase sur les mutualités est reprise de la v1, à confirmer.
+- Nom d'état civil complet « van Outryve d'Ydewalle » vu sur les annuaires ; le site suit sa signature
+  (« Xénia van Outryve »).
+- Rendu vérifié en Chromium seulement : à voir sur Safari (verre dépoli de B) et sur un vrai téléphone (barre
+  d'appel, sélecteur).
+- Les points ouverts de la v1 (impeccable P2/P3, hauteurs, aquarelle du hero) sont caducs avec la refonte ; détail
+  dans le journal ci-dessous et sous l'étiquette `v1-eclaircie`.
 
-## Déploiement (maquette) — en ligne depuis le 2026-08-11
-**https://xenia.chris-ia.com** — HTTPS automatique (wildcard `*.chris-ia.com`),
-aucun DNS à créer.
+## Déploiement
+
+### Aperçu de la seconde proposition — en ligne depuis le 2026-10-21
+**https://xenia.noveo-digital.be** (serveur clients, Cloudflare devant, `noindex`).
 
 | Élément | Valeur |
 |---|---|
-| Coolify | `http://46.224.83.139:8000` (instance **maquettes**, ⚠️ jamais la prod Noveo `188.245.156.214`) |
-| Serveur | `zw8ck4ckcw08gg00g8wwkkso` |
-| Projet | `p124wf4ynk21bns4c8153iaj` |
-| Application | `seetu6uqg4tnkjg8do4f1f8n` |
-| Dépôt | `github.com/cltconcept/xenia-website` (**public** — requis par Coolify sans clé SSH) |
-| Build pack | `dockerfile` (multi-étages → nginx:alpine, port 80) |
+| Coolify | `https://srv.noveodigital.be` (serveur clients Hetzner `167.233.243.35` ; jeton `C:\Dev\Noveo\_secrets\coolify-clients.env`) |
+| Serveur | `zb2n7reassfqrqfozo9tlfw4` |
+| Projet | `bhhz1q5p59ppef9fjhlcpyq0` |
+| Application | `qic8nsliymjyzgfg9n4umkk8` (GitHub App `cplvqlbjxfey5mkidppiadol`, branche `main`, auto-déploiement au push) |
+| Dépôt | `github.com/cltconcept/xenia-website` (public) |
+| Build pack | `dockerfile` (multi-étages → nginx:alpine, port 80) ; variable de build `VERIFICATION=preview` |
+| Statistiques | Umami `https://stats.noveo-digital.be`, site `1f82e5d6-e54c-4d27-b63e-dde05fbb5094`, relais `/stats/` |
 
-Redéployer après un `git push` : `GET {base}/api/v1/deploy?uuid=seetu6uqg4tnkjg8do4f1f8n`
-(jeton d'API Coolify requis — `~/.claude.json` → `mcpServers.coolify.env` —
-jamais stocké dans le dépôt).
+Redéployer : un push sur `main` suffit ; sinon `POST https://srv.noveodigital.be/api/v1/deploy?uuid=qic8nsliymjyzgfg9n4umkk8`.
+Vérifier : `python <scratchpad>/verifier-en-ligne-xenia.py --reset` (modèle : `medicaldietcenter/artifacts/verifier-en-ligne.py`).
 
-⚠️ Les `canonical` et le sitemap pointent volontairement vers le domaine
-provisoire `xeniavanoutryve.be` : la maquette ne peut pas se faire indexer.
-Ne pas « corriger ».
-📄 Dossier client en ligne : `https://xenia.chris-ia.com/dossier-xenia-van-outryve.pdf`
-(copie de `docs/` vers `public/` — **à refaire à chaque régénération** — et
-`Disallow` dans robots.txt).
+⚠️ Les `canonical` et le sitemap pointent volontairement vers `www.xeniavanoutryve.be` (domaine provisoire) : ne pas
+« corriger ».
+
+### Ancienne maquette v1 — https://xenia.chris-ia.com
+Instance maquettes `46.224.83.139` (projet `p124wf4ynk21bns4c8153iaj`, app `seetu6uqg4tnkjg8do4f1f8n`). **Aucun
+webhook** : elle sert toujours la v1 « L'éclaircie » (commit `71889f1`) malgré le push du 2026-10-21. Ne plus y
+déployer (règle Forge du 2026-09-28) ; à arrêter quand la cliente aura choisi.

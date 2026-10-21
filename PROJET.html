@@ -1,397 +1,734 @@
-<!DOCTYPE html>
-<html lang="fr" data-theme="dark">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Xénia Van Outryve — Documentation projet</title>
+<!doctype html>
+<html lang="fr" data-theme="sombre"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Xénia van Outryve — site vitrine — Projet</title>
 <style>
-  :root {
-    --bg: #16121a; --panel: #201a26; --panel-2: #2a2231;
-    --text: #efe9f2; --muted: #a396ad; --sep: rgba(239, 233, 242, 0.1);
-    --framboise: #e05c85; --sage: #7fb598; --peach: #ffd9c4; --lilac: #dfd2f4;
-    --done: #2f7d4f; --progress: #b06a1f; --planned: #2f5d8f;
-  }
-  [data-theme="light"] {
-    --bg: #fdfbf8; --panel: #ffffff; --panel-2: #f7f2ec;
-    --text: #43324b; --muted: #7a6b82; --sep: rgba(67, 50, 75, 0.12);
-    --framboise: #c13d63; --sage: #47705c;
-    --done: #d9efe2; --progress: #fbe8cf; --planned: #d9e6f5;
-  }
-  * { margin: 0; box-sizing: border-box; }
-  body {
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    background: var(--bg); color: var(--text); line-height: 1.6;
-  }
-  .layout { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
-  .side {
-    position: sticky; top: 0; height: 100vh; overflow-y: auto;
-    padding: 28px 20px; border-right: 1px solid var(--sep);
-  }
-  .side__brand { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 6px; }
-  .side__brand svg { width: 30px; height: 30px; }
-  .side__role { font-size: 0.78rem; color: var(--muted); margin-bottom: 22px; }
-  .side nav { display: flex; flex-direction: column; gap: 2px; }
-  .side nav a {
-    color: var(--muted); text-decoration: none; font-size: 0.88rem;
-    padding: 7px 10px; border-radius: 8px;
-  }
-  .side nav a:hover { background: var(--panel-2); color: var(--text); }
-  .theme-btn {
-    margin-top: 24px; padding: 7px 12px; border-radius: 999px; cursor: pointer;
-    background: var(--panel-2); color: var(--text); border: 1px solid var(--sep); font-size: 0.8rem;
-  }
-  main { padding: 40px clamp(20px, 5vw, 64px); max-width: 980px; }
-  .hero h1 { font-size: 1.9rem; letter-spacing: -0.02em; }
-  .hero p.lead { color: var(--muted); margin-top: 6px; max-width: 60ch; }
-  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .badge {
-    font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 999px;
-    background: var(--panel-2); border: 1px solid var(--sep);
-  }
-  section { margin-top: 48px; scroll-margin-top: 20px; }
-  h2 {
-    font-size: 1.25rem; letter-spacing: -0.01em;
-    display: flex; align-items: center; gap: 10px;
-    padding-bottom: 10px; border-bottom: 1px solid var(--sep); margin-bottom: 18px;
-  }
-  h2 .ico { font-size: 1.05rem; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-  th { text-align: left; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 10px; border-bottom: 1px solid var(--sep); }
-  td { padding: 9px 10px; border-bottom: 1px solid var(--sep); vertical-align: top; }
-  code { background: var(--panel-2); padding: 1px 7px; border-radius: 6px; font-size: 0.84em; }
-  pre {
-    background: var(--panel); border: 1px solid var(--sep); border-radius: 12px;
-    padding: 16px 18px; overflow-x: auto; font-size: 0.85rem; line-height: 1.55;
-  }
-  .status { font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
-  .st-done { background: var(--done); color: #fff; }
-  .st-progress { background: var(--progress); color: #fff; }
-  .st-planned { background: var(--planned); color: #fff; }
-  [data-theme="light"] .st-done { color: #1e5e3a; }
-  [data-theme="light"] .st-progress { color: #7d4a12; }
-  [data-theme="light"] .st-planned { color: #234a72; }
-  .card {
-    background: var(--panel); border: 1px solid var(--sep); border-radius: 14px;
-    padding: 18px 20px; margin-bottom: 12px;
-  }
-  .warn { border-left: 3px solid var(--framboise); }
-  .timeline { position: relative; padding-left: 26px; }
-  .timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--sep); }
-  .tl-item { position: relative; margin-bottom: 20px; }
-  .tl-item::before {
-    content: ''; position: absolute; left: -24px; top: 7px;
-    width: 10px; height: 10px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--framboise), var(--lilac));
-  }
-  .tl-date { font-weight: 700; font-size: 0.9rem; }
-  .tl-item ul { margin: 6px 0 0; padding-left: 18px; font-size: 0.88rem; color: var(--muted); }
-  .tl-item li { margin-bottom: 4px; }
-  .tl-item b { color: var(--text); }
-  @media (max-width: 860px) {
-    .layout { grid-template-columns: 1fr; }
-    .side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--sep); }
-  }
-</style>
-</head>
-<body>
-<div class="layout">
-  <aside class="side">
-    <div class="side__brand">
-      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:multiply"><ellipse cx="27" cy="32" rx="23" ry="12.5" transform="rotate(-38 27 32)" fill="#E8799F" opacity="0.9"/></g><g style="mix-blend-mode:multiply"><ellipse cx="37" cy="32" rx="23" ry="12.5" transform="rotate(38 37 32)" fill="#84C7AE" opacity="0.9"/></g></svg>
-      Xénia Van Outryve
-    </div>
-    <p class="side__role">Site vitrine · documentation projet</p>
-    <nav>
-      <a href="#stack">🧱 Stack technique</a>
-      <a href="#demarrage">🚀 Démarrage rapide</a>
-      <a href="#architecture">🗂️ Architecture</a>
-      <a href="#env">🔐 Variables d'env.</a>
-      <a href="#roadmap">🗺️ Roadmap</a>
-      <a href="#journal">📆 Journal</a>
-      <a href="#problemes">⚠️ À confirmer</a>
-      <a href="#deploiement">🌍 Déploiement</a>
-    </nav>
-    <button class="theme-btn" onclick="const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark'">☀️ / 🌙 Basculer le thème</button>
-  </aside>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+:root{--fond:#0f1418;--carte:#161d23;--texte:#e6ebef;--doux:#9aa7b2;--filet:#26313a;--acc:#00aeff;--acc2:#5cc8ff}
+[data-theme=clair]{--fond:#f4f5f2;--carte:#fff;--texte:#1b2229;--doux:#56616b;--filet:#dde1dc;--acc:#0069a6;--acc2:#174460}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 Inter,system-ui,sans-serif;background:var(--fond);color:var(--texte)}
+header{padding:40px 24px 28px;border-bottom:1px solid var(--filet)}header h1{margin:0 0 6px;font-size:clamp(1.7rem,4vw,2.4rem)}
+header p{margin:0 0 14px;color:var(--doux);max-width:70ch}.puce{display:inline-block;margin:0 6px 6px 0;padding:3px 10px;border:1px solid var(--filet);border-radius:99px;font-size:.82rem}
+.cadre{display:grid;grid-template-columns:240px 1fr;gap:32px;max-width:1200px;margin:auto;padding:24px}
+nav{position:sticky;top:16px;align-self:start;display:flex;flex-direction:column;gap:2px}nav a{color:var(--doux);text-decoration:none;padding:6px 10px;border-radius:6px}nav a:hover{background:var(--carte);color:var(--texte)}
+section{background:var(--carte);border:1px solid var(--filet);border-radius:12px;padding:20px 24px;margin-bottom:20px;overflow-x:auto}
+h2{margin-top:0;font-size:1.3rem}table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--filet);vertical-align:top}
+th{color:var(--doux);font-weight:600}code{font-size:.88em;background:var(--fond);padding:1px 5px;border-radius:4px}pre{background:var(--fond);padding:14px;border-radius:8px;overflow-x:auto}pre code{padding:0}
+a{color:var(--acc)}.badge{padding:2px 9px;border-radius:99px;font-size:.8rem;white-space:nowrap}.ok{background:#1f6f3a33;color:#4cc27a}.encours{background:#c96a0033;color:#ef9a3c}.prevu{background:#2457a833;color:#6ea2f0}
+.jalon{position:relative;padding-left:22px;color:var(--acc2)}.jalon::before{content:"";position:absolute;left:4px;top:.45em;width:10px;height:10px;border-radius:50%;background:var(--acc2)}
+.jalon+ul{border-left:2px solid var(--filet);margin-left:8px;padding-left:22px}
+button{position:fixed;top:14px;right:14px;background:var(--carte);color:var(--texte);border:1px solid var(--filet);border-radius:99px;padding:6px 12px;cursor:pointer;font:inherit;font-size:.85rem}
+@media (max-width:820px){.cadre{grid-template-columns:1fr}nav{position:static;flex-direction:row;flex-wrap:wrap}}
+</style></head><body>
+<button type="button" onclick="var h=document.documentElement;h.dataset.theme=h.dataset.theme==='clair'?'sombre':'clair'">Clair / sombre</button>
+<header><h1>Xénia van Outryve — site vitrine</h1><p>Site de présentation d&#x27;une psychologue clinicienne (santé, périnatalité, nutrition) en Brabant wallon — **seconde proposition (2026-10-20) : trois directions construites** (A « Le carnet », B « Respirer », C « Le salon ») + page présentoir, Astro statique. La v1 « L&#x27;éclaircie » est conservée sous l&#x27;étiquette git `v1-eclaircie`.</p><span class="puce">A : Literata + Albert Sans</span><span class="puce">CSS vanilla, jetons par direction dans `src/directions/&lt;x&gt;/`</span><span class="puce">@astrojs/sitemap</span><span class="puce">3 photos N&amp;B de la cliente</span><span class="puce">`scripts/verifier.mjs` + `forge-checks.json`</span><span class="puce">Umami « Noveo Analytics » via le relais nginx `/stats/`</span></header>
+<div class="cadre"><nav aria-label="Sommaire"><a href="#stack-technique">🧱 Stack technique</a><a href="#demarrage-rapide">🚀 Démarrage rapide</a><a href="#architecture">🗂️ Architecture</a><a href="#variables-denvironnement">🔐 Variables d'environnement</a><a href="#roadmap-features">🗺️ Roadmap &amp; Features</a><a href="#journal-des-changements">📓 Journal des changements</a><a href="#problemes-connus-a-confirmer-cliente">⚠️ Problèmes connus / à confirmer cliente</a><a href="#deploiement">🌐 Déploiement</a></nav><main><section id="stack-technique"><h2><span aria-hidden="true">🧱</span> Stack technique</h2>
+<table>
+<thead>
+<tr>
+<th>Catégorie</th>
+<th>Technologie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Astro 7.3.5 (statique, 8 routes : présentoir <code>/</code>, <code>/a/ /b/ /c/</code> + <code>/a|b|c/cabinets/</code>, 404), npm</td>
+</tr>
+<tr>
+<td>Mouvement</td>
+<td>CSS + WAAPI seulement (aucun GSAP, Lenis ni vidéo) ; <code>src/lib/mouvement.ts</code> (apparitions, menu, mouvement réduit)</td>
+</tr>
+<tr>
+<td>Typographies (auto-hébergées, latin + latin-ext)</td>
+<td>A : Literata + Albert Sans (+ prénom au stylo, glyphes Hershey) · B : Libre Caslon Display + Figtree · C : Alice + Karla</td>
+</tr>
+<tr>
+<td>Styles</td>
+<td>CSS vanilla, jetons par direction dans <code>src/directions/&lt;x&gt;/</code></td>
+</tr>
+<tr>
+<td>Sitemap</td>
+<td>@astrojs/sitemap</td>
+</tr>
+<tr>
+<td>Médias</td>
+<td>3 photos N&amp;B de la cliente (reçues le 08/09) + 12 ambiances générées (Higgsfield <code>gpt_image_2_5</code>, high 2k, 33 cr) → WebP 720/1200 et 960/1920 (PIL)</td>
+</tr>
+<tr>
+<td>Contrôle de sortie</td>
+<td><code>scripts/verifier.mjs</code> + <code>forge-checks.json</code> (refuse « » “ ”, « Xénia Van », « spécialis », le nom de l'agence…)</td>
+</tr>
+<tr>
+<td>Statistiques</td>
+<td>Umami « Noveo Analytics » via le relais nginx <code>/stats/</code> (site <code>1f82e5d6-e54c-4d27-b63e-dde05fbb5094</code>)</td>
+</tr>
+<tr>
+<td>Conteneur</td>
+<td>Docker multi-étages → nginx:alpine (EXPOSE 80)</td>
+</tr>
+<tr>
+<td>Déploiement</td>
+<td>Serveur clients Coolify <code>srv.noveodigital.be</code> → <code>https://xenia.noveo-digital.be</code> (+ ancienne app maquettes <code>xenia.chris-ia.com</code>, auto-déployée par le même push)</td>
+</tr>
+</tbody>
+</table>
+</section><section id="demarrage-rapide"><h2><span aria-hidden="true">🚀</span> Démarrage rapide</h2>
+<pre><code class="language-bash"># Installation
+npm install
 
-  <main>
-    <div class="hero">
-      <h1>Xénia Van Outryve — site vitrine</h1>
-      <p class="lead">Site de présentation d'une psychologue clinicienne (santé, périnatalité, nutrition) en Brabant wallon — design « L'éclaircie », Astro statique.</p>
-      <div class="badges">
-        <span class="badge">Astro 5</span><span class="badge">GSAP + Lenis (différés)</span>
-        <span class="badge">Fraunces + Hanken Grotesk</span><span class="badge">Docker → nginx</span>
-        <span class="badge">Coolify · *.chris-ia.com</span><span class="badge">Port dev 4331</span>
-      </div>
-    </div>
+# Développement — port dédié 4331
+npm run dev          # http://127.0.0.1:4331  (présentoir) ; /a/ /b/ /c/
 
-    <section id="stack">
-      <h2><span class="ico">🧱</span>Stack technique</h2>
-      <table>
-        <tr><th>Catégorie</th><th>Technologie</th></tr>
-        <tr><td>Framework</td><td>Astro 5 — statique, 9 pages HTML + 404</td></tr>
-        <tr><td>Animations</td><td>GSAP 3 + ScrollTrigger, Lenis — <b>imports différés uniquement</b></td></tr>
-        <tr><td>Typographies</td><td>Fraunces Variable (display) · Hanken Grotesk Variable (body), Fontsource</td></tr>
-        <tr><td>Styles</td><td>CSS vanilla — tokens dans <code>src/styles/global.css</code></td></tr>
-        <tr><td>SEO</td><td>@astrojs/sitemap · JSON-LD MedicalBusiness + FAQPage · llms.txt</td></tr>
-        <tr><td>Médias générés</td><td>Kie <code>nano-banana-pro</code> (aquarelles) · Higgsfield Seedance 2.5 (film du hero) · ffmpeg all-intra · sharp (WebP)</td></tr>
-        <tr><td>Conteneur</td><td>Docker multi-étages → nginx:alpine (EXPOSE 80)</td></tr>
-      </table>
-    </section>
-
-    <section id="demarrage">
-      <h2><span class="ico">🚀</span>Démarrage rapide</h2>
-      <pre># Installation
-pnpm install
-
-# Développement — port dédié 4331 (4330 = dentalexpert)
-pnpm dev          # http://localhost:4331
-
-# Build production + aperçu
-pnpm build
-pnpm preview</pre>
-    </section>
-
-    <section id="architecture">
-      <h2><span class="ico">🗂️</span>Architecture</h2>
-      <pre>xenia/
-├── brief/                  ← matériau client — GITIGNORÉ (fil privé)
-├── chartes/xenia/          ← charte graphique relevée (charte.json, PDF 9 pages, CHARTE.md, tokens.css)
-├── docs/                   ← DESIGN.md · dossier.html · dossier-xenia-van-outryve.pdf
-├── public/                 ← favicon · robots · llms.txt · og.png · copie du PDF
+# Contrôles : check + build + contrôleur de sortie (mode aperçu)
+npm test
+</code></pre>
+</section><section id="architecture"><h2><span aria-hidden="true">🗂️</span> Architecture</h2>
+<pre><code>xenia/
+├── brief/                 ← matériau client PRIVÉ, gitignoré : mail du 27/07, photos/, references-2026-09-14/,
+│                             v2-staging/ (contenu.ts source, ambiances-src/, manuscrit-xenia.svg)
+├── remarques/             ← e-mails de la cliente des 8 et 14/09 (gitignoré)
+├── docs/forge/            ← brief-directions.md (spec de la seconde proposition), etat.md
+├── public/                ← photos/ (N&amp;B), a/ b/ c/ (ambiances par direction), fonts/, favicons
+├── scripts/               ← verifier.mjs, copier-polices.mjs, nettoyer-originaux.mjs, projet-html.py
 └── src/
-    ├── data/site.ts        ← LA source : lieux, horaires, liens RDV, coordonnées
-    ├── layouts/Base.astro  ← SEO, OG, JSON-LD MedicalBusiness
-    ├── lib/motion.ts       ← socle GSAP différé (repris de dentalexpert)
-    ├── components/         ← Header · Footer (LA vague unique) · PageHero (médaillon fondu + Blob)
-    │                          Blob (forme organique dégradée) · Portrait (cadre 4/5)
-    │                          LieuxCards (teintes + itinéraire) · Domaines (teinte par page)
-    │                          Tagline · Manuscrit (stylo) · Closing · Logo · Wave
-    ├── scripts/            ← illustration_hero.sh (Kie) · convertir_hero.mjs · convertir_illustrations.mjs
-    └── pages/              ← index · approche · accompagnements/×3
-                               nutrition-sante · a-propos · lieux-contact · 404</pre>
-      <div class="card">
-        <b>Design « L'éclaircie »</b> — aurore pastel (pêche <code>#FFD9C4</code>, rose <code>#F6C8DB</code>,
-        lilas <code>#DFD2F4</code>, eau <code>#C9E9DE</code>) + aubergine <code>#43324B</code> + framboise
-        <code>#C13D63</code> + sauge <code>#5E8E75</code> sur ivoire <code>#FDFBF8</code>.
-        Signature : la <b>traversée</b> (scène épinglée scrubée au scroll, stylo « Respirez. », film d'aquarelle) et le <b>halo qui respire</b> (cycle 7 s, coupé si <code>prefers-reduced-motion</code>).
-        Logo : deux pétales translucides croisés — le X de Xénia.
-      </div>
-      <div class="card">
-        <b>Système de surfaces (recomposition 2026-09-09)</b> — plus de bandes ivoire à vagues : chaque section est
-        <code>.section--blob</code> avec un <code>&lt;Blob&gt;</code> dégradé derrière le contenu (5 formes, 7 teintes,
-        mobile = grand lavis centré), cartes teintées par thème (<code>.card--rose/lilac/aqua/peach</code>), verre dépoli
-        toujours posé sur un blob, une seule vague (avant le footer). Jetons neufs : <code>--tint-*</code>,
-        <code>--scrim-hero(-mobile)</code>, <code>--muted-hero</code>, <code>--radius-organique</code>, <code>--petale-rose/sage</code>.
-      </div>
-    </section>
-
-    <section id="env">
-      <h2><span class="ico">🔐</span>Variables d'environnement</h2>
-      <div class="card">Aucune. Site 100 % statique, aucun secret.</div>
-    </section>
-
-    <section id="roadmap">
-      <h2><span class="ico">🗺️</span>Roadmap & Features</h2>
-      <table>
-        <tr><th>Feature</th><th>Statut</th><th>Date</th></tr>
-        <tr><td>Design system « L'éclaircie » + logo</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
-        <tr><td>8 pages + 404, contenus du mail cliente</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
-        <tr><td>SEO/GEO : JSON-LD, FAQPage, sitemap, llms.txt, OG</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
-        <tr><td>Dossier client PDF unifié et vulgarisé (8 pages, 2026-09-09)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
-        <tr><td>Dockerfile + nginx (prêt à déployer)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
-        <tr><td>Dépôt GitHub public + déploiement Coolify (HTTPS)</td><td><span class="status st-done">✅ Done</span></td><td>2026-08-11</td></tr>
-        <tr><td>Recomposition design (spec 2026-09-08)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-09</td></tr>
-        <tr><td>Blocs et animations de l'accueil (spec 2026-09-09)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-09</td></tr>
-        <tr><td>Mise en ligne de la maquette recomposée (GitHub + Coolify)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-09</td></tr>
-        <tr><td>Vérification impeccable (critique 29/40, audit 13/20) + 8 P1 corrigés</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-12</td></tr>
-        <tr><td>Allègement du texte (−30/40 %) + iconographie sur mesure (33 pictos, 5 vignettes)</td><td><span class="status st-done">✅ Done</span></td><td>2026-09-13</td></tr>
-        <tr><td>Reste impeccable P2/P3 (mailto visio, Échap, pétales RM, cibles 44 px…)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
-        <tr><td>Photo de la cliente dans le hero + bloc tarifs (attendent ses éléments)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
-        <tr><td>Photos de la cliente (portrait « à venir »)</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
-        <tr><td>Domaine final + bascule DNS + Search Console</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
-        <tr><td>Textes validés par la cliente</td><td><span class="status st-planned">📋 Planned</span></td><td>—</td></tr>
-      </table>
-    </section>
-
-    <section id="journal">
-      <h2><span class="ico">📆</span>Journal des changements</h2>
-      <div class="timeline">
-        <div class="tl-item">
-          <p class="tl-date">2026-09-13 — soir · plus aucune mention de l'agence sur le site</p>
-          <ul>
-            <li>🗑️ <b>« Site conçu et hébergé par Noveo Digital (noveodigital.be) » retiré des mentions légales</b> (<code>src/pages/mentions-legales.astro</code>, carte Hébergement) : règle posée par l'utilisateur le même jour — <b>aucun site client ne porte de signature d'agence</b> (ni Noveo, ni noveodigital.be, ni CLT Concept, ni chris-ia). La carte ne nomme plus que l'hébergeur (Hetzner Online GmbH, adresse, données dans l'UE).</li>
-            <li>✅ Vérifié : build 10 pages, <code>grep -rniE "noveo" dist/</code> vide, PDF servi déjà propre. Règle gravée dans <code>_autres/website/CLAUDE.md</code>, le skill <code>site-vitrine</code> et le contrôleur de référence (<code>dailypopsociety/scripts/verifier.mjs</code>).</li>
-            <li>🚀 Committé, poussé et redéployé sur la maquette, page vérifiée en ligne.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-13 — allègement du texte (−30/40 %) + iconographie sur mesure</p>
-          <ul>
-            <li>🎯 <b>Déclencheur</b> : retours du responsable de l'utilisateur, « trop de texte » et « pas d'iconographie personnalisée (Higgsfield) ». Brainstorming, spec et plan dans <code>docs/superpowers/</code>, exécution par sous-agents + génération par le lead.</li>
-            <li>✨ <b>33 pictogrammes propres au site</b> (<code>src/icons/</code>, trait aubergine + pétale du logo via <code>Icon.astro</code>) : 4 planches Recraft V4.1 vector via Higgsfield, découpe par projection d'encre (grille détectée) et potrace, 52,6 Ko. <b>5 vignettes aquarelle « objets du cabinet »</b> (Nano Banana Pro, 2 candidats par sujet, WebP ≤ 20 Ko) via <code>Vignette.astro</code>. 60 crédits.</li>
-            <li>✂️ <b>Textes</b> : accueil 994 → 651 mots visibles (−35 %), Approche 492 → 317, À propos 403 → 270, accompagnements ≈ 410 → 259-273, Nutrition 411 → 272, Lieux 545 → 360 ; FAQ 6 → 4 (JSON-LD resynchronisé), bandeau 10 → 8, situations 8 → 6, « Où » une seule fois, adresses retirées des cartes compactes et du footer. Cibles recalibrées de +65 (texte fixe = 163 mots), prouvées par <code>scripts/compter_mots.mjs</code>.</li>
-            <li>✅ <b>Vérifié</b> : build 10 pages, 0 erreur console, 0 débordement, contrastes ≥ 4,90:1, <b>hauteur de l'accueil stable</b> (8 230 → 8 370 px desktop scène comprise, 9 722 → 10 021 px mobile : les vignettes reprennent la place du texte ; cible ≤ 6 000 px non atteinte), HTML accueil 114 Ko brut / 30 Ko gzip, détecteur impeccable <code>dist</code> 67 → 59, H1 inchangés, <code>llms.txt</code> à jour. Reste : audit SEO/GEO complet à repasser, dossier client PDF à régénérer.</li>
-            <li>🚀 <b>Committé (<code>99aea48</code>), poussé et redéployé</b> (Coolify <code>xkkcjibyhjfherd9mfzfnafm</code> — l'API veut désormais <code>POST /api/v1/deploy</code>, le GET répond 405) : 9 pages 200 en ligne, vraie 404, vignettes et <code>llms.txt</code> servis, console vide.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-12 — après-midi · les 8 P1 impeccable corrigés (LOCAL, non committé)</p>
-          <ul>
-            <li>✅ <b>Décisions utilisateur</b> : 8 P1 seulement, trois listes conservées, pilule « RDV » dans l'en-tête mobile, <code>--muted</code> aligné sur <code>--muted-hero</code>, film différé sans réencodage.</li>
-            <li>🐛 <b>Bandeau</b> : repli clavier en <code>:has(.chip:focus-visible)</code> au lieu de <code>:focus-within</code> → le premier tap/clic navigue (vérifié tactile et souris).</li>
-            <li>♿ <b>CTA</b> : pilule « RDV » 44 px + burger 44×44 sur mobile ; CTA du hero en <code>autoAlpha</code>, hors tabulation tant qu'invisibles ; un focus dans le hero termine la scène.</li>
-            <li>🎨 <b>Contrastes</b> : <code>--muted #6E5F76</code>, petit texte framboise en <code>--framboise-deep</code>, scrim mobile du hero couvrant le haut — <b>mesuré au pixel : tout ≥ 4,53:1</b> (eyebrow mobile 5,52, footer 4,92–5,25, lavis 4,88–5,41).</li>
-            <li>🔎 Identité « Psychologue clinicienne · Brabant wallon » dès l'écran 0 de la traversée ; 🔗 liens annuaire/itinéraire avec « nouvel onglet » en <code>.sr-only</code>, glyphe externe et note de réassurance sur Lieux.</li>
-            <li>⚡ Film desktop chargé au premier geste de défilement avec test réseau (vérifié : aucune requête avant le scroll) ; <code>will-change</code> des lavis mobiles retiré. Détecteur : <code>dist</code> 191 → 67 constats, accueil desktop enfin scannable. <b>À valider à l'écran, puis commit + redéploiement.</b></li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-12 — vérification impeccable (critique + audit), rien corrigé</p>
-          <ul>
-            <li>🔍 <b>Plugin <code>impeccable</code> 4.3.1 passé sur le site</b> (critique + audit, trois agents isolés) : <b>critique 29/40</b> (Bon), <b>audit 13/20</b> (Acceptable), 0 P0 · 8 P1 · 8 P2 · 6 P3. Synthèse et rapports dans <code>docs/impeccable/2026-09-12/</code>, instantané dans <code>.impeccable/critique/</code> — non committés, aucune ligne de code touchée.</li>
-            <li>🐛 <b>Bug P1 confirmé par reproduction (4/4)</b> : le premier tap ou clic sur une capsule du bandeau ne navigue pas (<code>Bandeau.astro:38-41</code>, <code>:focus-within</code> replie la piste au focus, le <code>click</code> tombe sur le <code>ul</code>). Fix : <code>:has(.chip:focus-visible)</code> ou pause sans reflow.</li>
-            <li>⚠️ Autres P1 : <code>--muted</code> sous 4,5:1 (footer, lavis mobiles, verre), eyebrow du hero mobile 3,1–3,8:1, CTA absent de l'en-tête mobile + CTA du hero à opacité 0 dans l'ordre de tabulation, film de 7 Mo chargé d'office sur desktop, 22 <code>will-change</code> au repos, écran 0 sans identité, sortie annuaire non annoncée.</li>
-            <li>🧰 Outillage : gstack <code>browse</code> absent de la machine → Playwright Python (<code>pw.py</code>) ; le détecteur impeccable ne lit pas les <code>.astro</code> et expire sur l'accueil desktop.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-09 — mise en ligne de la maquette recomposée</p>
-          <ul>
-            <li>🚀 <b>Poussé sur GitHub et redéployé</b> : trois commits sur <code>main</code> de <code>cltconcept/xenia-website</code>, déploiement Coolify <code>seetu6uqg4tnkjg8do4f1f8n</code> en 25 s sur le sous-domaine existant <b>xenia.chris-ia.com</b>.</li>
-            <li>✅ Vérifié en ligne : 9 pages en 200, vraie 404, fichiers de racine et médias servis, <b>5 en-têtes de sécurité actifs</b> et version de nginx masquée, JSON-LD Service + Breadcrumb présents, console vide.</li>
-            <li>🧹 Avant commit : audit SEO/GEO ramené de 4,6 Mo à 675 Ko, polices de la charte gitignorées, contrôle anti-secret passé.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-09 — soir · dossier client unifié, vulgarisé</p>
-          <ul>
-            <li>📘 <b>Un seul document pour la cliente</b> : <code>docs/dossier-xenia-van-outryve.pdf</code>, 8 pages sans jargon — sa demande et nos réponses (moodboard, 3 références), couleurs, écritures et logo, l'accueil et les pages en captures, contrôle qualité (96), Google et IA (93 / 91), ce qu'on attend d'elle. Source <code>docs/dossier.html</code>, images <code>docs/dossier-img/</code>, copie dans <code>public/</code>.</li>
-            <li>⏳ <b>Document intemporel</b> : aucune date, aucun historique de corrections, aucune tâche Noveo — la page contrôle qualité décrit l'état du site, et le tableau final ne liste que ce qu'on attend de la cliente.</li>
-            <li>📉 <b>PDF allégé de 9 Mo à 1,4 Mo, sans post-traitement</b> : grain, ombres et dégradés sur boîtes arrondies (rasterisés par Chromium) remplacés à la source par des teintes unies ; PyMuPDF abandonné (texte illisible ou dégradés perdus) ; contrôle du rendu avec pypdfium2.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-09 — soir · corrections du contrôle qualité (LOCAL, non committé)</p>
-          <ul>
-            <li>🐛 <b>Cinq constats corrigés et revérifiés</b> : film mobile 640×360 / 163 Ko (économie de données respectée), og.jpg 42 Ko, favicon.ico, JSON-LD <code>Service</code> + <code>BreadcrumbList</code> sur les 4 pages d'offre (<code>src/lib/schema.ts</code>), hébergeur dans les mentions, llms.txt enrichi.</li>
-            <li>🔐 <code>nginx.conf</code> : en-têtes de sécurité + <code>server_tokens off</code> (syntaxe à valider au déploiement, Docker arrêté).</li>
-            <li>📊 Rapport Noveo : <b>score 96/100</b>, 4 constats restants (portrait, en-têtes à déployer, domaine, adresse). Audit SEO/GEO : <b>93 / 91</b>.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-09 — soir · audit SEO/GEO + contrôle qualité Noveo</p>
-          <ul>
-            <li>🔎 <b>Audit SEO &amp; GEO</b> du build recomposé : <code>docs/audit-seo-geo-xenia-van-outryve.pdf</code> — <b>SEO 89</b> (91 le 11/08), <b>GEO 89</b> (86). Balises, canoniques, JSON-LD, sitemap, Lighthouse 100/97 ; à corriger : film 6,9 Mo en mobile, og.png 503 Ko, JSON-LD Service, intentions locales.</li>
-            <li>✅ <b>Contrôle qualité Noveo</b> : <code>docs/rapport-qa-xenia-chris-ia-com-2026-09-09.pdf</code> — <b>score santé 93/100</b>, 0 critique, 8 constats (portrait à venir, film mobile, en-têtes nginx, og.png, domaine provisoire, mentions, favicon.ico, Service). 21 liens / 0 cassé, 0 console, 0 cookie.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-09 — soir · charte graphique</p>
-          <ul>
-            <li>📘 <b>Charte de marque relevée</b> sur le site recomposé (<code>/charte-url</code>, 3 pages) : <code>chartes/xenia/Charte-Xenia-Van-Outryve.pdf</code> (9 pages A4), <code>CHARTE.md</code>, <code>tokens.css</code>, <code>charte.json</code> (source), polices et logo dans <code>assets/</code>. 10 couleurs, 6 niveaux typo. <b>Proposé</b> à valider : base 8 px, monospace, couleurs d'état, textes vide/échec.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-09 — soir · blocs et animations de l'accueil (LOCAL, non committé)</p>
-          <ul>
-            <li>✨ <b>Six pièces ajoutées</b> après comparaison avec la référence aimée par la cliente : <b>bandeau des thèmes</b> (capsules qui défilent), <b>carrousel des accompagnements</b> à 4 onglets (ARIA tabs, auto 7 s pausable, clavier, sans JS = cartes empilées), <b>première séance en 3 étapes</b> (ligne tracée au scroll, même composant sur Approche), <b>carte dessinée du Brabant wallon</b> (contour figé, pastilles qui s'allument, collante à côté des cartes compactes, zéro cookie), <b>parallaxe</b> des blobs, <b>trait</b> sous les titres. Ordre « histoire d'abord ». Rien qui dépende de la cliente.</li>
-            <li>📏 Accueil 1440×900 : <b>8 230 px</b> (deux blocs de plus) ; mobile 9 722.</li>
-            <li>✅ QA : build sans résidu, ordre du DOM conforme, parallaxe et traits mesurés, carrousel / bandeau / étapes / carte vérifiés, mobile sans débordement, console vide, <b>Lighthouse desktop 100 / 97</b>.</li>
-            <li>♻️ Corrections : ligne SVG des étapes à dimensions explicites, fin du scrub à mi-écran, carte enveloppée pour le <code>sticky</code>, contour affirmé, <code>gsap.matchMedia</code> pour la parallaxe, règle sans-JS du carrousel.</li>
-            <li>♿ Revue des composants : bandeau non défilable par le focus et replié en liste statique au clavier ; carrousel sans auto ni bouton pause en <code>reduced-motion</code> ; panneaux hors tab order ; ligne des étapes centre à centre ; trait sur « Qui je suis ».</li>
-            <li>⚠️ Toujours <b>non committé</b> : validation à l'écran d'abord.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-09-09 — recomposition du site (LOCAL, non committé)</p>
-          <ul>
-            <li>♻️ <b>Blobs plus coupés aux bords des sections</b> (retour utilisateur) : plus de <code>overflow: clip</code> par section, les formes coulent d'une section à l'autre ; débordement horizontal coupé une fois sur <code>&lt;main&gt;</code>.</li>
-            <li>🗑️ <b>« Respirez. » retiré de la traversée</b> (demande utilisateur) : deux phrases, pin <code>+=100%</code>, accueil à <b>7 017 px</b>. ✨ <b>Indice de défilement</b> (« Faites défiler » + souris animée) sur l'écran 0, effacé au premier scroll.</li>
-            <li>✨ <b>Recomposition complète selon la spec du 2026-09-08</b> (plan exécuté par sous-agents, double revue par tâche) : hero en deux colonnes (texte sur <b>scrim</b>, <b>médaillon aquarelle</b> du cabinet), traversée resserrée (<code>+=120%</code>, voile 0,55, poster visible dès l'écran 0), sortie masquée, pétales = deux rencontres du logo. Fin des bandes à vagues : <b><code>Blob.astro</code></b> derrière chaque section, <b>cartes teintées</b>, verre toujours sur un blob, <b>une seule vague</b> (Footer). Accueil : « Qui je suis » (<code>Portrait.astro</code>), rencontre nutrition (3 pétales en verre + disque), tagline avant les lieux. Pages : <code>PageHero</code> à médaillon fondu + blob, <code>Domaines</code> teinté, FAQ/TDAH/focus en verre sur blob, « Pour qui » en 3 liens-cartes, <b>« Itinéraire »</b> Google Maps par cabinet, mentions en lilas doux. Textes inchangés.</li>
-            <li>🎬 <b>Film régénéré</b> : Seedance 2.5, 24 s, 1080p, 216 crédits, accepté à l'œil sur 4 frames ; all-intra 1280×720@20 crf 27 → 7,1 Mo, 482 frames I ; poster à 30 %. Master dans <code>brief/masters/</code>.</li>
-            <li>🖼️ <b>Aquarelle du hero</b> : Kie nano-banana-pro, 3 candidats 4:5, le n° 1 retenu ; WebP 640/1040/1600 (<code>scripts/convertir_hero.mjs</code>).</li>
-            <li>📏 <b>Hauteurs 1440×900</b> : accueil 9 014 → <b>7 017</b> (−22 %) ; intérieures −9 à −17 %. ⚠️ Sous les cibles de la spec (≤ 6 800, −20 %) : la scène épinglée pèse 1 980 px, la vague du footer ajoute 90 px — arbitrage à l'écran.</li>
-            <li>✅ <b>QA</b> : build 10 pages, 0 résidu, 1 vague par page, verre sur blob desktop et mobile, aucun débordement, console vide, hero complet sur 1366×768, <b>Lighthouse desktop 99 / 96</b>.</li>
-            <li>♻️ Correctifs des revues : isolation des médaillons, jetons <code>--radius-organique</code> / <code>--petale-*</code>, <code>aria-label</code> des liens Itinéraire / RDV, blobs redimensionnés (périnatalité, TDAH, enfants), libellés de la rencontre à 80 %, preload du poster, <code>sizes</code> 402 px.</li>
-            <li>⚠️ <b>Rien n'est committé ni redéployé</b> : réglage visuel en localhost (<code>pnpm dev</code>, port 4331), validation à l'écran d'abord.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-08-11 — nuit · traversée, stylo, film</p>
-          <ul>
-            <li>✨ Le hero desktop devient une <b>scène épinglée scrubée au scroll</b> (patron Capitale Cars) : trois phrases traversent pendant que le voile se lève, puis le hero se lève mot à mot ; mobile = intro courte ; sans JS = statique.</li>
-            <li>✍️ <b>« Respirez. » écrit par un stylo</b> : glyphes single-stroke Hershey Script, un <code>&lt;path pathLength="1"&gt;</code> par lettre, <code>stroke-dashoffset</code> séquencé dans la timeline (<code>Manuscrit.astro</code>).</li>
-            <li>🎬 <b>Film d'aquarelle</b> généré (Seedance 2.5, 12 s puis allongé à 24 s), scrubé par le scroll en desktop ; correctif « pas fluide » : ré-encodage <b>all-intra</b> + seuil de seek.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-08-11 — soir · upgrade techniques + aquarelles générées</p>
-          <ul>
-            <li>✨ <b>Grain</b> fixe global, <b>spotlight borders</b> (liseré sous le curseur, prouvé via <code>--sx/--sy</code>), <b>split-scroll</b> opposé sur la section nutrition (dérives mesurées).</li>
-            <li>🖼️ <b>4 aquarelles pastel</b> (palette charte) : cartes accueil + médaillons des heros intérieurs — Higgsfield seedream 4.5 + Kie nano-banana-pro (0,12 $), webp via sharp.</li>
-            <li>⚠️ Modération Higgsfield erratique (faux « nsfw » y compris sur natures mortes) — reformuler en scènes-objets, sinon repli Kie.</li>
-            <li>🔎 mindfoodyou.be : thème de démo, <b>aucune vraie photo à récupérer</b> — le portrait attend la cliente.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-08-11 — soir · itération design (skills elayadesign)</p>
-          <ul>
-            <li>✨ Audit <code>redesign-existing-projects</code> + <code>landing-page-design</code> appliqué <b>en préservant la charte cliente</b> : tagline reveal mot à mot (opacités prouvées 0,45/0,22/0,22 en mi-scroll), escalier des 3 cartes, skip-link + <code>&lt;main&gt;</code>, états <code>:active</code>, FAQ 4 → 6 + JSON-LD, page <code>/mentions-legales/</code>.</li>
-            <li>⚠️ <code>clearProps</code> ajouté à <code>bootReveals</code> — le transform inline GSAP écrasait sinon les offsets CSS.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-08-11 — après-midi · maquette en ligne</p>
-          <ul>
-            <li>🚀 <b>Maquette déployée : https://xenia.chris-ia.com</b> — 9 pages + sitemap/robots/llms.txt/og/PDF en 200, JSON-LD dans le HTML livré, zéro erreur console.</li>
-            <li>🐛 <b>Vraie 404</b> : fallback SPA nginx corrigé (<code>try_files =404</code> + <code>error_page 404</code>), re-vérifié en prod.</li>
-            <li>📄 Dossier PDF servi : <code>/dossier-xenia-van-outryve.pdf</code>.</li>
-          </ul>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">2026-08-11</p>
-          <ul>
-            <li>✨ <b>Création complète du site</b> : design system, 8 pages + 404, header à menu déroulant, animations différées — boucle visuelle /browse (desktop, mobile, burger, dropdown vérifiés).</li>
-            <li>✨ Liens de RDV <b>réels vérifiés en ligne</b> : Doctoranytime + Rosa. Bonus : Master en psychologie clinique de la santé (UCLouvain).</li>
-            <li>✨ SEO/GEO : JSON-LD MedicalBusiness (3 adresses, 2 ReserveAction), FAQPage, sitemap, robots, llms.txt, OG rendue depuis la charte — vérifié dans le build.</li>
-            <li>📄 <b>Dossier client PDF</b> — scores SEO 91 / GEO 86, gains rapides appliqués le jour même.</li>
-            <li>🔧 Dockerfile multi-étages → nginx:alpine ; <code>brief/</code> exclu du dépôt et de l'image.</li>
-            <li>🔧 Déploiement débloqué après accord utilisateur sur la création du dépôt public.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="problemes">
-      <h2><span class="ico">⚠️</span>Problèmes connus / à confirmer cliente</h2>
-      <div class="card warn"><b>Corrections impeccable du 12/09 (8 P1) committées le 13/09</b> (<code>528fa01</code>), puis allègement + iconographie. <b>Reste (P2/P3)</b> (<code>docs/impeccable/2026-09-12/synthese.md</code>) : <code>mailto:</code> visio sans adresse visible, pétales en reduced-motion, déroulant non refermable par Échap, verre dans l'élément qui respire, animations infinies sans pause hors viewport, cibles tactiles &lt; 44 px, nav à 1024 px + zoom 200 %, couleurs hors jetons, <code>lenis</code>/<code>Manuscrit.astro</code> morts, breakpoint 700 px. Commandes : quieter/distill → adapt → polish.</div>
-      <div class="card warn"><b>Nom de domaine non tranché</b> (Mindfoodyou.be abandonné) — placeholder <code>xeniavanoutryve.be</code> dans les canonical/sitemap/JSON-LD.</div>
-      <div class="card warn"><b>Tarifs et paiement</b> : seule certitude vérifiée : « paiement mobile accepté » (Doctoranytime). Remboursement mutualité formulé prudemment.</div>
-      <div class="card warn"><b>Aquarelle du hero à valider par la cliente</b> (elle reste même après les photos ; le portrait vit dans « Qui je suis » et À propos). <b>Hauteurs</b> : accueil 7 197 px, intérieures −9/−17 % — sous les cibles de la spec, à trancher à l'écran.</div>
-      <div class="card warn"><b>Portrait</b> : placeholder en attendant les photos. <b>Nom</b> : le site suit le brief (« Xenia Van Outryve ») — l'état civil des annuaires est « van Outryve d'Ydewalle ». <b>Réseaux sociaux</b> « à venir ».</div>
-    </section>
-
-    <section id="deploiement">
-      <h2><span class="ico">🌍</span>Déploiement — en ligne depuis le 2026-08-11</h2>
-      <div class="card">
-        <b>https://xenia.chris-ia.com</b> — HTTPS automatique (wildcard <code>*.chris-ia.com</code>), aucun DNS à créer.
-        Dossier client : <code>/dossier-xenia-van-outryve.pdf</code>.
-      </div>
-      <table>
-        <tr><th>Élément</th><th>Valeur</th></tr>
-        <tr><td>Coolify</td><td><code>http://46.224.83.139:8000</code> (instance <b>maquettes</b> — ⚠️ jamais la prod Noveo <code>188.245.156.214</code>)</td></tr>
-        <tr><td>Serveur</td><td><code>zw8ck4ckcw08gg00g8wwkkso</code></td></tr>
-        <tr><td>Projet</td><td><code>p124wf4ynk21bns4c8153iaj</code></td></tr>
-        <tr><td>Application</td><td><code>seetu6uqg4tnkjg8do4f1f8n</code></td></tr>
-        <tr><td>Dépôt</td><td><code>github.com/cltconcept/xenia-website</code> (public — requis par Coolify sans clé SSH)</td></tr>
-        <tr><td>Build pack</td><td><code>dockerfile</code> — multi-étages → nginx:alpine, port 80</td></tr>
-      </table>
-      <pre># Redéployer après un git push (jeton ~/.claude.json → mcpServers.coolify.env)
-GET http://46.224.83.139:8000/api/v1/deploy?uuid=seetu6uqg4tnkjg8do4f1f8n</pre>
-      <div class="card warn">⚠️ Les <code>canonical</code> et le sitemap pointent vers le domaine provisoire <code>xeniavanoutryve.be</code> : la maquette ne peut pas se faire indexer. Ne pas « corriger ». La copie du PDF de <code>docs/</code> vers <code>public/</code> est à refaire à chaque régénération.</div>
-    </section>
-  </main>
-</div>
-</body>
-</html>
+    ├── data/              ← contenu.ts (TOUS les textes, sans guillemets), medias.ts, directions.ts, site.ts
+    ├── lib/mouvement.ts   ← apparitions, piège du focus, défilement bloqué, mouvement réduit
+    ├── components/partage ← Tete (SEO, noindex, OG, stats), SelecteurDirection, Statistiques, presentoir/
+    ├── directions/
+    │   ├── CONTRAT.md     ← comment un habillage se branche (ancres, imports, ports)
+    │   ├── a/             ← « Le carnet » : grille à marge, prénom au stylo, module « Par où commencer ? »
+    │   ├── b/             ← « Respirer » : arches, rameau d'olivier, voile sauge + verre, module « Quel jour, quel cabinet ? »
+    │   └── c/             ← « Le salon » : formes organiques, vagues, motif du tapis, carte des cabinets
+    └── pages/             ← index (présentoir), a|b|c/index + cabinets, 404, robots.txt
+</code></pre>
+<ul>
+<li><strong>Flux</strong> : <code>contenu.ts</code> + <code>medias.ts</code> → trois habillages indépendants (chaque route n'importe que le sien) → HTML
+  statique ; tout est lisible sans JS.</li>
+<li><strong>Contenu</strong> : réécrit le 2026-10-20 sur la remarque de la cliente (« ces petites phrases entre guillemets […] un
+  aspect un peu trop commercial ») : aucun guillemet, titres descriptifs, sa voix (mail du 27/07), « van » en
+  minuscule.</li>
+<li><strong>Choix du client</strong> : quand elle aura choisi A, B ou C, retirer les deux autres habillages, le sélecteur et le
+  présentoir, servir la direction retenue à la racine, puis décliner les autres pages (approche, accompagnements,
+  nutrition, à propos, mentions légales) — voir <code>.claude/skills/forge/references/trois-directions.md</code>.</li>
+</ul>
+</section><section id="variables-denvironnement"><h2><span aria-hidden="true">🔐</span> Variables d'environnement</h2>
+<p>Aucune au runtime. Variable de build Coolify <code>VERIFICATION=preview</code> (contrôleur de sortie en mode aperçu).</p>
+</section><section id="roadmap-features"><h2><span aria-hidden="true">🗺️</span> Roadmap &amp; Features</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Statut</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1 « L'éclaircie » (design, 9 pages, SEO/GEO, dossier PDF, impeccable, allègement)</td>
+<td><span class="badge ok">✅ Done</span></td>
+<td>2026-08-11 → 2026-09-13</td>
+</tr>
+<tr>
+<td>Seconde proposition : trois directions (accueil + Cabinets) + présentoir, d'après les remarques du 14/09</td>
+<td><span class="badge ok">✅ Done</span></td>
+<td>2026-10-20</td>
+</tr>
+<tr>
+<td>Aperçu en ligne <code>xenia.noveo-digital.be</code> + mail « trois propositions » (brouillon)</td>
+<td><span class="badge ok">✅ Done</span></td>
+<td>2026-10-20</td>
+</tr>
+<tr>
+<td>Choix de direction par la cliente, puis retrait des deux autres</td>
+<td><span class="badge prevu">📋 Planned</span></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Déclinaison des autres pages dans la direction retenue + mentions légales</td>
+<td><span class="badge prevu">📋 Planned</span></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Nom de domaine final + bascule DNS + Search Console</td>
+<td><span class="badge prevu">📋 Planned</span></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Tarifs, photos des cabinets (attendent la cliente)</td>
+<td><span class="badge prevu">📋 Planned</span></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+</section><section id="journal-des-changements"><h2><span aria-hidden="true">📓</span> Journal des changements</h2>
+<h3 id="2026-10-21-seconde-proposition-en-ligne-mail-a-la-cliente">2026-10-21 (seconde proposition EN LIGNE + mail à la cliente)</h3>
+<ul>
+<li>🚀 Aperçu en ligne : <strong>https://xenia.noveo-digital.be</strong> (serveur clients, commit <code>fd3843b</code>, déploiement Coolify
+  <code>u2cjhwfzn4old6d7cxrbsrw1</code> en ≈ 20 s). Vérifié en ligne : 7 pages + présentoir en 200, vraie 404, <code>cf-ray</code>
+  présent (Cloudflare devant), <code>noindex</code> en en-tête et en balise, canonical vers <code>www.xeniavanoutryve.be</code>, un seul
+  <code>&lt;h1&gt;</code> par page, aucune mention de l'agence, aucun guillemet, aucun « Xénia Van ». Statistiques : visite relayée
+  avec une IP japonaise → « JP » dans Umami, puis site remis à zéro.</li>
+<li>🗂️ Asana : Pré-Prod URL de la carte « XENIA VAN OUTRYVE » renseignée.</li>
+<li>✉️ Brouillon <code>XENIA VAN OUTRYVE.eml</code> (skill <code>forge-mail-da</code>) dans <code>Bureau\Mails DA 2026-10-05</code> : « Madame van
+  Outryve », trois descriptions, rien envoyé.</li>
+<li>ℹ️ L'ancienne app maquettes (xenia.chris-ia.com) n'a PAS de webhook : elle sert toujours la v1, qui reste
+  consultable en archive. Étiquette <code>v1-eclaircie</code> poussée sur GitHub.</li>
+<li>🐛 Deux agents (habillage C, présentoir) figés pendant la nuit (PC en veille) : arrêtés, leur travail relu et
+  repris tel quel (correctif du hero téléphone de C fait, présentoir complet).</li>
+</ul>
+<h3 id="2026-10-20-seconde-proposition-trois-directions-construites">2026-10-20 (seconde proposition : trois directions construites)</h3>
+<ul>
+<li>📨 Retours de la cliente (e-mails des 8 et 14/09, transférés par Arnaud le 15/09, rangés dans <code>remarques/</code>,
+  gitignoré) : 4 photos N&amp;B ; changer typo et couleurs ; « ces petites phrases entre guillemets […] un aspect un peu
+  trop commercial, alors qu'on cherche plutôt à transmettre une idée d'accompagnement bienveillant » ; garder les
+  itinéraires et les trois cabinets ; 3 nouvelles références (Anda, Amarie Lael, planche Pinterest de gabarits
+  pour thérapeutes).</li>
+<li>✨ Décision utilisateur : « fais 3 DA différentes, change tout et repropose ce qu'elle veut suivant les
+  remarques » ; accueil + page Cabinets par direction ; ses photos + 12 ambiances générées (33 cr Higgsfield).</li>
+<li>♻️ v1 étiquetée <code>v1-eclaircie</code> puis retirée du dossier de travail ; socle Astro 7.3.5 (npm) repris de la
+  mécanique de medicaldietcenter ; contrôleur de sortie qui refuse « » “ ” et « Xénia Van ».</li>
+<li>✍️ Contenu commun réécrit (<code>src/data/contenu.ts</code>) : plus aucune phrase entre guillemets ni accroche qui retourne
+  une objection, titres descriptifs, sa voix à la 1re personne (mail du 27/07), « van » en minuscule.</li>
+<li>🎨 Trois habillages en parallèle (un agent par direction) : A « Le carnet » (prénom « Xénia » écrit au stylo en
+  glyphes Hershey, préparé par l'orchestrateur), B « Respirer » (arches, rameau d'olivier, voile sauge + verre
+  dépoli, le souhait de juillet), C « Le salon » (formes organiques, vagues, motif du tapis de son salon, carte des
+  cabinets). Présentoir à la racine (ouverture ≤ 2,5 s, triptyque dans les trois chartes).</li>
+<li>✅ <code>npm test</code> : check 0 erreur, 8 pages, contrôleur 0 erreur 0 avertissement. Mots visibles à l'accueil : A 756,
+  B 773, C 625. Contrastes du texte courant ≥ 7,66:1. Hero téléphone mesuré à 390 × 844, 375 × 667 et 360 × 640 :
+  bouton et téléphone au-dessus du sélecteur de direction dans les trois directions.</li>
+</ul>
+<h3 id="2026-09-13-soir-plus-aucune-mention-de-lagence-sur-le-site">2026-09-13 (soir — plus aucune mention de l'agence sur le site)</h3>
+<ul>
+<li>🗑️ <strong>« Site conçu et hébergé par Noveo Digital (noveodigital.be) » retiré des
+  mentions légales</strong> (<code>src/pages/mentions-legales.astro</code>, carte Hébergement) :
+  règle posée par l'utilisateur le même jour — <strong>aucun site client ne porte de
+  signature d'agence</strong> (ni Noveo, ni noveodigital.be, ni CLT Concept, ni
+  chris-ia). La carte ne nomme plus que l'hébergeur (Hetzner Online GmbH,
+  adresse, données dans l'UE), ce que la loi demande.</li>
+<li>✅ Vérifié : build 10 pages, <code>grep -rniE "noveo" dist/</code> vide, PDF servi
+  <code>public/dossier-xenia-van-outryve.pdf</code> déjà propre (0 occurrence au texte
+  extrait). Règle gravée dans <code>_autres/website/CLAUDE.md</code>, le skill
+  <code>site-vitrine</code> et le contrôleur de référence (<code>dailypopsociety/scripts/verifier.mjs</code>).</li>
+<li>🚀 Committé, poussé et redéployé sur la maquette, page vérifiée en ligne.</li>
+</ul>
+<h3 id="2026-09-13-allegement-du-texte-3040-iconographie-sur-mesure">2026-09-13 (allègement du texte −30/40 % + iconographie sur mesure)</h3>
+<ul>
+<li>🎯 <strong>Déclencheur</strong> : deux retours du responsable de l'utilisateur sur la
+  maquette, « trop de texte » et « pas d'iconographie personnalisée
+  (Higgsfield) ». Brainstorming (4 questions + 2 écrans du compagnon visuel),
+  spec <code>docs/superpowers/specs/2026-09-13-xenia-allegement-iconographie-design.md</code>,
+  plan du même nom, exécution par sous-agents (socle, accueil, composants +
+  pages) et par le lead (génération Higgsfield, découpe, vérification).</li>
+<li>✨ <strong>Set de 33 pictogrammes propres au site</strong> (<code>src/icons/</code>, style B : trait
+  aubergine + pétale du logo posé par <code>Icon.astro</code>) : 4 planches Recraft V4.1
+  <code>vector</code> via Higgsfield (10 crédits pièce, SVG natif rasterisé), découpées
+  par projection d'encre (grille DÉTECTÉE : Recraft a livré du 3×3 et du 2×4)
+  et vectorisées par potrace (<code>scripts/icones/decouper.mjs</code>, 52,6 Ko les 33).
+  <code>diplome</code> trop plat → <code>livre</code> pour le master.</li>
+<li>✨ <strong>5 vignettes aquarelle « objets du cabinet »</strong> (plaid, carnet, fauteuils,
+  porte, fenêtre) : Nano Banana Pro via Higgsfield avec deux illustrations
+  d'août en référence de style, 2 candidats par sujet (choix dans
+  <code>brief/illu-src/vignettes/CHOIX.md</code>), WebP 320/640/960 ≤ 20 Ko en 640
+  (<code>Vignette.astro</code>, <code>scripts/convertir_illustrations.mjs --vignette</code>).
+  60 crédits Higgsfield au total.</li>
+<li>✂️ <strong>Textes</strong> : accueil 994 → 651 mots visibles (−35 % ; 739 sur la base de
+  comptage du 12/09, textes cachés compris), Approche 492 → 317, À propos
+  403 → 270, accompagnements ≈ 410 → 259-273, Nutrition 411 → 272, Lieux
+  545 → 360 ; FAQ 6 → 4 questions (JSON-LD resynchronisé), bandeau 10 → 8
+  capsules, situations 8 → 6, ligne « Où » une seule fois sous le carrousel,
+  adresses retirées des cartes compactes et du pied de page. Faits, H1/H2,
+  meta et phrases-patients intacts. ⚠️ <strong>Cibles recalibrées de +65</strong> pendant
+  l'implémentation : le texte fixe (nav rendue deux fois + footer) pèse 163
+  mots, pas 100 ; <code>scripts/compter_mots.mjs</code> (texte visible : sr-only, tiroir
+  mobile et copie du bandeau exclus) prouve toutes les cibles.</li>
+<li>📐 <strong>Emplacements</strong> : pictos dans les repères du hero, les 6 cartes, les
+  onglets, les repères « Qui je suis », les cercles des étapes (numéro en
+  sr-only), les cartes de lieux, les piliers d'Approche (le logo répété
+  disparaît), les heros de page, le closing, le contact du footer ; vignettes
+  à l'opposé du texte en desktop, 168 px au-dessus du titre en mobile (carnet
+  et fenêtre masquées sur téléphone pour la hauteur).</li>
+<li>✅ <strong>Vérifié</strong> : build 10 pages, 0 erreur console, 0 débordement à 390,
+  contrastes des nouveaux libellés ≥ 4,90:1 au pixel, <strong>hauteur de l'accueil
+  stable, pas réduite</strong> : 8 230 → 8 370 px desktop (scène épinglée comprise,
+  mesuré en ligne) et 9 722 → 10 021 px mobile — les cinq vignettes reprennent
+  la place libérée par le texte ; la cible ≤ 6 000 px de la spec n'est pas
+  atteinte (levier : vignettes en position absolue dans la zone du blob plutôt
+  qu'en flux, ≈ −500 px, ou approche B). HTML
+  de l'accueil 114 Ko brut / 30 Ko gzip avec 45 SVG inline, détecteur
+  impeccable <code>dist</code> 67 → 59 constats (aucune règle nouvelle), FAQ JSON-LD = HTML,
+  H1 inchangés, <code>llms.txt</code> à jour.</li>
+<li>📚 <code>docs/DESIGN.md</code> : section « Iconographie ». Reste : audit SEO/GEO complet
+  (<code>/noveo-checkquality</code>) à repasser, dossier client PDF à régénérer (captures).</li>
+<li>🚀 <strong>Committé (<code>99aea48</code>, après <code>528fa01</code> pour les P1 du 12/09), poussé et
+  redéployé</strong> (déploiement Coolify <code>xkkcjibyhjfherd9mfzfnafm</code>, ⚠️ l'API veut
+  désormais <code>POST /api/v1/deploy?uuid=…</code>, le GET répond 405) : vérifié en
+  ligne sur https://xenia.chris-ia.com — 9 pages 200, vraie 404, vignettes et
+  <code>llms.txt</code> servis, 45 pictos inline sur l'accueil, console vide.</li>
+</ul>
+<h3 id="2026-09-12-apres-midi-les-8-p1-impeccable-corriges-en-local-non-committes">2026-09-12 (après-midi — les 8 P1 impeccable corrigés, EN LOCAL, non committés)</h3>
+<ul>
+<li>✅ <strong>Décisions utilisateur</strong> : corriger les 8 P1 seulement, garder les trois
+  listes de motifs, pilule « RDV » dans l'en-tête mobile (pas de barre basse),
+  <code>--muted</code> aligné sur <code>--muted-hero</code>, film différé sans réencodage.</li>
+<li>🐛 <strong>Bandeau</strong> (<code>Bandeau.astro</code>) : le repli en liste statique passe de
+  <code>:focus-within</code> à <code>:has(.chip:focus-visible)</code> (clavier seulement) + pause sans
+  reflow à tout focus → <strong>le premier tap/clic navigue (vérifié 2/2, tactile et
+  souris)</strong>.</li>
+<li>♿ <strong>CTA</strong> : pilule compacte « RDV » (44 px, nom accessible « Prendre
+  rendez-vous ») et burger 44×44 dans l'en-tête mobile (<code>Header.astro</code>) ; CTA
+  du hero en <code>autoAlpha</code> (+ <code>visibility: hidden</code> pré-paint) → hors de l'ordre
+  de tabulation tant qu'ils sont invisibles ; un focus dans le hero termine la
+  scène (<code>index.astro</code>).</li>
+<li>🎨 <strong>Contrastes</strong> : <code>--muted</code> → <code>#6E5F76</code>, <code>.overline</code> / têtes du footer /
+  numéros d'étapes / tags / citation / eyebrow → <code>--framboise-deep</code>, scrim
+  mobile du hero couvrant aussi le haut (0,62 → 0,9). <strong>Mesuré au pixel après
+  correction : tout ≥ 4,53:1</strong> (eyebrow mobile 5,52 contre 3,1–3,8 ; footer
+  4,92–5,25 contre 4,03–4,33 ; lavis mobiles 4,88–5,41 contre 4,04–4,28).</li>
+<li>🔎 <strong>Identité dès l'écran 0</strong> : « Psychologue clinicienne · Brabant wallon »
+  dans la phrase 1 de la traversée, s'efface avec elle.</li>
+<li>🔗 <strong>Liens annuaire / itinéraire</strong> (<code>LieuxCards.astro</code>) : texte visible en
+  tête du nom accessible + « nouvel onglet » en <code>.sr-only</code>, glyphe de lien
+  externe, note de réassurance au-dessus des cartes sur Lieux (reprend la FAQ
+  mot pour mot).</li>
+<li>⚡ <strong>Perf</strong> : film desktop chargé au premier geste de défilement seulement
+  (wheel/touch/touche/scroll) avec test <code>saveData</code>/<code>effectiveType</code> — <strong>vérifié :
+  aucune requête <code>hero-film.mp4</code> avant le scroll, une après</strong> ; <code>will-change</code>
+  des lavis sous 961 px retiré (<code>Blob.astro</code>), celui des mots du H1 relâché
+  après l'intro mobile.</li>
+<li>📚 <code>docs/DESIGN.md</code> : palette (<code>--muted</code>, <code>--framboise-deep</code>) et interdit
+  « pas de framboise ni de muted sous 4,5:1 ».</li>
+<li>✅ Vérifié sur le build (<code>pnpm build</code> OK, <code>pnpm preview</code>) : console vide,
+  aucun débordement à 360/390, tabulation desktop = nav → capsules (les CTA
+  invisibles ne prennent plus le focus), <code>:has()</code> conservé par le compilateur
+  Astro. Détecteur impeccable : <code>dist</code> <strong>191 → 67 constats</strong> ; l'accueil
+  desktop se scanne enfin (le film ne bloque plus le réseau au repos).
+  ⏳ <strong>À valider à l'écran par l'utilisateur, puis commit + redéploiement.</strong></li>
+</ul>
+<h3 id="2026-09-12-verification-impeccable-critique-audit-rien-corrige">2026-09-12 (vérification impeccable — critique + audit, rien corrigé)</h3>
+<ul>
+<li>🔍 <strong>Plugin <code>impeccable</code> 4.3.1 (pbakaus) installé et passé sur le site</strong>
+  (commandes <code>critique</code> + <code>audit</code>, trois agents isolés : revue design,
+  détecteur + mesures au pixel, audit technique) : <strong>critique 29/40 (Bon)</strong>,
+  <strong>audit 13/20 (Acceptable)</strong>, 0 P0 · 8 P1 · 8 P2 · 6 P3. Synthèse et
+  rapports détaillés dans <code>docs/impeccable/2026-09-12/</code> (<code>synthese.md</code>,
+  rapports A/B/C, <code>preuves/</code>, <code>pw.py</code>), instantané impeccable dans
+  <code>.impeccable/critique/</code> — dossiers <strong>non committés</strong>, aucune ligne de code
+  touchée : l'ordre des corrections est à décider.</li>
+<li>🐛 <strong>Bug fonctionnel P1 confirmé par reproduction (4/4, tactile et souris)</strong> :
+  le premier tap ou clic sur une capsule du bandeau ne navigue pas —
+  <code>Bandeau.astro:38-41</code>, la règle <code>:focus-within</code> replie la piste au focus du
+  lien, l'élément sous le doigt change et le <code>click</code> tombe sur le <code>ul</code>. Navigue
+  dès que la règle est neutralisée (fix : <code>.bandeau:has(.chip:focus-visible)</code>
+  ou pause de l'animation sans reflow).</li>
+<li>⚠️ Autres P1 : <code>--muted #7A6B82</code> sous 4,5:1 sur le footer, les lavis mobiles
+  et le verre (aligner sur <code>--muted-hero</code>), eyebrow du hero mobile à 3,1–3,8:1
+  (scrim transparent sur 28 %), CTA absent de l'en-tête mobile + CTA du hero à
+  opacité 0 dans l'ordre de tabulation desktop, film de 7 Mo récupéré en Blob
+  d'office sur tout écran ≥ 1024 px sans test réseau, 22 <code>will-change</code> au repos,
+  écran 0 desktop sans le mot « psychologue » avant 60 % de la scène, sortie
+  vers l'annuaire non annoncée.</li>
+<li>🧰 Outillage : le <code>browse</code> de gstack n'est pas installé sur la machine →
+  captures et mesures par Playwright Python (<code>pw.py</code>). Le détecteur impeccable
+  ne lit pas les <code>.astro</code> (scanner <code>dist/</code> et les URL) et expire sur l'accueil
+  desktop (film en Blob).</li>
+</ul>
+<h3 id="2026-09-09-mise-en-ligne-de-la-maquette-recomposee">2026-09-09 (mise en ligne de la maquette recomposée)</h3>
+<ul>
+<li>🚀 <strong>Poussé sur GitHub et redéployé</strong> (demande utilisateur) : trois commits
+  sur <code>main</code> de <code>cltconcept/xenia-website</code> (<code>62c0199</code> le site, <code>a4bebd8</code> la
+  documentation, <code>ce66d45</code> les scripts de médias), puis déploiement de l'app
+  Coolify <code>seetu6uqg4tnkjg8do4f1f8n</code> — <strong>25 s</strong>, sur le sous-domaine existant
+  <strong>https://xenia.chris-ia.com</strong> (aucune nouvelle app créée).</li>
+<li>✅ Vérifié EN LIGNE : les 9 pages en 200, vraie 404, robots / llms.txt /
+  sitemap / favicon.ico / og.jpg / film mobile / aquarelle du hero servis
+  (l'ancien <code>og.png</code> répond bien 404) ; <strong>les 5 en-têtes de sécurité sont
+  actifs</strong> et <code>Server: nginx</code> n'annonce plus sa version ; JSON-LD <code>Service</code> +
+  <code>BreadcrumbList</code> présents sur les pages d'offre ; carrousel, bandeau, blobs
+  et parallaxe rendus, console vide, aucun débordement.</li>
+<li>🧹 Avant commit : audit SEO/GEO ramené de 4,6 Mo à 675 Ko (même cause que le
+  dossier : grain, ombres et dégradés arrondis rasterisés par Chromium) ; les
+  polices rapatriées de la charte sont gitignorées (re-téléchargeables depuis
+  <code>chartes/xenia/assets.json</code>). Contrôle anti-secret passé : aucune clé dans
+  les fichiers versionnés, <code>brief/</code> toujours hors dépôt.</li>
+</ul>
+<h3 id="2026-09-09-soir-dossier-client-unifie-vulgarise">2026-09-09 (soir — dossier client unifié, vulgarisé)</h3>
+<ul>
+<li>📘 <strong>Un seul document pour la cliente</strong> (demande utilisateur, remplace le
+  dossier de 5 planches du 11/08) : <code>docs/dossier-xenia-van-outryve.pdf</code>,
+  <strong>8 pages A4</strong> aux couleurs du site, sans jargon — 1 couverture ;
+  2 « Votre demande, notre réponse » (ses mots du moodboard → ce que ça donne,
+  ses 3 références et ce qu'on en a gardé / écarté) ; 3 les couleurs (10
+  swatches à rôle simple, pourquoi framboise et ivoire) ; 4 écritures + logo
+  « la rencontre » (3 versions) ; 5 l'accueil raconte une histoire (4
+  captures) ; 6 les pages et le téléphone (6 captures) ; 7 contrôle qualité
+  (score 96, contrôlé / corrigé / reste à faire et qui) ; 8 Google et IA (SEO
+  93, GEO 91 expliqués, ce qui est en place, la suite, ce qu'on attend d'elle).
+  Source <code>docs/dossier.html</code>, images dans <code>docs/dossier-img/</code>, copie servie
+  dans <code>public/</code>. Les audits techniques restent en documents séparés.</li>
+<li>⏳ <strong>Document rendu INTEMPOREL</strong> (demande utilisateur : « les corrections, le
+  client s'en fout, c'est mon job ») : aucune date nulle part (pieds de page,
+  moodboard, passes de contrôle), la page 7 décrit <strong>l'état du site</strong> et non
+  l'historique (« Un site vérifié, page par page » ; la carte « corrigé le
+  jour même » devient « Léger, et fait pour durer », faits présentés comme des
+  caractéristiques) ; le tableau « ce qui reste » ne liste plus que ce qui
+  dépend de la cliente (photo, domaine, adresse, tarifs) — la colonne « qui »
+  et la ligne « mise en ligne / Noveo » sont retirées. À REGÉNÉRER tel quel
+  quand le contenu change : ne jamais y remettre de date ni de tâche Noveo.</li>
+<li>📉 <strong>PDF allégé de 9 Mo à 1,4 Mo, sans post-traitement</strong> (demande
+  utilisateur). Cause : Chromium rasterise à l'impression tout fond à filtre
+  SVG (le grain feTurbulence = 457 Ko × 8 pages), toute ombre portée et tout
+  dégradé posé sur une boîte arrondie (cartes teintées, encadrés, jauges).
+  Correctifs à la source uniquement : grain retiré, ombres retirées, fonds de
+  cartes en <strong>teintes unies</strong> (<code>#FCF0F5</code>, <code>#F5F1FC</code>, <code>#EEF8F4</code>, <code>#FFF2EA</code>),
+  couverture en dégradé linéaire opaque. La barre d'aurore garde son dégradé.
+  ⚠️ Post-traitement PyMuPDF <strong>abandonné</strong> : <code>subset_fonts</code>/<code>garbage≥3</code>
+  rendent le texte illisible, et même <code>garbage=1</code> + <code>rewrite_images</code> perdent
+  des dégradés (« cannot find Pattern resource »). Contrôle du rendu avec
+  <strong>pypdfium2</strong> (moteur de Chrome), pas avec PyMuPDF ni le lecteur Chrome
+  headless (page blanche).</li>
+</ul>
+<h3 id="2026-09-09-soir-corrections-du-controle-qualite">2026-09-09 (soir — corrections du contrôle qualité)</h3>
+<ul>
+<li>🐛 <strong>Cinq constats du rapport Noveo corrigés et revérifiés</strong> (seconde passe
+  complète du contrôle) : film du hero servi en <strong>640×360 / 163 Ko</strong> sur mobile
+  (<code>hero-film-mobile.mp4</code>, rien en mode économie de données ; le master
+  all-intra reste au desktop) ; image Open Graph <strong>og.jpg 42 Ko</strong> (og.png 503 Ko
+  supprimé) ; <strong>favicon.ico</strong> 16/32/48 ; <strong>JSON-LD <code>Service</code> + <code>BreadcrumbList</code></strong>
+  sur les 4 pages d'offre (<code>src/lib/schema.ts</code>, alimenté par
+  <code>accompagnements.ts</code>, passé au layout par la prop <code>extraLd</code>) ; bloc
+  <strong>Hébergement</strong> dans les mentions (Noveo Digital, Hetzner Online GmbH —
+  identifié par l'IP de la maquette) ; <strong>llms.txt</strong> enrichi (thèmes, première
+  séance, horaires, FAQ) et daté.</li>
+<li>🔐 <strong>nginx.conf</strong> : <code>server_tokens off</code> + HSTS, X-Frame-Options,
+  X-Content-Type-Options, Referrer-Policy, Permissions-Policy, répétés dans
+  chaque <code>location</code> à <code>add_header</code> (sinon annulés). ⚠️ Syntaxe non testée en
+  local (Docker arrêté) : à valider au premier redéploiement, puis <code>curl -sI</code>.</li>
+<li>📊 Rapport Noveo reconstruit : <strong>score 96/100</strong>, 4 constats restants
+  (portrait à venir, en-têtes à déployer, domaine à trancher, adresse de
+  l'éditrice). Audit SEO/GEO mis à jour : <strong>SEO 93 / GEO 91</strong>.</li>
+</ul>
+<h3 id="2026-09-09-soir-audit-seogeo-controle-qualite-noveo">2026-09-09 (soir — audit SEO/GEO + contrôle qualité Noveo)</h3>
+<ul>
+<li>🔎 <strong>Audit SEO &amp; GEO du build recomposé</strong> : <code>docs/audit-seo-geo-xenia-van-outryve.pdf</code>
+  (4 pages aux couleurs du site, source <code>docs/audit-seo-geo.html</code>). <strong>SEO 89</strong>
+  (91 le 11/08 : deux médias lourds apparus), <strong>GEO 89</strong> (86 : plus de matière
+  lisible sans JS). Relevé statique des 9 pages : balises, canoniques, h1, alt,
+  JSON-LD complets ; sitemap = 9 pages ; Lighthouse desktop 100/97. À corriger :
+  film 6,9 Mo téléchargé en mobile, og.png 503 Ko, pas de <code>Service</code> /
+  <code>BreadcrumbList</code>, intentions locales sans page dédiée ; domaine à trancher.</li>
+<li>✅ <strong>Contrôle qualité Noveo Digital</strong> (<code>/noveo-checkquality</code> sur le build servi
+  en local) : <code>docs/rapport-qa-xenia-chris-ia-com-2026-09-09.pdf</code> (14 pages),
+  <strong>score santé 93/100</strong>, 0 critique. 21 liens / 0 cassé, 0 erreur console,
+  0 cookie, 0 script tiers, menu mobile complet, aucun débordement. 8 constats :
+  portrait « à venir » (H1, cliente), film mobile (H2), en-têtes de sécurité
+  nginx absents + version exposée (M1), og.png (M2), domaine provisoire (M3),
+  mentions légales sans hébergeur (B1), favicon.ico (B2), JSON-LD Service (B3).
+  Faux positifs écartés : h1 « multiple » (retours à la ligne), mailto
+  « incohérent » (libellé E-mail), hero mobile vide (cliché pris pendant l'intro).</li>
+</ul>
+<h3 id="2026-09-09-soir-charte-graphique">2026-09-09 (soir — charte graphique)</h3>
+<ul>
+<li>📘 <strong>Charte de marque relevée sur le site recomposé</strong> (skill <code>/charte-url</code>, 3
+  pages relevées en local : accueil, Adolescents &amp; Adultes, Lieux &amp; Contact) :
+  <code>chartes/xenia/Charte-Xenia-Van-Outryve.pdf</code> (9 pages A4 aux couleurs du
+  site), <code>CHARTE.md</code> (pour l'agent qui code), <code>tokens.css</code>, <code>charte.json</code>
+  (source de vérité, toute retouche s'y fait puis <code>build.cjs</code>), polices
+  WOFF2 et logo SVG dans <code>assets/</code>. 10 couleurs, 6 niveaux typographiques,
+  thème clair seul. <strong>Proposé</strong> (à faire valider) : base d'espacement 8 px
+  (le site est en <code>clamp()</code> fluides), monospace JetBrains Mono, couleurs
+  d'état ambre et rouge sombre, textes vide/échec. Le wordmark n'existe
+  qu'en HTML : le lockup livré est le symbole seul.</li>
+</ul>
+<h3 id="2026-09-09-soir-blocs-et-animations-de-laccueil">2026-09-09 (soir — blocs et animations de l'accueil)</h3>
+<ul>
+<li>✨ <strong>Six pièces ajoutées</strong> (spec <code>docs/superpowers/specs/2026-09-09-xenia-blocs-et-animations-design.md</code>,
+  plan du même nom, sous-agents + double revue) après comparaison avec la
+  référence aimée par la cliente (template « Yoga studio ») : <strong>bandeau des
+  thèmes</strong> (10 capsules teintées qui défilent, source <code>themes.ts</code>),
+  <strong>carrousel des accompagnements</strong> à 4 onglets (patron ARIA tabs, flèches en
+  verre, auto 7 s pausable, clavier, sans JS = 4 cartes empilées ; remplace
+  les 3 cartes en escalier, titre « Un accompagnement selon l'âge et la vie »),
+  <strong>première séance en 3 étapes</strong> (frise horizontale dont la ligne se trace au
+  scroll ; même composant en liste verticale sur Approche, textes en source
+  unique <code>etapes.ts</code>), <strong>carte dessinée du Brabant wallon</strong> (contour simplifié
+  figé dans <code>carte.ts</code>, 3 pastilles qui s'allument, liaison pointillée
+  révélée par masque, collante à côté des 3 cartes compactes ; aucun service
+  tiers, aucun cookie), <strong>parallaxe</strong> des blobs et <strong>trait de pinceau</strong> sous
+  les titres de section. Ordre A « histoire d'abord » validé par
+  l'utilisateur. Rien qui dépende de la cliente (photo, tarifs : emplacements
+  prêts).</li>
+<li>📏 Accueil 1440×900 : <strong>8 230 px</strong> (7 017 avant, +2 blocs) ; mobile 9 722.</li>
+<li>✅ QA : build 10 pages sans résidu, ordre du DOM conforme, 6 blobs en
+  parallaxe, traits tracés, carrousel (onglets, clavier, auto, pause, sans
+  JS), bandeau (défile, pause au survol), étapes et carte tracées, mobile
+  sans débordement, console vide, <strong>Lighthouse desktop (build) : performance 100,
+  accessibilité 97</strong> (seul défaut : la tagline atténuée, préexistante).</li>
+<li>♻️ Corrections en cours de route : ligne SVG des étapes à dimensions
+  explicites (élément remplacé), fin du scrub à mi-écran (le 3e cercle
+  s'allumait trop tard en colonne), carte enveloppée dans un conteneur de la
+  page pour le <code>sticky</code> (la racine d'un composant ne reçoit pas le scope
+  Astro du parent), contour de la carte plus affirmé, <code>bootBlobs</code> dans
+  <code>gsap.matchMedia</code>, <code>isolation</code> sur les titres à trait, règle sans-JS du
+  carrousel, médaillon du carrousel en teintes 35 %.</li>
+<li>♿ Revue des composants (2 points importants corrigés) : le bandeau ne peut
+  plus être défilé par le focus clavier (<code>overflow: clip</code>) et se replie en
+  liste statique au <code>:focus-within</code> (toutes les capsules visibles) ; en
+  <code>reduced-motion</code> le carrousel n'a plus d'auto ni de bouton pause (le bouton
+  naissait inversé) ; panneaux du carrousel retirés du tab order ; ligne des
+  étapes exactement de centre à centre ; trait posé aussi sur « Qui je suis »
+  (titre sorti du reveal). Textes du carrousel = les données (<code>accompagnements.ts</code>),
+  spec alignée.</li>
+</ul>
+<h3 id="2026-09-09-recomposition-du-site">2026-09-09 (recomposition du site)</h3>
+<ul>
+<li>♻️ <strong>Les blobs ne sont plus coupés aux bords des sections</strong> (retour
+  utilisateur : « le tronçage casse la fluidité ») : <code>.section--blob</code> et le
+  <code>PageHero</code> perdent leur <code>overflow: clip</code>, les formes coulent d'une section à
+  l'autre sous le contenu (fonds transparents) ; le débordement horizontal est
+  coupé une seule fois sur <code>&lt;main&gt;</code> (<code>overflow-x: clip</code>, aucun effet sur le pin
+  ni sur le header fixe). Les trois blobs réduits pour tenir dans leur section
+  (périnatalité, TDAH, enfants) reprennent une taille généreuse.</li>
+<li>🗑️ <strong>« Respirez. » retiré de la traversée</strong> (demande utilisateur) : la scène
+  passe à deux phrases (« Parfois, tout pèse un peu trop. » → « La lumière
+  revient, à votre rythme. ») et le pin à <code>+=100%</code> ; accueil à <strong>7 017 px</strong>.
+  <code>Manuscrit.astro</code> reste sur le disque (recette du stylo Hershey), plus importé.</li>
+<li>✨ <strong>Indice de défilement</strong> sur l'écran 0 (« Faites défiler » + souris à
+  point animé, framboise) : la scène étant épinglée, il dit qu'il faut scroller ;
+  visible seulement en scène desktop, effacé dès 2 % de progression, animation
+  coupée en reduced-motion.</li>
+<li>✨ <strong>Recomposition complète selon la spec du 2026-09-08</strong> (plan
+  <code>docs/superpowers/plans/2026-09-09-xenia-recomposition.md</code>, exécuté par
+  sous-agents avec double revue conformité + qualité par tâche) : hero en deux
+  colonnes (texte sur <strong>scrim</strong> ivoire, <strong>médaillon aquarelle</strong> permanent du
+  cabinet, halo derrière), traversée resserrée (<code>+=120%</code>, voile à 0,55, poster
+  du film visible dès l'écran 0 : plus jamais blanc), sortie du hero masquée
+  (plus de ligne droite), pétales = deux « rencontres » du logo. Fin des bandes
+  ivoire à vagues : <strong><code>Blob.astro</code></strong> (forme organique dégradée, 5 tracés
+  générés par harmoniques et figés, 7 teintes, dérive lente, mobile = lavis
+  centré qui couvre la section) derrière chaque section, <strong>cartes teintées</strong> par
+  thème, verre dépoli toujours sur un blob, <strong>une seule vague</strong> (dans le Footer).
+  Accueil : 8 cartes « Ce qui vous amène » teintées, section <strong>« Qui je suis »</strong>
+  (remplace le teaser Approche : <code>Portrait.astro</code>, citation, 3 repères à
+  puce-pétale, 2 liens), <strong>rencontre nutrition</strong> (3 pétales en verre à 120° +
+  disque « Équilibre psychologique »), tagline déplacée avant les lieux.
+  Pages intérieures : <code>PageHero</code> à médaillon fondu (multiply sur dégradé,
+  anneau de verre) + blob, <code>Domaines</code> teinté par page, cartes teintées,
+  FAQ/TDAH/focus en verre sur blob, « Pour qui » en 3 liens-cartes,
+  <strong>« Itinéraire »</strong> Google Maps sur chaque cabinet (URL de recherche, zéro
+  cookie), mentions en lilas doux. Textes inchangés hors guillemets insécables
+  et micro-ajouts prévus.</li>
+<li>🎬 <strong>Film régénéré</strong> : Seedance 2.5 via Higgsfield, 24 s, 1080p, <strong>216
+  crédits</strong> (1 seule génération, acceptée à l'œil sur 4 frames : papier blanc,
+  aucune zone grise, montée de couleur monotone). Encodage all-intra
+  1280×720@20 crf 27 → <strong>7,1 Mo, 482 frames I</strong> ; poster à 30 %. Master dans
+  <code>brief/masters/</code> (hors git).</li>
+<li>🖼️ <strong>Aquarelle du hero</strong> : Kie <code>nano-banana-pro</code>, 3 candidats 4:5 2K
+  (<code>scripts/illustration_hero.sh</code>), le n° 1 retenu (fauteuil pêche, voilage,
+  rai de lumière, feuilles, coussin framboise, beaucoup de blanc), WebP 640 /
+  1040 / 1600 (<code>scripts/convertir_hero.mjs</code>).</li>
+<li>📏 <strong>Hauteurs mesurées</strong> (1440×900, avant → après) : accueil 9 014 → <strong>7 017</strong>
+  (−22 %, après le retrait de « Respirez. »), approche 3 799 → 3 473 (−9 %, +3 liens-cartes), ado-adultes
+  3 422 → 2 906 (−15 %), périnatalité 3 316 → 2 874 (−13 %), enfants
+  3 133 → 2 611 (−17 %), nutrition 3 325 → 2 805 (−16 %), à propos
+  3 288 → 2 750 (−16 %), lieux 4 059 → 3 539 (−13 %), mentions 2 213 → 2 123.
+  ⚠️ Pages intérieures en deçà de l'objectif −20 % de la spec, accueil à 7 017
+  contre ≤ 6 800 : la scène épinglée pèse 1 800 px et la vague du footer
+  ajoute 90 px partout — resserrer
+  davantage se décide à l'écran (leviers : <code>--section-pad</code>, pin, padding du
+  PageHero).</li>
+<li>✅ <strong>QA</strong> : build 10 pages, 0 résidu <code>soft-wrap</code>/<code>section--soft</code>/
+  <code>card--undefined</code>, 1 vague par page, verre sur blob desktop ET mobile,
+  <code>scrollWidth</code> = viewport partout, console vide, hero complet visible sur
+  1366×768, <strong>Lighthouse desktop (build) : performance 99, accessibilité 96</strong>
+  (seul défaut : l'état atténué initial des mots de la tagline, préexistant).</li>
+<li>♻️ Correctifs issus des revues : <code>isolation: isolate</code> sur les médaillons,
+  jetons <code>--radius-organique</code> / <code>--petale-rose</code> / <code>--petale-sage</code>, <code>will-change</code>
+  coupé en reduced-motion, <code>aria-label</code> sur les liens Itinéraire / RDV, blobs
+  redimensionnés pour tenir dans leurs sections (périnatalité, TDAH, enfants),
+  libellés de la rencontre à 80 % du pétale, <code>&lt;link rel="preload"&gt;</code> du poster
+  sur l'accueil, <code>sizes</code> du médaillon à 402 px.</li>
+<li>⚠️ <strong>Rien n'est committé ni redéployé</strong> : phase de réglage visuel en
+  localhost (<code>pnpm dev</code>, http://localhost:4331), validation à l'écran d'abord.</li>
+</ul>
+<h3 id="2026-08-11-nuit-le-film-daquarelle-dans-le-hero">2026-08-11 (nuit — le film d'aquarelle dans le hero)</h3>
+<ul>
+<li>🎬 <strong>Film génératif dans la traversée</strong> (demande utilisateur « comme pour
+  capital car ») : Seedance 2.5 via Higgsfield (78 crédits, 12 s — encres
+  pastel qui fleurissent sur ivoire, l'arc de l'éclaircie) + upscale 4K
+  ByteDance. Couche profonde de l'aurore, révélé quand le voile se lève ;
+  desktop : préchargé en Blob, <code>currentTime</code> scrubé par la scène (cible via
+  <code>onUpdate</code>, lissage 0,14 en rAF) ; mobile : boucle ; sans JS : poster.</li>
+<li>🐛 <strong>« Pas fluide du tout » (retour utilisateur) → réglé</strong> : le film web
+  était en GOP par défaut → chaque seek décodait depuis la keyframe. Ré-encodé
+  <strong>ALL-INTRA</strong> 1280×720@20 depuis le master 4K (recette du journey-scrub de
+  capitale-cars, ffprobe : 100 % frames I, 6,6 Mo) + seuil de seek 1/30 s.</li>
+<li>📦 Masters livrés : film aquarelle 4K (27 Mo) + vidéo du hero complet 4K.</li>
+</ul>
+<h3 id="2026-08-11-nuit-le-stylo-ecrit-respirez">2026-08-11 (nuit — le stylo écrit « Respirez. »)</h3>
+<ul>
+<li>✍️ <strong>Écriture manuscrite scrubée</strong> (demande utilisateur « comme un stylo qui
+  écrit ») : l'acte 2 de la traversée écrit « Respirez. » lettre après lettre
+  en cursive liée — glyphes <strong>single-stroke Hershey Script</strong> (fonte de traceur
+  monoligne, domaine public — une vraie trajectoire de plume, pas un contour
+  de police), un <code>&lt;path pathLength="1"&gt;</code> par lettre assemblé dans
+  <code>Manuscrit.astro</code>, <code>stroke-dashoffset</code> séquencé dans la timeline épinglée.
+  Recette réutilisable : <code>hersheytextjs</code> (JSON), décaler chaque glyphe de
+  l'avancement <code>o</code>, les liaisons cursives se recouvrent naturellement.</li>
+</ul>
+<h3 id="2026-08-11-nuit-la-traversee-scene-epinglee-au-scroll">2026-08-11 (nuit — la traversée, scène épinglée au scroll)</h3>
+<ul>
+<li>✨ <strong>Le hero desktop devient une scène pin + scrub</strong> (patron Capitale Cars,
+  demandé par l'utilisateur — l'intro au chargement se ratait trop
+  facilement) : « Parfois, tout pèse un peu trop. » sur le voile → le scroll
+  lève le voile et allume le halo → « Respirez. » → pétales + « La lumière
+  revient, à votre rythme. » → le vrai hero se lève mot à mot. ~2 écrans de
+  scroll, rejouable en remontant. <code>sort()+refresh()</code> après le pin.
+  Mobile : intro courte au chargement. Sans JS / reduced-motion : statique.</li>
+<li>📸 Vérifié par captures à 5 positions de scroll + console propre.</li>
+</ul>
+<h3 id="2026-08-11-nuit-hero-signature-leclaircie">2026-08-11 (nuit — hero signature « L'éclaircie »)</h3>
+<ul>
+<li>✨ <strong>Chorégraphie d'ouverture GSAP</strong> (~3 s) : voile qui se dissout, halo qui
+  s'allume, pétales du logo en dérive dans l'aurore, mots du H1 levés en
+  masques (split JS, aria-label intégral conservé), <strong>trait de pinceau tracé</strong>
+  sous « mieux-être durable » (SVG pathLength, dégradé framboise→rose).
+  Parallax de sortie scrubée (sans pin). Vérifié par captures à t≈0 / 0,8 s /
+  2,8 s + mesures (7 mots splittés, voile à 0, dashoffset 0, console propre).</li>
+<li>🛡️ Garde-fous : classe <code>js-intro</code> posée <strong>avant le premier paint</strong> (script
+  inline — zéro flash), timeout 3 s anti-voile-bloqué, reduced-motion et
+  sans-JS = hero complet statique, GSAP toujours en import dynamique.</li>
+<li>🖼️ <strong>Aquarelle Approche</strong> (Kie, 0,04 $ — arrosoir + jeune pousse : grandir
+  à son rythme) en médaillon du hero de la page.</li>
+</ul>
+<h3 id="2026-08-11-soir-upgrade-techniques-aquarelles-generees">2026-08-11 (soir — upgrade techniques + aquarelles générées)</h3>
+<ul>
+<li>✨ <strong>Upgrade techniques</strong> (chapitre du skill redesign) : <strong>grain</strong> fixe global
+  (feTurbulence 4 %), <strong>spotlight borders</strong> (liseré illuminé sous le curseur,
+  masque de bordure + <code>--sx/--sy</code> posés au pointermove/rAF — prouvé),
+  <strong>split-scroll</strong> opposé sur la section nutrition (dérives mesurées
+  +13,9 px / −1,9 px, scrub sans pin).</li>
+<li>🖼️ <strong>Série de 4 aquarelles pastel</strong> (palette charte, sur ivoire) : cartes
+  accueil (voile multiply) + médaillons organiques des heros intérieurs.
+  Higgsfield seedream 4.5 (chaussons, fruits-thé) + Kie nano-banana-pro
+  (fauteuil, crayons — 0,12 $). Webp via <code>scripts/convertir_illustrations.mjs</code>.
+  ⚠️ Modération Higgsfield <strong>erratique</strong> : « nsfw » en faux positif sur des
+  natures mortes ; les mots « baby/child/herbs/plant/powder/petal » bloquent en
+  entrée, et un classifieur de sortie retoque au hasard — reformuler en
+  scènes-objets et retenter, ou basculer sur Kie.</li>
+<li>🔎 Ancien site mindfoodyou.be inspecté : thème WordPress de démo (images
+  tyler.com), <strong>aucune vraie photo</strong> — seul upload : l'ancien logotype.
+  Le portrait attend toujours les photos de la cliente.</li>
+</ul>
+<h3 id="2026-08-11-soir-iteration-design-skills-elayadesign">2026-08-11 (soir — itération design, skills elayadesign)</h3>
+<ul>
+<li>✨ <strong>Audit appliqué</strong> (skills <code>redesign-existing-projects</code> + <code>landing-page-design</code>
+  de github.com/elayadesign, installés dans <code>website/.claude/skills/</code>) en
+  <strong>préservant la charte cliente</strong> (aurore, italiques Fraunces — leurs Design
+  Values par défaut ne s'appliquent pas, la grille d'audit si) :
+  section <strong>tagline reveal</strong> sur l'accueil (mots activés un à un au scroll,
+  prouvé par opacités mesurées 0,45/0,22/0,22 en mi-parcours), <strong>escalier</strong>
+  des 3 cartes accompagnements (symétrie générique cassée), skip-link +
+  <code>&lt;main&gt;</code>, états <code>:active</code>, <strong>FAQ 4 → 6</strong> questions + JSON-LD synchronisé,
+  page <strong>/mentions-legales/</strong> (vie privée honnête : zéro cookie, zéro
+  collecte) + lien footer. 10 pages au build.</li>
+<li>⚠️ Piège documenté : <code>clearProps</code> ajouté à <code>bootReveals</code> — sans lui, le
+  transform inline résiduel de GSAP écrase les offsets CSS (escalier).</li>
+</ul>
+<h3 id="2026-08-11-apres-midi-maquette-en-ligne">2026-08-11 (après-midi — maquette en ligne)</h3>
+<ul>
+<li>🚀 <strong>Maquette déployée : https://xenia.chris-ia.com</strong> (dépôt public
+  <code>cltconcept/xenia-website</code>, Docker → nginx, Coolify, HTTPS auto). Vérifié sur
+  le site servi : les 9 pages + sitemap/robots/llms.txt/og.png/PDF en 200,
+  JSON-LD <code>MedicalBusiness</code> + <code>FAQPage</code> dans le HTML livré, canonical vers le
+  domaine provisoire, zéro erreur console.</li>
+<li>🐛 <strong>Vraie 404</strong> : le fallback SPA de nginx servait l'accueil en 200 pour
+  toute URL inconnue (soft-404) → <code>try_files =404</code> + <code>error_page 404 /404.html</code>,
+  re-vérifié en prod après redéploiement.</li>
+<li>📄 Dossier PDF servi : https://xenia.chris-ia.com/dossier-xenia-van-outryve.pdf</li>
+</ul>
+<h3 id="2026-08-11">2026-08-11</h3>
+<ul>
+<li>✨ Création complète du site (design system, 8 pages + 404, header à menu
+  déroulant, footer, animations différées) à partir du moodboard et du mail
+  cliente du 27/07/2026 — méthode boucle visuelle <code>/browse</code> (desktop + mobile</li>
+<li>burger + dropdown vérifiés sur captures).</li>
+<li>✨ Liens de prise de RDV <strong>réels vérifiés en ligne</strong> : Doctoranytime
+  (<code>/d/psychologue/xenia-van-outryve</code>) et Rosa (<code>/fr/hp/xenia-van-outryve/</code>).
+  Bonus vérifié : Master en psychologie clinique de la santé (UCLouvain).</li>
+<li>✨ SEO/GEO : JSON-LD <code>MedicalBusiness</code> (3 adresses, 2 ReserveAction),
+  <code>FAQPage</code> sur Lieux &amp; Contact, sitemap, robots, llms.txt, OG 1200×630
+  rendue depuis la charte. Vérifié <strong>dans le build</strong> (<code>dist/</code>).</li>
+<li>📄 Dossier client : <code>docs/dossier-xenia-van-outryve.pdf</code> — scores SEO 91 /
+  GEO 86, gains rapides appliqués le jour même. Copie servie dans <code>public/</code>
+  (à refaire à chaque régénération), <code>Disallow</code> dans robots.txt.</li>
+<li>🔧 Dockerfile multi-étages → nginx:alpine + <code>.dockerignore</code> (piège
+  node_modules hôte) ; <code>brief/</code> exclu du dépôt <strong>et</strong> de l'image (fil privé).</li>
+<li>🔧 Déploiement débloqué après accord utilisateur sur la création du dépôt
+  public (le classifieur auto l'avait refusée une première fois).</li>
+</ul>
+</section><section id="problemes-connus-a-confirmer-cliente"><h2><span aria-hidden="true">⚠️</span> Problèmes connus / à confirmer cliente</h2>
+<ul>
+<li><strong>Choix de direction (A, B ou C) attendu</strong> de la cliente ; ensuite retirer les deux autres habillages, le
+  sélecteur et le présentoir, puis décliner les autres pages (approche, accompagnements, nutrition, à propos,
+  <strong>mentions légales</strong>, absentes de la démonstration <code>noindex</code>).</li>
+<li>Sa remarque orale à Arnaud sur « la typo et les couleurs » n'a jamais été transcrite : les trois directions
+  suivent ses références écrites.</li>
+<li><strong>Nom de domaine non tranché</strong> (placeholder <code>xeniavanoutryve.be</code> dans <code>site.config.json</code>).</li>
+<li><strong>Tarifs, photos des trois cabinets</strong> : à demander. La phrase sur les mutualités est reprise de la v1, à confirmer.</li>
+<li>Nom d'état civil complet « van Outryve d'Ydewalle » vu sur les annuaires ; le site suit sa signature
+  (« Xénia van Outryve »).</li>
+<li>Rendu vérifié en Chromium seulement : à voir sur Safari (verre dépoli de B) et sur un vrai téléphone (barre
+  d'appel, sélecteur).</li>
+<li>Les points ouverts de la v1 (impeccable P2/P3, hauteurs, aquarelle du hero) sont caducs avec la refonte ; détail
+  dans le journal ci-dessous et sous l'étiquette <code>v1-eclaircie</code>.</li>
+</ul>
+</section><section id="deploiement"><h2><span aria-hidden="true">🌐</span> Déploiement</h2>
+<h3 id="apercu-de-la-seconde-proposition-en-ligne-depuis-le-2026-10-21">Aperçu de la seconde proposition — en ligne depuis le 2026-10-21</h3>
+<p><strong>https://xenia.noveo-digital.be</strong> (serveur clients, Cloudflare devant, <code>noindex</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coolify</td>
+<td><code>https://srv.noveodigital.be</code> (serveur clients Hetzner <code>167.233.243.35</code> ; jeton <code>C:\Dev\Noveo\_secrets\coolify-clients.env</code>)</td>
+</tr>
+<tr>
+<td>Serveur</td>
+<td><code>zb2n7reassfqrqfozo9tlfw4</code></td>
+</tr>
+<tr>
+<td>Projet</td>
+<td><code>bhhz1q5p59ppef9fjhlcpyq0</code></td>
+</tr>
+<tr>
+<td>Application</td>
+<td><code>qic8nsliymjyzgfg9n4umkk8</code> (GitHub App <code>cplvqlbjxfey5mkidppiadol</code>, branche <code>main</code>, auto-déploiement au push)</td>
+</tr>
+<tr>
+<td>Dépôt</td>
+<td><code>github.com/cltconcept/xenia-website</code> (public)</td>
+</tr>
+<tr>
+<td>Build pack</td>
+<td><code>dockerfile</code> (multi-étages → nginx:alpine, port 80) ; variable de build <code>VERIFICATION=preview</code></td>
+</tr>
+<tr>
+<td>Statistiques</td>
+<td>Umami <code>https://stats.noveo-digital.be</code>, site <code>1f82e5d6-e54c-4d27-b63e-dde05fbb5094</code>, relais <code>/stats/</code></td>
+</tr>
+</tbody>
+</table>
+<p>Redéployer : un push sur <code>main</code> suffit ; sinon <code>POST https://srv.noveodigital.be/api/v1/deploy?uuid=qic8nsliymjyzgfg9n4umkk8</code>.
+Vérifier : <code>python &lt;scratchpad&gt;/verifier-en-ligne-xenia.py --reset</code> (modèle : <code>medicaldietcenter/artifacts/verifier-en-ligne.py</code>).</p>
+<p>⚠️ Les <code>canonical</code> et le sitemap pointent volontairement vers <code>www.xeniavanoutryve.be</code> (domaine provisoire) : ne pas
+« corriger ».</p>
+<h3 id="ancienne-maquette-v1-httpsxeniachris-iacom">Ancienne maquette v1 — https://xenia.chris-ia.com</h3>
+<p>Instance maquettes <code>46.224.83.139</code> (projet <code>p124wf4ynk21bns4c8153iaj</code>, app <code>seetu6uqg4tnkjg8do4f1f8n</code>). <strong>Aucun
+webhook</strong> : elle sert toujours la v1 « L'éclaircie » (commit <code>71889f1</code>) malgré le push du 2026-10-21. Ne plus y
+déployer (règle Forge du 2026-09-28) ; à arrêter quand la cliente aura choisi.</p></section></main></div>
+</body></html>
